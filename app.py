@@ -6,10 +6,10 @@ import urllib
 
 from config import feeds
 from flask import Flask, jsonify, redirect, render_template, request
-from werkzeug.contrib.cache import MemcachedCache
+from werkzeug.contrib.cache import FileSystemCache
 
 app = Flask('subfeeder')
-cache = MemcachedCache(['127.0.0.1:11211'])
+cache = FileSystemCache('/Volumes/GitHub/subfeeder/cache')
 
 
 def get_entries():
@@ -29,17 +29,22 @@ def debug():
     return jsonify(entries)
 
 
-@app.route('/api')
-def api():
-    entries = get_entries()
-    return jsonify(entries)
+@app.route('/api/popular')
+def api_popular():
+    entries = sorted(get_entries(), key=lambda k: k['shares'], reverse=True)
+    return jsonify(entries[:50])
+
+
+@app.route('/api/recent')
+def api_recent():
+    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)
+    return jsonify(entries[:50])
 
 
 @app.route('/')
 def home():
-    entries = get_entries()
+    entries = sorted(get_entries(), key=lambda k: k['shares'], reverse=True)
     count = len(entries)
-    entries = sorted(entries, key=lambda k: k['facebook']['shares'], reverse=True)
     verbose = request.cookies.get('verbose', 'true')
     verbose = json.loads(verbose)
 
@@ -53,9 +58,8 @@ def home():
 
 @app.route('/recent')
 def recent():
-    entries = get_entries()
+    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)
     count = len(entries)
-    entries = sorted(entries, key=lambda k: k['time'], reverse=True)
     verbose = request.cookies.get('verbose', 'true')
     verbose = json.loads(verbose)
 

@@ -31,16 +31,20 @@
                 <b>{{ entry.link | hostname }}</b>
                 <b>&bull;</b>
                 <b>{{ entry.time | shortdate }} ago</b>
-                {% if entry.facebook.shares %}
+                {% if entry.shares %}
                     <b>&bull;</b>
-                    <b>{{ entry.facebook.shares }} shares</b>
+                    <b>{{ entry.shares }} shares</b>
                 {% endif %}
             </div>
-            {% if entry.facebook.description and verbose %}
+            {% if entry.description and verbose %}
                 <div class="summary">
-                    {{ entry.facebook.description }}
+                    {{ entry.description }}
                 </div>
             {% endif %}
+        </div>
+    {% else %}
+        <div class="entry">
+            <div class="summary">Processing content...</div>
         </div>
     {% endfor %}
 </div>
