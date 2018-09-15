@@ -14,7 +14,8 @@ feeds = ['http://feeds.arstechnica.com/arstechnica/index/',
          'http://feeds.feedburner.com/sub/recode',
          'http://feeds.feedburner.com/sub/techcrunch',
          'http://feeds.feedburner.com/sub/verge',
-         'https://news.ycombinator.com/rss']
+         'https://news.ycombinator.com/rss',
+         'https://lobste.rs/rss']
 
 ro_feeds = ['http://feeds.feedburner.com/hotnews/yvoq',
          'http://feeds.feedburner.com/sub/stiripesurse',

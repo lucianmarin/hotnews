@@ -1,6 +1,5 @@
 import datetime
 import feedparser
-import json
 import requests
 import urllib
 
@@ -32,7 +31,6 @@ for feed in feeds:
             url = urllib.parse.quote(entry.link)
             graph = 'https://graph.facebook.com/v2.7/?id={0}&access_token={1}'.format(url, token)
             facebook = requests.get(graph).json()
-            print(facebook)
             try:
                 if 'error' not in facebook:
                     if 'share' in facebook:
@@ -43,6 +41,7 @@ for feed in feeds:
                         item['description'] = facebook['og_object']['description']
                     else:
                         item['description'] = ''
+                print(facebook)
             except Exception as e:
                 print(e)
                 pass
