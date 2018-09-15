@@ -4,11 +4,10 @@ import json
 import requests
 import urllib
 
-from config import feeds
-from werkzeug.contrib.cache import FileSystemCache
+from config import cache, feeds
 
-cache = FileSystemCache('/Volumes/GitHub/subfeeder/cache')
 total = 0
+token = '531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0'
 
 
 def to_date(s):
@@ -20,32 +19,38 @@ for feed in feeds:
     start = datetime.datetime.utcnow()
     response = requests.get(feed)
     entries = feedparser.parse(response.content).entries
-    items = []
+    items = {}
+    feed_cache = cache.get(feed) or []
     for entry in entries:
-        item = {}
-        if entry.id.startswith('https://www.neowin.net/'):
-            item['link'] = entry.id
-        else:
-            item['link'] = entry.link
-        token = '531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0'
-        url = urllib.parse.quote(item['link'])
-        graph = 'https://graph.facebook.com/v2.7/?id={0}&access_token={1}'.format(url, token)
-        facebook = json.loads(requests.get(graph).text)
-        item['shares'] = 0
-        item['description'] = ''
-        try:
-            item['shares'] = facebook['share']['share_count']
-        except:
-            pass
-        try:
-            item['description'] = facebook['og_object']['description']
-        except:
-            pass
+        item = {'link': entry.link}
+        if entry.link in feed_cache:
+            if 'shares' in feed_cache[entry.link]:
+                item['shares'] = feed_cache[entry.link]['shares']
+            if 'description' in feed_cache[entry.link]:
+                item['description'] = feed_cache[entry.link]['description']
+        if 'shares' not in item or 'description' not in item:
+            url = urllib.parse.quote(entry.link)
+            graph = 'https://graph.facebook.com/v2.7/?id={0}&access_token={1}'.format(url, token)
+            facebook = requests.get(graph).json()
+            print(facebook)
+            try:
+                if 'error' not in facebook:
+                    if 'share' in facebook:
+                        item['shares'] = facebook['share']['share_count']
+                    else:
+                        item['shares'] = 0
+                    if 'og_object' in facebook:
+                        item['description'] = facebook['og_object']['description']
+                    else:
+                        item['description'] = ''
+            except Exception as e:
+                print(e)
+                pass
         item['time'] = to_date(entry.published_parsed).timestamp()
         item['published'] = to_date(entry.published_parsed).isoformat()
         item['author'] = entry.get('author', '')
         item['title'] = entry.get('title', '')
-        items.append(item)
+        items[entry.link] = item
     end = datetime.datetime.utcnow()
     current = (end - start).total_seconds()
     total += current
@@ -53,4 +58,4 @@ for feed in feeds:
     cache.set(feed, items, timeout=0)
 
 
-print('Total {0} minutes'.format(round(total/60, 2)))
+print('Total {0} minutes'.format(round(total / 60, 2)))

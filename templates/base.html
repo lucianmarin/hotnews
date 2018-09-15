@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Subfeeder</title>
+    <title>Newscafe</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0" />
     <meta name="author" content="Lucian Marin" />
@@ -14,8 +14,12 @@
 
 <div class="menu">
     <h1>
-        <a {% if view == 'home' %}class="selected"{% endif %} href="/">Subfeeder</a>
-        <a {% if view == 'last' %}class="selected"{% endif %} href="/recent">Recent</a>
+        <a class="{% if view == 'home' %}selected{% endif %}" href="/">
+            Newscafe
+        </a>
+        <a class="{% if view == 'last' %}selected{% endif %}" href="/recent">
+            Recent
+        </a>
     </h1>
 </div>
 
@@ -23,9 +27,7 @@
     {% for entry in entries %}
         <div class="entry">
             <h4 class="title">
-                <a target="_blank" href="{{ entry.link }}">
-                    {{ entry.title }}
-                </a>
+                <a target="_blank" href="{{ entry.link }}">{{ entry.title }}</a>
             </h4>
             <div class="small">
                 <b>{{ entry.link | hostname }}</b>
@@ -36,7 +38,7 @@
                     <b>{{ entry.shares }} shares</b>
                 {% endif %}
             </div>
-            {% if entry.description and verbose %}
+            {% if entry.description %}
                 <div class="summary">
                     {{ entry.description }}
                 </div>
@@ -50,15 +52,9 @@
 </div>
 
 <div class="footer">
-    <b>Subfeeder</b>
+    <b>Newscafe</b>
     <b>&frasl;</b>
     <b>{{ count }} articles</b>
-    <b>&frasl;</b>
-    {% if verbose %}
-        <a href="/succinct">succinct</a>
-    {% else %}
-        <a href="/verbose">verbose</a>
-    {% endif %}
 </div>
 
 </body>

@@ -4,18 +4,17 @@ import json
 import requests
 import urllib
 
-from config import feeds
+from config import cache, feeds
 from flask import Flask, jsonify, redirect, render_template, request
-from werkzeug.contrib.cache import FileSystemCache
 
 app = Flask('subfeeder')
-cache = FileSystemCache('/Volumes/GitHub/subfeeder/cache')
 
 
 def get_entries():
     entries = []
     for feed in feeds:
-        entries += cache.get(feed) or []
+        fdict = cache.get(feed) or {}
+        entries += fdict.values()
     return entries
 
 
@@ -43,48 +42,18 @@ def api_recent():
 
 @app.route('/')
 def home():
-    entries = sorted(get_entries(), key=lambda k: k['shares'], reverse=True)
-    count = len(entries)
-    verbose = request.cookies.get('verbose', 'true')
-    verbose = json.loads(verbose)
+    entries = sorted(get_entries(), key=lambda k: k['shares'] if 'shares' in k else 0, reverse=True)
+    count = len(get_entries())
 
-    if verbose:
-        entries = entries[:15]
-    else:
-        entries = entries[:25]
-
-    return render_template('base.html', entries=entries, count=count, verbose=verbose, view='home')
+    return render_template('base.html', entries=entries[:15], count=count, view='home')
 
 
 @app.route('/recent')
 def recent():
-    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)
-    count = len(entries)
-    verbose = request.cookies.get('verbose', 'true')
-    verbose = json.loads(verbose)
+    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)[:15]
+    count = len(get_entries())
 
-    if verbose:
-        entries = entries[:15]
-    else:
-        entries = entries[:25]
-
-    return render_template('base.html', entries=entries, count=count, verbose=verbose, view='last')
-
-
-@app.route('/succinct')
-def set_succinct():
-    go_back = redirect(request.referrer or '/')
-    response = app.make_response(go_back)
-    response.set_cookie('verbose', value='false', max_age=365*24*3600)
-    return response
-
-
-@app.route('/verbose')
-def set_verbose():
-    go_back = redirect(request.referrer or '/')
-    response = app.make_response(go_back)
-    response.set_cookie('verbose', value='true', max_age=365*24*3600)
-    return response
+    return render_template('base.html', entries=entries[:15], count=count, view='last')
 
 
 @app.template_filter('hostname')
