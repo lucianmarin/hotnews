@@ -62,7 +62,7 @@ def home():
 
 @app.route('/recent')
 def recent():
-    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)[:15]
+    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)
     count = len(entries)
 
     return render_template('base.html', entries=entries[:15], count=count, view='last')
