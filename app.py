@@ -14,7 +14,10 @@ def get_entries():
     for feed in feeds:
         fdict = cache.get(feed) or {}
         entries += fdict.values()
-    return entries
+    uniques = {}
+    for entry in entries:
+        uniques[entry['link']] = entry
+    return uniques.values()
 
 
 @app.route('/debug')
@@ -42,7 +45,7 @@ def api_recent():
 @app.route('/')
 def home():
     entries = sorted(get_entries(), key=lambda k: k['shares'] if 'shares' in k else 0, reverse=True)
-    count = len(get_entries())
+    count = len(entries)
 
     return render_template('base.html', entries=entries[:15], count=count, view='home')
 
@@ -50,7 +53,7 @@ def home():
 @app.route('/recent')
 def recent():
     entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)[:15]
-    count = len(get_entries())
+    count = len(entries)
 
     return render_template('base.html', entries=entries[:15], count=count, view='last')
 

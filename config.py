@@ -2,6 +2,8 @@ from werkzeug.contrib.cache import FileSystemCache
 
 cache = FileSystemCache('./cache')
 
+links = ['http://feeds.feedburner.com/sub/daringfireball']
+
 magazines = ['http://feeds.arstechnica.com/arstechnica/index/',
              'http://feeds.macrumors.com/MacRumors-Front',
              'http://feeds.feedburner.com/d0od',
@@ -18,4 +20,4 @@ magazines = ['http://feeds.arstechnica.com/arstechnica/index/',
 news = ['https://news.ycombinator.com/rss',
         'https://lobste.rs/rss']
 
-feeds = magazines + news
+feeds = links + magazines + news
