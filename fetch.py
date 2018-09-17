@@ -38,14 +38,14 @@ for feed in feeds:
                 item['shares'] = feed_cache[entry.link]['shares']
             if 'description' in feed_cache[entry.link]:
                 item['description'] = feed_cache[entry.link]['description']
-        if 'shares' not in item and item['time'] > past_time:
+        if item.get('shares', 0) and item['time'] > past_time:
             url = urllib.parse.quote(entry.link)
             graph = api_path.format(url, token)
             facebook = requests.get(graph).json()
             try:
                 if 'error' not in facebook:
                     if 'share' in facebook:
-                        item['shares'] = facebook['share']['share_count']
+                        item['shares'] = int(facebook['share']['share_count'])
                     else:
                         item['shares'] = 0
                     if 'og_object' in facebook:
