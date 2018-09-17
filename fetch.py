@@ -6,7 +6,8 @@ import urllib
 from config import cache, feeds
 
 total = 0
-token = '531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0'
+api_path = "https://graph.facebook.com/v2.7/?id={0}&access_token={1}"
+token = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
 week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
 past_time = week_ago.timestamp()
 
@@ -37,7 +38,7 @@ for feed in feeds:
                 item['description'] = feed_cache[entry.link]['description']
         if item['time'] > past_time:
             url = urllib.parse.quote(entry.link)
-            graph = 'https://graph.facebook.com/v2.7/?id={0}&access_token={1}'.format(url, token)
+            graph = api_path.format(url, token)
             facebook = requests.get(graph).json()
             try:
                 if 'error' not in facebook:
