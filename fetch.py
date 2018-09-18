@@ -1,65 +1,50 @@
-import datetime
 import feedparser
 import requests
 import urllib
 
-from config import cache, feeds
+from helpers import feeds, load_db, save_db, to_date
 
-total = 0
-api_path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
 token = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
-week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
-past_time = week_ago.timestamp()
+api_path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
 
+data = load_db()
 
-def to_date(s):
-    return datetime.datetime(s.tm_year, s.tm_mon, s.tm_mday, s.tm_hour, s.tm_min, s.tm_sec, tzinfo=datetime.timezone.utc)
-
-
+entries = []
 for feed in feeds:
-    print('Fetching {0}'.format(feed))
-    start = datetime.datetime.utcnow()
     response = requests.get(feed)
-    entries = feedparser.parse(response.content).entries
-    items = {}
-    feed_cache = cache.get(feed) or []
-    for entry in entries:
-        item = {
-            'link': entry.link,
-            'time': to_date(entry.published_parsed).timestamp(),
-            'published': to_date(entry.published_parsed).isoformat(),
-            'author': entry.get('author', ''),
-            'title': entry.get('title', '')
-        }
-        if entry.link in feed_cache:
-            if 'shares' in feed_cache[entry.link]:
-                item['shares'] = feed_cache[entry.link]['shares']
-            if 'description' in feed_cache[entry.link]:
-                item['description'] = feed_cache[entry.link]['description']
-        if 'shares' not in item or 'description' not in item:
-            url = urllib.parse.quote(entry.link)
-            graph = api_path.format(url, token)
-            facebook = requests.get(graph).json()
-            try:
-                if 'error' not in facebook:
-                    if 'share' in facebook:
-                        item['shares'] = int(facebook['share']['share_count'])
-                    else:
-                        item['shares'] = 0
-                    if 'og_object' in facebook:
-                        item['description'] = facebook['og_object']['description']
-                    else:
-                        item['description'] = ''
-                print(facebook)
-            except Exception as e:
-                print(e)
-                pass
-        items[entry.link] = item
-    end = datetime.datetime.utcnow()
-    current = (end - start).total_seconds()
-    total += current
-    print('Time {0} seconds'.format(current))
-    cache.set(feed, items, timeout=0)
+    entries += feedparser.parse(response.content).entries
+    print(feed)
 
+allowed = True
 
-print('Total {0} minutes'.format(round(total / 60, 2)))
+for entry in entries:
+    print(entry.link)
+    item = {
+        'link': entry.link,
+        'time': to_date(entry.published_parsed).timestamp(),
+        'published': to_date(entry.published_parsed).isoformat(),
+        'author': entry.get('author', ''),
+        'title': entry.get('title', '')
+    }
+    if entry.link in data:
+        if 'shares' in data[entry.link]:
+            item['shares'] = data[entry.link]['shares']
+        if 'description' in data[entry.link]:
+            item['description'] = data[entry.link]['description']
+    if allowed:
+        url = urllib.parse.quote(entry.link)
+        graph = api_path.format(url, token)
+        facebook = requests.get(graph).json()
+        if 'error' not in facebook:
+            if 'share' in facebook and 'share_count' in facebook['share']:
+                item['shares'] = int(facebook['share']['share_count'])
+            if 'og_object' in facebook and 'description' in facebook['og_object']:
+                item['description'] = facebook['og_object']['description']
+        else:
+            allowed = False
+        print(facebook)
+    data[entry.link] = item
+
+print(len(data.values()))
+
+save_db(data)

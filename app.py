@@ -3,31 +3,10 @@ import feedparser
 import requests
 import urllib
 
-from config import cache, feeds
+from helpers import load_db
 from flask import Flask, jsonify, render_template, request
 
 app = Flask('newscafe')
-
-
-def get_entries():
-    entries = []
-    for feed in feeds:
-        fdict = cache.get(feed) or {}
-        entries += fdict.values()
-
-    uniques = {}
-    for entry in entries:
-        uniques[entry['link']] = entry
-    entries = uniques.values()
-
-    week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
-    past_time = week_ago.timestamp()
-    recent = []
-    for entry in entries:
-        if entry['time'] > past_time:
-            recent.append(entry)
-
-    return recent
 
 
 @app.route('/debug')
@@ -42,19 +21,22 @@ def debug():
 
 @app.route('/api/popular')
 def api_popular():
-    entries = sorted(get_entries(), key=lambda k: k['shares'], reverse=True)
+    data = load_db()
+    entries = sorted(data.values(), key=lambda k: k['shares'] if 'shares' in k else 0, reverse=True)
     return jsonify(entries[:50])
 
 
 @app.route('/api/recent')
 def api_recent():
-    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)
+    data = load_db()
+    entries = sorted(data.values(), key=lambda k: k['time'], reverse=True)
     return jsonify(entries[:50])
 
 
 @app.route('/')
 def home():
-    entries = sorted(get_entries(), key=lambda k: k['shares'] if 'shares' in k else 0, reverse=True)
+    data = load_db()
+    entries = sorted(data.values(), key=lambda k: k['shares'] if 'shares' in k else 0, reverse=True)
     count = len(entries)
 
     return render_template('base.html', entries=entries[:15], count=count, view='home')
@@ -62,7 +44,8 @@ def home():
 
 @app.route('/recent')
 def recent():
-    entries = sorted(get_entries(), key=lambda k: k['time'], reverse=True)
+    data = load_db()
+    entries = sorted(data.values(), key=lambda k: k['time'], reverse=True)
     count = len(entries)
 
     return render_template('base.html', entries=entries[:15], count=count, view='last')
