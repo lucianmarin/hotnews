@@ -15,8 +15,6 @@ for feed in feeds:
     entries += feedparser.parse(response.content).entries
     print(feed)
 
-allowed = True
-
 for entry in entries:
     print(entry.link)
     item = {
@@ -31,7 +29,7 @@ for entry in entries:
             item['shares'] = data[entry.link]['shares']
         if 'description' in data[entry.link]:
             item['description'] = data[entry.link]['description']
-    if allowed:
+    if 'shares' not in item or 'description' not in item:
         url = urllib.parse.quote(entry.link)
         graph = api_path.format(url, token)
         facebook = requests.get(graph).json()
@@ -40,8 +38,6 @@ for entry in entries:
                 item['shares'] = int(facebook['share']['share_count'])
             if 'og_object' in facebook and 'description' in facebook['og_object']:
                 item['description'] = facebook['og_object']['description']
-        else:
-            allowed = False
         print(facebook)
     data[entry.link] = item
 
