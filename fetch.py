@@ -27,13 +27,16 @@ for entry in entries:
         }
         data[entry.link] = item
 
+allowed = True
 temp = data
 for key in temp:
-    if 'shares' not in data[key] or 'description' not in data[key]:
+    if allowed and ('shares' or 'description') not in data[key]:
         url = urllib.parse.quote(entry.link)
         graph = api_path.format(url, token)
         facebook = requests.get(graph).json()
-        if 'error' not in facebook:
+        if 'error' in facebook:
+            allowed = False
+        else:
             if 'share' in facebook and 'share_count' in facebook['share']:
                 data[key]['shares'] = int(facebook['share']['share_count'])
             if 'og_object' in facebook and 'description' in facebook['og_object']:
