@@ -7,7 +7,6 @@ from helpers import feeds, load_db, save_db, to_date
 
 token = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
 api_path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
-hours_ago = (datetime.now() - timedelta(days=1)).timestamp()
 days_ago = (datetime.now() - timedelta(days=3)).timestamp()
 
 data = load_db()
@@ -33,34 +32,24 @@ for entry in entries:
             print(item['time'], item['link'])
 
 allowed = True
-
 values = sorted(data.values(), key=lambda k: k['time'], reverse=True)
-filtered = {v['link'] for v in values if v['time'] > hours_ago}
-for key in filtered:
-    if allowed and 'description' not in data[key]:
-        url = urllib.parse.quote(data[key]['link'])
-        graph = api_path.format(url, token)
-        facebook = requests.get(graph).json()
-        if 'error' in facebook:
-            allowed = False
-        elif 'og_object' in facebook:
-            og = facebook['og_object']
-            data[key]['description'] = og.get('description', '')
-        print(facebook)
+filtered = {v['link'] for v in values if v['time'] > days_ago}
 
-values = sorted(data.values(), key=lambda k: k['time'])
-filtered = {v['link'] for v in values if v['time'] < hours_ago}
 for key in filtered:
-    if allowed and 'shares' not in data[key]:
+    if allowed:
         url = urllib.parse.quote(data[key]['link'])
         graph = api_path.format(url, token)
-        facebook = requests.get(graph).json()
-        if 'error' in facebook:
-            allowed = False
-        elif 'share' in facebook:
-            share = facebook['share']
-            data[key]['shares'] = int(share.get('share_count', 0))
-        print(facebook)
+        if 'shares' not in data[key] or 'description' not in data[key]:
+            facebook = requests.get(graph).json()
+            if 'error' in facebook:
+                allowed = False
+            if 'share' in facebook:
+                share = facebook['share']
+                data[key]['shares'] = int(share.get('share_count', 0))
+            if 'og_object' in facebook:
+                og = facebook['og_object']
+                data[key]['description'] = og.get('description', '')
+            print(facebook)
 
 print(len(data.keys()))
 
