@@ -18,7 +18,13 @@ def debug():
     if url:
         entries = feedparser.parse(requests.get(url).content).entries
     else:
-        entries = []
+        data = load_db()
+        no_shares = [d for d in data.values() if 'shares' not in d]
+        no_description = [d for d in data.values() if 'description' not in d]
+        entries = {
+            'no shares': len(no_shares),
+            'no description': len(no_description)
+        }
     return jsonify(entries)
 
 
