@@ -28,7 +28,7 @@ def load_db():
 
 
 def save_db(data):
-    days_ago = (datetime.now() - timedelta(days=3)).timestamp()
+    days_ago = (datetime.now() - timedelta(days=2)).timestamp()
     new = {}
     for key in data.keys():
         if data[key]['time'] > days_ago:
