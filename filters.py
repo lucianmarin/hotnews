@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import urllib
 
 
@@ -9,39 +9,25 @@ def hostname(value):
 
 
 def date(struct):
-    timestamp = datetime.datetime.fromtimestamp(struct)
+    timestamp = datetime.fromtimestamp(struct)
     return timestamp.strftime('%b %-e, %Y %H:%M')
 
 
 def shortdate(struct):
     """Short time interval for a timestamp."""
-    timestamp = datetime.datetime.utcfromtimestamp(struct)
-    delta = datetime.datetime.utcnow() - timestamp
+    timestamp = datetime.utcfromtimestamp(struct)
+    delta = datetime.utcnow() - timestamp
 
     miliseconds = abs(delta.microseconds) // 1000
     seconds = abs(delta.seconds)
-    days = abs(delta.days) % 365
-    years = abs(delta.days) // 365
-    weeks = days // 7
+    minutes = seconds // 60
+    hours = seconds // 3600
 
-    if not years and not days:
-        if not seconds:
-            return "%dms" % miliseconds
-        elif seconds < 60:
-            return "%ds" % seconds
-        elif seconds < 3600:
-            return "%dm" % (seconds // 60)
-        else:
-            return "%dh" % (seconds // 3600)
-    elif not years:
-        if not weeks:
-            return "%dd" % days
-        else:
-            return "%dw" % weeks
+    if not hours and not minutes and not seconds:
+        return "%dms" % miliseconds
+    elif not hours and not minutes:
+        return "%ds" % seconds
+    elif not hours:
+        return "%dm" % minutes
     else:
-        if not weeks and not days:
-            return "%dy" % years
-        elif not weeks:
-            return "%dy, %dd" % (years, days)
-        else:
-            return "%dy, %dw" % (years, weeks)
+        return "%dh" % hours
