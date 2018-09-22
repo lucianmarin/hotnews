@@ -39,7 +39,7 @@ for key in filtered:
     if allowed:
         url = urllib.parse.quote(data[key]['link'])
         graph = api_path.format(url, token)
-        if 'shares' not in data[key] or 'description' not in data[key]:
+        if 'description' not in data[key]:
             facebook = requests.get(graph).json()
             if 'error' in facebook:
                 allowed = False
