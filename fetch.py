@@ -40,15 +40,13 @@ for key in filtered:
         url = urllib.parse.quote(data[key]['link'])
         graph = api_path.format(url, token)
         if 'description' not in data[key]:
-            facebook = requests.get(graph).json()
-            if 'error' in facebook:
+            fb = requests.get(graph).json()
+            if 'error' in fb:
                 allowed = False
-            if 'og_object' in facebook:
-                og = facebook['og_object']
-                data[key]['description'] = og.get('description', '')
-            if 'og_object' not in facebook and 'error' not in facebook:
-                data[key]['description'] = ''
-            print(facebook)
+            else:
+                og_object = fb.get('og_object', {})
+                data[key]['description'] = og_object.get('description', '')
+            print(fb)
 
 values = sorted(data.values(), key=lambda k: k['time'])
 filtered = {v['link'] for v in values if v['time'] < hours_ago}
@@ -57,15 +55,13 @@ for key in filtered:
         url = urllib.parse.quote(data[key]['link'])
         graph = api_path.format(url, token)
         if 'shares' not in data[key]:
-            facebook = requests.get(graph).json()
-            if 'error' in facebook:
+            fb = requests.get(graph).json()
+            if 'error' in fb:
                 allowed = False
-            if 'share' in facebook:
-                share = facebook['share']
-                data[key]['shares'] = int(share.get('share_count', 0))
-            if 'share' not in facebook and 'error' not in facebook:
-                data[key]['shares'] = 0
-            print(facebook)
+            else:
+                share = fb.get('share', {})
+                data[key]['shares'] = share.get('share_count', 0)
+            print(fb)
 
 print(len(data.keys()))
 
