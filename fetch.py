@@ -46,6 +46,8 @@ for key in filtered:
             if 'og_object' in facebook:
                 og = facebook['og_object']
                 data[key]['description'] = og.get('description', '')
+            if 'og_object' not in facebook and 'error' not in facebook:
+                data[key]['description'] = ''
             print(facebook)
 
 values = sorted(data.values(), key=lambda k: k['time'])
@@ -61,6 +63,8 @@ for key in filtered:
             if 'share' in facebook:
                 share = facebook['share']
                 data[key]['shares'] = int(share.get('share_count', 0))
+            if 'share' not in facebook and 'error' not in facebook:
+                data[key]['shares'] = 0
             print(facebook)
 
 print(len(data.keys()))
