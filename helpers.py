@@ -38,7 +38,7 @@ def load_db():
 def save_db(data):
     new = {}
     for key in data.keys():
-        if data[key]['time'] > days_ago:
+        if data[key]['time'] > days_ago():
             new[key] = data[key]
     with open("db.json", "w") as db_file:
         return db_file.write(ujson.dumps(new, indent=2))
