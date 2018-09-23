@@ -7,7 +7,7 @@ $d: 0.2s
 body
     background-color: white
     color: black
-    font-family: "Clear Sans", sans-serif
+    font-family: "Noto Sans", sans-serif
     font-size: 13px
     line-height: 20px
 
@@ -26,8 +26,8 @@ b, i
     padding: 0 20px
 
 h1
-    font-size: 21px
-    line-height: 30px
+    font-size: 20px
+    line-height: 25px
     overflow: hidden
     padding: 20px 0
     a
@@ -45,7 +45,6 @@ p
     padding-bottom: 15px
 
 .title
-    font-size: 14px
     a
         color: black
         &:visited
@@ -53,6 +52,8 @@ p
 
 .small
     overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
     a, b
         color: silver
         display: block
@@ -79,13 +80,13 @@ p
             margin-right: 0
 
 @font-face
-    font-family: "Clear Sans"
+    font-family: "Noto Sans"
     font-style: normal
     font-weight: normal
-    src: url(clearsans/regular.woff)
+    src: url(notosans/regular.woff)
 
 @font-face
-    font-family: "Clear Sans"
+    font-family: "Noto Sans"
     font-style: normal
     font-weight: bold
-    src: url(clearsans/bold.woff)
+    src: url(notosans/bold.woff)
