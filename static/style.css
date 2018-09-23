@@ -9,7 +9,7 @@ b, i { font-style: normal; font-weight: normal; }
 .menu, .main, .footer { margin: 0 auto; max-width: 520px; padding: 0 20px; }
 
 h1 { font-size: 20px; line-height: 25px; overflow: hidden; padding: 20px 0; }
-h1 a { color: silver; display: block; float: left; margin-right: 10px; }
+h1 a { color: silver; display: block; float: left; margin-right: 12.5px; }
 h1 a.selected { color: black; }
 
 p { color: gray; }
@@ -17,13 +17,13 @@ p { color: gray; }
 .entry { padding-bottom: 15px; }
 
 .title a { color: black; }
-.title a:visited { color: gray; }
+.title a:visited { color: dimgray; }
 
 .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .small a, .small b { color: silver; display: block; float: left; margin-right: 5px; }
 .small a:last-child, .small b:last-child { margin-right: 0; }
 
-.summary { color: gray; }
+.summary { color: dimgray; }
 
 .footer { overflow: hidden; padding-bottom: 30px; }
 .footer a, .footer b { color: silver; display: block; float: left; margin-right: 5px; padding: 5px 0; }
