@@ -17,7 +17,7 @@
         <a class="{% if view == 'home' %}selected{% endif %}" href="/">
             Newscafe
         </a>
-        <a class="{% if view == 'last' %}selected{% endif %}" href="/recent">
+        <a class="{% if view == 'last' %}selected{% endif %}" href="/recent/">
             Recent
         </a>
     </h1>
@@ -52,7 +52,9 @@
 </div>
 
 <div class="footer">
-    <b>Newscafe</b>
+    <a href="/">Newscafe</a>
+    <b>&frasl;</b>
+    <a href="https://sub.cafe/">Sub</a>
     <b>&frasl;</b>
     <b>{{ count }} articles</b>
 </div>
