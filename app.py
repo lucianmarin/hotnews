@@ -12,7 +12,7 @@ app.jinja_env.filters['shortdate'] = shortdate
 app.jinja_env.globals['v'] = 4
 
 
-@app.route('/api/0/frontpage/')
+@app.route('/api/0/newscafe/')
 def api_popular():
     data = load_db()
     entries = sorted(data.values(), key=lambda k: k['shares'] if 'shares' in k else 0, reverse=True)
