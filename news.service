@@ -1,0 +1,21 @@
+[Unit]
+Description=News service
+After=network.target
+
+[Service]
+PIDFile=/run/news.pid
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/lucian/newscafe
+ExecStart=/usr/local/bin/gunicorn wsgi:application -c gunicorn.py
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target
+
+# sudo cp news.service /etc/systemd/system/news.service
+# sudo systemctl daemon-reload
+# sudo systemctl stop news.service
+# sudo systemctl start news.service
+# sudo systemctl status news.service

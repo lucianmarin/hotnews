@@ -3,19 +3,19 @@ from datetime import datetime, timedelta, timezone
 
 
 feeds = ['http://feeds.feedburner.com/sub/daringfireball',
-        'http://feeds.arstechnica.com/arstechnica/index/',
-        'http://feeds.macrumors.com/MacRumors-Front',
-        'http://feeds.feedburner.com/sub/9to5google',
-        'http://feeds.feedburner.com/sub/9to5mac',
-        'http://feeds.feedburner.com/sub/anandtech',
-        'http://feeds.feedburner.com/sub/electrek',
-        'http://feeds.feedburner.com/sub/engadget',
-        'http://feeds.feedburner.com/sub/gsmarena',
-        'http://feeds.feedburner.com/sub/nautilus',
-        'http://feeds.feedburner.com/sub/techcrunch',
-        'http://feeds.feedburner.com/sub/verge',
-        'https://news.ycombinator.com/rss',
-        'https://lobste.rs/rss']
+         'http://feeds.arstechnica.com/arstechnica/index/',
+         'http://feeds.macrumors.com/MacRumors-Front',
+         'http://feeds.feedburner.com/sub/9to5google',
+         'http://feeds.feedburner.com/sub/9to5mac',
+         'http://feeds.feedburner.com/sub/anandtech',
+         'http://feeds.feedburner.com/sub/electrek',
+         'http://feeds.feedburner.com/sub/engadget',
+         'http://feeds.feedburner.com/sub/gsmarena',
+         'http://feeds.feedburner.com/sub/nautilus',
+         'http://feeds.feedburner.com/sub/techcrunch',
+         'http://feeds.feedburner.com/sub/verge',
+         'https://news.ycombinator.com/rss',
+         'https://lobste.rs/rss']
 
 
 def hours_ago():
@@ -32,7 +32,8 @@ def to_date(s):
 
 def load_db():
     with open("db.json", "r") as db_file:
-        return ujson.loads(db_file.read())
+        data = db_file.read()
+    return ujson.loads(data)
 
 
 def save_db(data):
@@ -41,4 +42,5 @@ def save_db(data):
         if data[key]['time'] > days_ago():
             new[key] = data[key]
     with open("db.json", "w") as db_file:
-        return db_file.write(ujson.dumps(new, indent=2))
+        db_file.write(ujson.dumps(new, indent=2))
+    return new
