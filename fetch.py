@@ -8,7 +8,7 @@ from models import News
 
 token = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
 api_path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
-is_allowed = False
+is_allowed = True
 
 entries = []
 for feed in feeds:
