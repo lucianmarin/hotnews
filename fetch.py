@@ -1,14 +1,14 @@
 import feedparser
 import requests
 import urllib
+import time
 
-from helpers import feeds, load_db, save_db, to_date, hours_ago, days_ago
+from helpers import feeds, to_date
+from models import News
 
 token = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
 api_path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
-allowed = True
-
-data = load_db()
+is_allowed = False
 
 entries = []
 for feed in feeds:
@@ -17,51 +17,44 @@ for feed in feeds:
     print(feed)
 
 for entry in entries:
-    if entry.link not in data:
-        item = {
-            'link': entry.link,
-            'time': to_date(entry.published_parsed).timestamp(),
-            'published': to_date(entry.published_parsed).isoformat(),
-            'author': entry.get('author', ''),
-            'title': entry.get('title', '')
-        }
-        if item['time'] > days_ago():
-            data[entry.link] = item
+    try:
+        n = News(link=entry.link, title=entry.title)
+        n.time = to_date(entry.published_parsed).timestamp()
+        n.author = entry.get('author', None)
+        n.save()
+    except Exception as e:
+        print(e)
+
+# clean up
+News.query.filter(time=(None, time.time() - 48 * 3600)).delete()
+
+for entry in News.query.filter(time=(time.time() - 8 * 3600, None)):
+    if is_allowed and entry.description is None:
+        url = urllib.parse.quote(entry.link)
+        graph = api_path.format(url, token)
+        fb = requests.get(graph).json()
+        if 'error' in fb:
+            is_allowed = False
+            print('error')
         else:
-            print(item['time'], item['link'])
+            og_object = fb.get('og_object', {})
+            entry.description = og_object.get('description', '')
+            entry.save()
+            print(entry.description)
 
-values = sorted(data.values(), key=lambda k: k['time'], reverse=True)
-filtered = {v['link'] for v in values if v['time'] > hours_ago()}
-for key in filtered:
-    if allowed:
-        url = urllib.parse.quote(data[key]['link'])
+
+for entry in News.query.filter(time=(None, time.time() - 8 * 3600)):
+    if is_allowed and entry.shares is None:
+        url = urllib.parse.quote(entry.link)
         graph = api_path.format(url, token)
-        if 'description' not in data[key]:
-            fb = requests.get(graph).json()
-            if 'error' in fb:
-                allowed = False
-            else:
-                og_object = fb.get('og_object', {})
-                data[key]['description'] = og_object.get('description', '')
-            print(fb)
-
-values = sorted(data.values(), key=lambda k: k['time'])
-filtered = {v['link'] for v in values if v['time'] < hours_ago()}
-for key in filtered:
-    if allowed:
-        url = urllib.parse.quote(data[key]['link'])
-        graph = api_path.format(url, token)
-        if 'shares' not in data[key]:
-            fb = requests.get(graph).json()
-            if 'error' in fb:
-                allowed = False
-            else:
-                share = fb.get('share', {})
-                data[key]['shares'] = share.get('share_count', 0)
-                og_object = fb.get('og_object', {})
-                data[key]['description'] = og_object.get('description', '')
-            print(fb)
-
-print(len(data.keys()))
-
-save_db(data)
+        fb = requests.get(graph).json()
+        if 'error' in fb:
+            is_allowed = False
+            print('error')
+        else:
+            og_object = fb.get('og_object', {})
+            entry.description = og_object.get('description', '')
+            share = fb.get('share', {})
+            entry.shares = share.get('share_count', 0)
+            entry.save()
+            print(entry.shares)
