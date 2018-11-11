@@ -14,7 +14,7 @@ def fetch_fb(link):
     return requests.get(graph).json()
 
 
-is_allowed = False
+is_allowed = True
 entries = []
 for feed in FEEDS:
     response = requests.get(feed)
