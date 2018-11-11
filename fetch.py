@@ -2,16 +2,21 @@ import feedparser
 import requests
 import urllib
 import time
-
-from helpers import feeds, to_date
+from dateutil.parser import parse
 from models import News
+from settings import FEEDS, TOKEN
 
-token = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
-api_path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
-is_allowed = True
 
+def fetch_fb(link):
+    path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
+    url = urllib.parse.quote(link)
+    graph = path.format(url, TOKEN)
+    return requests.get(graph).json()
+
+
+is_allowed = False
 entries = []
-for feed in feeds:
+for feed in FEEDS:
     response = requests.get(feed)
     entries += feedparser.parse(response.content).entries
     print(feed)
@@ -19,7 +24,7 @@ for feed in feeds:
 for entry in entries:
     try:
         n = News(link=entry.link, title=entry.title)
-        n.time = to_date(entry.published_parsed).timestamp()
+        n.time = parse(entry.published).timestamp()
         n.author = entry.get('author', None)
         n.save()
     except Exception as e:
@@ -30,9 +35,7 @@ News.query.filter(time=(None, time.time() - 48 * 3600)).delete()
 
 for entry in News.query.filter(time=(time.time() - 8 * 3600, None)):
     if is_allowed and entry.description is None:
-        url = urllib.parse.quote(entry.link)
-        graph = api_path.format(url, token)
-        fb = requests.get(graph).json()
+        fb = fetch_fb(entry.link)
         if 'error' in fb:
             is_allowed = False
             print('error')
@@ -45,9 +48,7 @@ for entry in News.query.filter(time=(time.time() - 8 * 3600, None)):
 
 for entry in News.query.filter(time=(None, time.time() - 8 * 3600)):
     if is_allowed and entry.shares is None:
-        url = urllib.parse.quote(entry.link)
-        graph = api_path.format(url, token)
-        fb = requests.get(graph).json()
+        fb = fetch_fb(entry.link)
         if 'error' in fb:
             is_allowed = False
             print('error')

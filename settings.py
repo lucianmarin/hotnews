@@ -1,7 +1,4 @@
-from datetime import datetime, timezone
-
-
-feeds = ['http://feeds.feedburner.com/sub/daringfireball',
+FEEDS = ['http://feeds.feedburner.com/sub/daringfireball',
          'http://feeds.arstechnica.com/arstechnica/index/',
          'http://feeds.macrumors.com/MacRumors-Front',
          'http://feeds.feedburner.com/sub/9to5google',
@@ -17,6 +14,4 @@ feeds = ['http://feeds.feedburner.com/sub/daringfireball',
          'https://lobste.rs/rss']
 
 
-def to_date(s):
-    return datetime(s.tm_year, s.tm_mon, s.tm_mday,
-                    s.tm_hour, s.tm_min, s.tm_sec, tzinfo=timezone.utc)
+TOKEN = "531212323670365|wzDqeYsX6vQhiebyAr7PofFxCf0"
