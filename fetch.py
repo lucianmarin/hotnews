@@ -42,10 +42,8 @@ for entry in News.query.filter(time=(time.time() - 8 * 3600, None)):
         else:
             og_object = fb.get('og_object', {})
             entry.description = og_object.get('description', '')
-            share = fb.get('share', {})
-            entry.comments = share.get('comment_count', 0)
             entry.save()
-            print(entry.comments, entry.description)
+            print(entry.description)
 
 
 for entry in News.query.filter(time=(None, time.time() - 8 * 3600)):
@@ -58,7 +56,6 @@ for entry in News.query.filter(time=(None, time.time() - 8 * 3600)):
             og_object = fb.get('og_object', {})
             entry.description = og_object.get('description', '')
             share = fb.get('share', {})
-            entry.comments = share.get('comment_count', 0)
             entry.shares = share.get('share_count', 0)
             entry.save()
-            print(entry.comments, entry.shares)
+            print(entry.shares)

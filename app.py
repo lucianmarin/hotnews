@@ -1,5 +1,6 @@
 import feedparser
 import requests
+from bs4 import BeautifulSoup
 from flask import Flask, jsonify, render_template, request
 from filters import hostname, date, shortdate
 from models import News
@@ -9,7 +10,7 @@ app = Flask('newscafe')
 app.jinja_env.filters['hostname'] = hostname
 app.jinja_env.filters['date'] = date
 app.jinja_env.filters['shortdate'] = shortdate
-app.jinja_env.globals['v'] = 4
+app.jinja_env.globals['v'] = 5
 
 
 @app.route('/api/0/newscafe/')
@@ -56,3 +57,30 @@ def debug():
     url = request.args.get('url', '')
     entries = feedparser.parse(requests.get(url).content).entries
     return jsonify(entries)
+
+
+@app.route('/text/<id>/')
+def text(id):
+    article = News.get(id)
+    r = requests.get(article.link)
+    soup = BeautifulSoup(r.content)
+    candidates = {}
+    for p in soup.findAll('p'):
+        key = p.parent.get('class', ['_'])[0]
+        if key in candidates:
+            candidates[key] += 1
+        else:
+            candidates[key] = 1
+    print(candidates)
+    sorted_candidates = sorted(candidates.items(), key=lambda kv: kv[1])
+    sorted_candidates.reverse()
+    container = sorted_candidates[0][0]
+    c = soup.select_one("." + container)
+    paragraphs = []
+    if c:
+        for p in c.findAll('p'):
+            text = p.text.strip()
+            if text:
+                paragraphs.append(text)
+    # lines = [line.strip() for line in c.text.splitlines() if line.strip()]
+    return render_template('text.html', entry=article, lines=paragraphs)

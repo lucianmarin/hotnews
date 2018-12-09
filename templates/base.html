@@ -33,13 +33,11 @@
                 <b>{{ entry.link | hostname }}</b>
                 <b>&bull;</b>
                 <b>{{ entry.time | shortdate }} ago</b>
+                <b>&bull;</b>
+                <a href="/text/{{entry.id}}/">text</a>
                 {% if entry.shares %}
                     <b>&bull;</b>
                     <b>{{ entry.shares }} shares</b>
-                {% endif %}
-                {% if entry.comments %}
-                    <b>&bull;</b>
-                    <b>{{ entry.comments }} comments</b>
                 {% endif %}
             </div>
             {% if entry.description %}
