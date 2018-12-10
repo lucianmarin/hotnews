@@ -69,12 +69,12 @@ def text(id):
     })
     soup = BeautifulSoup(r.content, features="lxml")
     candidate = None
-    count = 0
+    counter = 0
     for tag in soup.findAll():
         length = len(tag.findAll('p', recursive=False))
-        if length > count:
+        if length > counter:
             candidate = tag
-            count = length
+            counter = length
     paragraphs = []
     if candidate:
         for child in candidate.children:
