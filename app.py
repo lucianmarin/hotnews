@@ -65,20 +65,16 @@ def text(id):
     article = News.get(id)
     r = requests.get(article.link)
     soup = BeautifulSoup(r.content, features="lxml")
-    candidates = {}
-    for p in soup.findAll('p'):
-        key = p.parent.get('class', ['_'])[0]
-        if key in candidates:
-            candidates[key] += 1
-        else:
-            candidates[key] = 1
-    sorted_candidates = sorted(candidates.items(), key=lambda kv: kv[1])
-    sorted_candidates.reverse()
-    container = sorted_candidates[0][0]
-    c = soup.select_one("." + container)
+    candidate = None
+    count = 0
+    for tag in soup.findAll():
+        length = len(tag.findAll('p', recursive=False))
+        if length > count:
+            candidate = tag
+            count = length
     paragraphs = []
-    if c:
-        for child in c.children:
+    if candidate:
+        for child in candidate.children:
             if child.name in ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
                 text = child.text.strip()
                 if text:
