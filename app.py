@@ -2,6 +2,7 @@ import feedparser
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify, render_template, request
+from helpers import fetch_paragraphs
 from filters import hostname, date, shortdate
 from models import News
 from settings import HEADERS
@@ -64,20 +65,5 @@ def debug():
 def text(id):
     count = News.query.count()
     article = News.get(id)
-    r = requests.get(article.link, headers=HEADERS)
-    soup = BeautifulSoup(r.content, features="lxml")
-    candidate = None
-    counter = 0
-    for tag in soup.findAll():
-        length = len(tag.findAll('p', recursive=False))
-        if length > counter:
-            candidate = tag
-            counter = length
-    paragraphs = []
-    if candidate:
-        for child in candidate.children:
-            if child.name in ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
-                text = child.text.strip()
-                if text:
-                    paragraphs.append(text)
+    paragraphs = fetch_paragraphs(article.link)
     return render_template('text.html', entry=article, lines=paragraphs, count=count)
