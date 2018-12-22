@@ -5,8 +5,8 @@ from settings import HEADERS, TOKEN
 
 
 def get_paragraphs(soup):
-    allowed = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre']
-    block = ['script', 'ins']
+    allowed = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre"]
+    block = ["script", "ins"]
     candidate = None
     counter = 0
     for tag in soup.findAll():
@@ -23,7 +23,7 @@ def get_paragraphs(soup):
                         subchild.decompose()
                 text = child.text.strip()
                 if text:
-                    if child.name in ['p', 'pre']:
+                    if child.name in ["p", "pre"]:
                         paragraphs.append((text, False))
                     else:
                         paragraphs.append((text, True))
@@ -42,12 +42,9 @@ def get_description(soup):
     og_desc_text = " ".join(og_desc_content.split())
     if og_desc_text:
         return og_desc_text
-    elif t_desc_text:
+    if t_desc_text:
         return t_desc_text
-    elif desc_text:
-        return desc_text
-    else:
-        return ''
+    return desc_text
 
 
 def fetch_fb(link):
@@ -63,18 +60,32 @@ def fetch_desc(link):
     description = get_description(soup)
     paragraphs = get_paragraphs(soup)
     description = '' if description.endswith(('…', '...')) else description
-    if description:
-        return description
-    elif paragraphs:
+    if not description and paragraphs:
         return paragraphs[0][0]
-    else:
-        return ''
+    return description
 
 
 def fetch_paragraphs(link):
     r = requests.get(link, headers=HEADERS)
     soup = BeautifulSoup(r.text, features="lxml")
     return get_paragraphs(soup)
+
+
+def fetch_external(link):
+    def netloc(value):
+        url = urllib.parse.urlsplit(value)
+        return url.netloc.replace('www.', '')
+    hn = netloc(link)
+    r = requests.get(link, headers=HEADERS)
+    soup = BeautifulSoup(r.text, features="lxml")
+    links = set()
+    for a in soup.findAll('a', href=True):
+        href = a['href']
+        if href.startswith(('https://', 'http://')) and netloc(href) != hn:
+            links.add(href)
+    print(links)
+    print(len(links))
+    return list(links)
 
 
 def fetch_words(link):
@@ -87,3 +98,4 @@ def fetch_words(link):
             words.add(word.lower())
     print(words)
     print(len(words))
+    return list(words)
