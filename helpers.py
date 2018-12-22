@@ -5,6 +5,9 @@ from settings import HEADERS, TOKEN
 
 
 def get_paragraphs(soup):
+    allowed = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre']
+    inline = ['a', 'i', 'b', 'em', 'strong', 'span', 'sub', 'sup', 'var',
+              'img', 'big', 'small', 'code', 'cite', 'abbr', 'acronym']
     candidate = None
     counter = 0
     for tag in soup.findAll():
@@ -15,7 +18,10 @@ def get_paragraphs(soup):
     paragraphs = []
     if candidate:
         for child in candidate.children:
-            if child.name in ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+            if child.name in allowed:
+                for subchild in child.findAll():
+                    if subchild.name not in inline:
+                        subchild.decompose()
                 text = child.text.strip()
                 if text:
                     paragraphs.append(text)
