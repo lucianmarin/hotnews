@@ -55,9 +55,6 @@ def fetch_fb(link):
 
 
 def fetch_desc(link):
-    h = requests.head(link, headers=HEADERS)
-    if 'html' not in h.headers.get('Content-Type', ''):
-        return ''
     r = requests.get(link, headers=HEADERS)
     soup = BeautifulSoup(r.text, features="lxml")
     description = get_description(soup)
@@ -69,9 +66,6 @@ def fetch_desc(link):
 
 
 def fetch_paragraphs(link):
-    h = requests.head(link, headers=HEADERS)
-    if 'html' not in h.headers.get('Content-Type', ''):
-        return ''
     r = requests.get(link, headers=HEADERS)
     soup = BeautifulSoup(r.text, features="lxml")
     return get_paragraphs(soup)
