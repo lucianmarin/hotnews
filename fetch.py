@@ -18,12 +18,12 @@ def grab_entries():
             orig = entry.get('feedburner_origlink', '')
             entry.link = orig if orig else entry.link
             url = get_url(entry.link)
+            print(url)
             n = News(link=url, title=entry.title)
             n.time = parse(entry.published).timestamp()
             n.author = getattr(entry, 'author', None)
             if n.time > time.time() - 48 * 3600:
                 n.save()
-                print(n.link)
         except Exception as e:
             pass
     return entries
@@ -65,4 +65,4 @@ def grab_facebook():
 grab_entries()
 cleanup()
 grab_description()
-# grab_facebook()
+grab_facebook()
