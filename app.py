@@ -34,8 +34,13 @@ def api_recent():
 @app.route('/')
 def home():
     count = News.query.count()
-    entries = News.query.order_by('-shares').limit(0, 15).execute()
-    return render_template('main.html', entries=entries, count=count,
+    uniques = {}
+    # entries = News.query.order_by('-shares').limit(0, 15).execute()
+    entries = News.query.order_by('shares').execute()
+    for entry in entries:
+        hn = hostname(entry.link)
+        uniques[hn] = entry
+    return render_template('main.html', entries=uniques.values(), count=count,
                            view='home')
 
 

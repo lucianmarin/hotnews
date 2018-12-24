@@ -35,6 +35,7 @@ FEEDS = [
     "http://feeds.feedburner.com/sub/nytimes/science",
     "http://feeds.feedburner.com/sub/nytimes/tech",
     "http://feeds.feedburner.com/sub/omgubuntu",
+    "http://feeds.feedburner.com/sub/polygon",
     "http://feeds.feedburner.com/sub/producthunt",
     "http://feeds.feedburner.com/sub/qz",
     "http://feeds.feedburner.com/sub/register",
