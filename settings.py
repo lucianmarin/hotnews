@@ -1,5 +1,13 @@
 FEEDS = [
     "http://rss.sciam.com/scientificamerican-global",
+    "http://feeds.reuters.com/news/artsculture",
+    "http://feeds.reuters.com/reuters/businessNews",
+    "http://feeds.reuters.com/reuters/entertainment",
+    "http://feeds.reuters.com/reuters/environment",
+    "http://feeds.reuters.com/reuters/healthNews",
+    "http://feeds.reuters.com/reuters/oddlyEnoughNews",
+    "http://feeds.reuters.com/reuters/scienceNews",
+    "http://feeds.reuters.com/reuters/technologyNews",
     "http://feeds.macrumors.com/macrumors-front",
     "http://feeds.crackberry.com/crackberry/qbtb",
     "http://feeds.imore.com/theiphoneblog",
