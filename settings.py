@@ -14,6 +14,7 @@ FEEDS = [
     "http://feeds.feedburner.com/sub/engadget",
     "http://feeds.feedburner.com/sub/fastcompany",
     "http://feeds.feedburner.com/sub/gsmarena",
+    "http://feeds.feedburner.com/sub/longreads",
     "http://feeds.feedburner.com/sub/nautilus",
     "http://feeds.feedburner.com/sub/npr",
     "http://feeds.feedburner.com/sub/nytimes/science",
