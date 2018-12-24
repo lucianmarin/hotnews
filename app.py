@@ -40,8 +40,8 @@ def home():
     for entry in entries:
         hn = hostname(entry.link)
         uniques[hn] = entry
-    return render_template('main.html', entries=uniques.values(), count=count,
-                           view='home')
+    sorted_entries = sorted(uniques.items(), key=lambda kv: kv[1]['shares'])
+    return render_template('main.html', entries=sorted_entries[:15], count=count, view='home')
 
 
 @app.route('/recent/')
