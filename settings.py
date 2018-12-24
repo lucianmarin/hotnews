@@ -1,6 +1,8 @@
 FEEDS = [
     "http://rss.sciam.com/scientificamerican-global",
     "http://feeds.macrumors.com/macrumors-front",
+    "http://feeds.crackberry.com/crackberry/qbtb",
+    "http://feeds.imore.com/theiphoneblog",
     "http://feeds.androidcentral.com/androidcentral",
     "http://feeds.windowscentral.com/wmexperts",
     "http://feeds.feedburner.com/neowin-main",
