@@ -40,7 +40,7 @@ def home():
     for entry in entries:
         hn = hostname(entry.link)
         uniques[hn] = entry
-    sorted_entries = sorted(uniques.values(), key=lambda v: v.shares)
+    sorted_entries = sorted(uniques.values(), key=lambda v: v.shares, reverse=True)
     return render_template('main.html', entries=sorted_entries[:15], count=count, view='home')
 
 
