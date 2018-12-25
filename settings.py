@@ -31,6 +31,7 @@ FEEDS = [
     "http://feeds.feedburner.com/sub/fubiz",
     "http://feeds.feedburner.com/sub/gsmarena",
     "http://feeds.feedburner.com/sub/longreads",
+    "http://feeds.feedburner.com/sub/mspoweruser",
     "http://feeds.feedburner.com/sub/nautilus",
     "http://feeds.feedburner.com/sub/npr",
     "http://feeds.feedburner.com/sub/nytimes/science",
