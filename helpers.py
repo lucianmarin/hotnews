@@ -12,7 +12,7 @@ def get_url(link):
 
 
 def get_paragraphs(soup):
-    allowed = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre"]
+    allowed = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "li"]
     block = ["script", "ins"]
     candidate = None
     counter = 0
@@ -24,13 +24,16 @@ def get_paragraphs(soup):
     paragraphs = []
     if candidate:
         for child in candidate.children:
+            for subchild in child.findAll():
+                if subchild.name in block:
+                    subchild.decompose()
+            if child.name == "ul":
+                child.unwrap()
+        for child in candidate.children:
             if child.name in allowed:
-                for subchild in child.findAll():
-                    if subchild.name in block:
-                        subchild.decompose()
                 text = child.text.strip()
                 if text:
-                    if child.name in ["p", "pre"]:
+                    if child.name in ["p", "pre", "li"]:
                         paragraphs.append((text, False))
                     else:
                         paragraphs.append((text, True))

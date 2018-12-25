@@ -1,6 +1,4 @@
-import feedparser
-import requests
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template
 from helpers import fetch_paragraphs
 from filters import hostname, date, shortdate
 from models import News
