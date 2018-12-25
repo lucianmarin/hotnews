@@ -17,6 +17,7 @@ FEEDS = [
     "http://feeds.feedburner.com/neowin-main",
     "http://feeds.feedburner.com/petapixel",
     "http://feeds.feedburner.com/thehackersnews",
+    "http://feeds.feedburner.com/venturebeat/szyf",
     "http://feeds.feedburner.com/sub/9to5google",
     "http://feeds.feedburner.com/sub/9to5mac",
     "http://feeds.feedburner.com/sub/aeon",
