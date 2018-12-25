@@ -68,7 +68,9 @@ def about():
 def debug():
     # url = request.args.get('url', '')
     # entries = feedparser.parse(requests.get(url).content).entries
-    entries = News.query.order_by('-shares').execute()
+    entries = []
+    for el in News.query.order_by('-shares').execute():
+        entries.append(el.to_dict())
     return jsonify(entries)
 
 
