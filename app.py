@@ -66,7 +66,7 @@ def about():
     for entry in entries:
         hn = hostname(entry.link)
         sites.add(hn)
-    return render_template('about.html', sites=sites, view='about')
+    return render_template('about.html', sites=sorted(sites), view='about')
 
 
 @app.route('/debug/')
