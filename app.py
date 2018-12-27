@@ -59,18 +59,18 @@ def recent():
     return render_template('main.html', entries=sorted_entries[:15], count=count, view='last')
 
 
+@app.route('/<name>/')
+def site(name):
+    count = News.query.count()
+    entries = News.query.filter(site=name).order_by('-shares').execute()
+    return render_template('site.html', site=name, name=sitename(name), entries=entries, count=count, view='site')
+
+
 @app.route('/<name>/recent/')
 def site_recent(name):
     count = News.query.count()
     entries = News.query.filter(site=name).order_by('-time').execute()
     return render_template('site.html', site=name, name=sitename(name), entries=entries, count=count, view='site_recent')
-
-
-@app.route('/<name>/top/')
-def site_top(name):
-    count = News.query.count()
-    entries = News.query.filter(site=name).order_by('-shares').execute()
-    return render_template('site.html', site=name, name=sitename(name), entries=entries, count=count, view='site_top')
 
 
 @app.route('/about/')
