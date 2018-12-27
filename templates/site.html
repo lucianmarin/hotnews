@@ -13,11 +13,18 @@
 <body>
     <div class="menu">
         <h1>
-            <a class="{% if view == 'home' %}selected{% endif %}" href="/">
-                Newscafe
+            <a href="/{% if view == 'site_recent' %}recent/{% endif %}">
+                ‹‹‹
             </a>
-            <a class="{% if view == 'last' %}selected{% endif %}" href="/recent/">
-                Recent
+            <a
+                href="/{{ site }}/top/"
+                class="{% if view == 'site_top' %}selected{% endif %}">
+                    {{ name }}
+            </a>
+            <a
+                href="/{{ site }}/recent/"
+                class="{% if view == 'site_recent' %}selected{% endif %}">
+                    recent
             </a>
         </h1>
     </div>

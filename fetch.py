@@ -66,4 +66,4 @@ def grab_facebook():
 grab_entries()
 cleanup()
 grab_description()
-# grab_facebook()
+grab_facebook()

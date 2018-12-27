@@ -8,6 +8,15 @@ def hostname(value):
     return url.netloc.replace('www.', '')
 
 
+def sitename(value):
+    """Get sitename without LTD part."""
+    parts = value.split('.')
+    parts.reverse()
+    del parts[0]
+    parts.reverse()
+    return ".".join(parts)
+
+
 def date(stamp):
     """Format date time."""
     timestamp = datetime.fromtimestamp(stamp)
