@@ -51,7 +51,10 @@
                 What sites are monitored?
             </h4>
             <div class="summary">
-                In alphabetical order: {{ ", ".join(sites) }}.
+                In alphabetical order:
+                {% for key, value in sites.items() %}
+                    {{ key }}{{ value | superscript }},
+                {% endfor %}
             </div>
         </div>
         <div class="entry">

@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template
 from helpers import fetch_paragraphs
-from filters import hostname, date, shortdate, sitename
+from filters import hostname, date, shortdate, sitename, superscript
 from models import News
 
 app = Flask('newscafe')
@@ -8,6 +8,7 @@ app = Flask('newscafe')
 app.jinja_env.filters['hostname'] = hostname
 app.jinja_env.filters['date'] = date
 app.jinja_env.filters['shortdate'] = shortdate
+app.jinja_env.filters['superscript'] = superscript
 app.jinja_env.globals['v'] = 5
 
 
@@ -71,12 +72,14 @@ def site_recent(name):
 
 @app.route('/about/')
 def about():
-    sites = set()
+    sites = {}
     entries = News.query.all()
     for entry in entries:
-        hn = hostname(entry.link)
-        sites.add(hn)
-    return render_template('about.html', sites=sorted(sites), view='about')
+        if entry.site in sites:
+            sites[entry.site] += 1
+        else:
+            sites[entry.site] = 1
+    return render_template('about.html', sites=sites, view='about')
 
 
 @app.route('/debug/')
