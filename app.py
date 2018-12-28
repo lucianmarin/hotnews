@@ -13,24 +13,22 @@ app.jinja_env.globals['v'] = 5
 
 @app.route('/api/0/top/')
 def api_top():
-    uniques = {}
+    unique = {}
     entries = News.query.order_by('shares').execute()
     for entry in entries:
-        hn = hostname(entry.link)
-        uniques[hn] = entry
-    sorted_entries = sorted(uniques.values(), key=lambda v: v.shares, reverse=True)
+        unique[entry.site] = entry
+    sorted_entries = sorted(unique.values(), key=lambda v: v.shares, reverse=True)
     dicts = [e.to_dict() for e in sorted_entries]
     return jsonify(dicts)
 
 
 @app.route('/api/0/recent/')
 def api_recent():
-    uniques = {}
+    unique = {}
     entries = News.query.order_by('time').execute()
     for entry in entries:
-        hn = hostname(entry.link)
-        uniques[hn] = entry
-    sorted_entries = sorted(uniques.values(), key=lambda v: v.time, reverse=True)
+        unique[entry.site] = entry
+    sorted_entries = sorted(unique.values(), key=lambda v: v.time, reverse=True)
     dicts = [e.to_dict() for e in sorted_entries]
     return jsonify(dicts)
 
@@ -38,25 +36,21 @@ def api_recent():
 @app.route('/')
 def home():
     count = News.query.count()
-    uniques = {}
-    entries = News.query.order_by('shares').execute()
-    for entry in entries:
-        hn = hostname(entry.link)
-        uniques[hn] = entry
-    sorted_entries = sorted(uniques.values(), key=lambda v: v.shares, reverse=True)
-    return render_template('main.html', entries=sorted_entries[:15], count=count, view='home')
+    unique = {}
+    for entry in News.query.order_by('-shares').iter_result():
+        if len(unique) < 15 and entry.site not in unique:
+            unique[entry.site] = entry
+    return render_template('main.html', entries=unique.values(), count=count, view='home')
 
 
 @app.route('/recent/')
 def recent():
     count = News.query.count()
-    uniques = {}
-    entries = News.query.order_by('time').execute()
-    for entry in entries:
-        hn = hostname(entry.link)
-        uniques[hn] = entry
-    sorted_entries = sorted(uniques.values(), key=lambda v: v.time, reverse=True)
-    return render_template('main.html', entries=sorted_entries[:15], count=count, view='last')
+    unique = {}
+    for entry in News.query.order_by('-time').iter_result():
+        if len(unique) < 15 and entry.site not in unique:
+            unique[entry.site] = entry
+    return render_template('main.html', entries=unique.values(), count=count, view='last')
 
 
 @app.route('/<name>/')
