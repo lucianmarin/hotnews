@@ -67,4 +67,4 @@ class Command(BaseCommand):
         self.grab_entries()
         self.cleanup()
         self.grab_description()
-        # self.grab_facebook()
+        self.grab_facebook()
