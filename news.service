@@ -6,7 +6,7 @@ After=network.target
 PIDFile=/run/news.pid
 RuntimeDirectory=gunicorn
 WorkingDirectory=/home/lucian/newscafe
-ExecStart=/usr/local/bin/gunicorn app.wsgi:application -c gunicorn.py
+ExecStart=/usr/local/bin/gunicorn news.wsgi:application -c gunicorn.py
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
@@ -19,3 +19,4 @@ WantedBy=default.target
 # sudo systemctl stop news.service
 # sudo systemctl start news.service
 # sudo systemctl status news.service
+# sudo cp news.conf /etc/nginx/conf.d/news.conf
