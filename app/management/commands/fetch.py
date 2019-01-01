@@ -23,15 +23,15 @@ class Command(BaseCommand):
                 orig = entry.get('feedburner_origlink', '')
                 entry.link = orig if orig else entry.link
                 url = get_url(entry.link)
-                domain = hostname(url)
                 published = parse(entry.published).timestamp()
                 if published > time.time() - 48 * 3600:
                     article, is_created = Article.objects.get_or_create(
                         url=url,
                         title=entry.title,
-                        domain=domain,
+                        domain=hostname(url),
                         pub=published,
-                        author=getattr(entry, 'author', ''))
+                        author=getattr(entry, 'author', '')
+                    )
             except Exception as e:
                 pass
         return entries
