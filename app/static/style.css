@@ -8,7 +8,10 @@ b, i { font-style: normal; font-weight: normal; }
 
 .menu, .main, .footer { margin: 0 auto; max-width: 520px; padding: 0 20px; }
 
-h1 { font-size: 20px; line-height: 25px; overflow: hidden; padding: 20px 0; }
+h5 { font-size: 11px; font-weight: normal; line-height: 15px; padding-top: 15px; }
+h5 a { color: silver; }
+
+h1 { font-size: 21px; font-weight: normal; line-height: 30px; overflow: hidden; padding-bottom: 15px; }
 h1 a { color: silver; display: block; float: left; margin-right: 12.5px; }
 h1 a.selected { color: black; }
 

@@ -1,8 +1,8 @@
 import requests
 import urllib
 from bs4 import BeautifulSoup
-from filters import hostname
-from settings import HEADERS, TOKEN
+from app.filters import hostname
+from news.settings import HEADERS, TOKEN
 
 
 def get_url(link):

@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>Newscafe</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="author" content="Lucian Marin">
+    <meta name="description" content="24/7 Breaking News">
+    <link rel="apple-touch-icon" type="image/png" href="/static/192.png">
+    <link rel="icon" sizes="192x192" type="image/png" href="/static/192.png">
+    <link rel="stylesheet" type="text/css" href="/static/style.css?v={{v}}">
+</head>
+<body>
+    <div class="menu">
+        <h5><a href="{{ reverse('index') }}">24 &frasl; 7 breaking news</a></h5>
+        <h1>
+            <a class="{% if view == 'index' %}selected{% endif %}" href="{{ reverse('index') }}">
+                newscafe
+            </a>
+            <a class="{% if view == 'recent' %}selected{% endif %}" href="{{ reverse('recent') }}">
+                recent
+            </a>
+        </h1>
+    </div>
+    <div class="main">
+        {% block main %}{% endblock %}
+    </div>
+    <div class="footer">
+        <a href="/">Newscafe</a>
+        <b>&frasl;</b>
+        <a href="/about/">About</a>
+        <b>&frasl;</b>
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZMPR9EL9VPPG">Donate</a>
+        <b>&frasl;</b>
+        <b>{{ count }} articles</b>
+    </div>
+</body>
+</html>

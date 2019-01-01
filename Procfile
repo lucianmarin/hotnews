@@ -1,2 +1,2 @@
-web: python3 run.py
-sass: sass -C -t compact --sourcemap=none --watch static/style.sass
+web: python3 manage.py runserver
+sass: sass -C -t compact --sourcemap=none --watch app/static/style.sass
