@@ -32,7 +32,7 @@ def recent(request):
 def site_index(request, domain):
     count = Article.objects.count()
 
-    index = Article.objects.filter(domain=domain).order_by('-shares')
+    index = Article.objects.filter(domain=domain).exclude(shares=None).order_by('-shares')
 
     return render(request, 'site.jinja', {
         'articles': index[:15],
