@@ -1,3 +1,9 @@
+{% if view in ['recent', 'site_recent'] %}
+    {% set rev = 'site_recent' %}
+{% else %}
+    {% set rev = 'site_index' %}
+{% endif %}
+
 <div class="entry">
     <h4 class="title">
         <a target="_blank" href="{{ article.url }}">
@@ -5,7 +11,9 @@
         </a>
     </h4>
     <div class="small">
-        <a>{{ article.url | hostname }}</a>
+        <a href="{{ reverse(rev, args=[article.domain]) }}">
+            {{ article.domain }}
+        </a>
         <b>&bull;</b>
         <b>{{ article.pub | shortdate }} ago</b>
         <b>&bull;</b>

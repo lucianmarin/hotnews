@@ -1,0 +1,24 @@
+{% extends 'base.jinja' %}
+
+{% block submenu %}
+    <a href="{{ reverse('index') }}">‹ back to newscafe</a>
+{% endblock %}
+
+{% block menu %}
+    <a class="{% if view == 'site_index' %}selected{% endif %}" href="{{ reverse('site_index', args=[domain]) }}">
+        {{ domain | sitename }}
+    </a>
+    <a class="{% if view == 'site_recent' %}selected{% endif %}" href="{{ reverse('site_recent', args=[domain]) }}">
+        recent
+    </a>
+{% endblock %}
+
+{% block main %}
+    {% for article in articles %}
+        {% include 'common/entry.jinja' %}
+    {% else %}
+        <div class="entry">
+            <div class="summary">Processing content...</div>
+        </div>
+    {% endfor %}
+{% endblock %}
