@@ -5,14 +5,14 @@ $d: 0.2s
     padding: 0
 
 body
-    background-color: white
-    color: black
+    background-color: $white
+    color: $black
     font-family: "Noto Sans", sans-serif
     font-size: 13px
     line-height: 20px
 
 a
-    color: black
+    color: $black
     text-decoration: none
     transition: color $d
 
@@ -31,28 +31,26 @@ h1
     overflow: hidden
     padding: 15px 0
     a
-        color: silver
+        color: $silver
         display: block
         float: left
         margin-right: 15px
         &.selected
-            color: black
+            color: $black
 
 .entry
     padding-bottom: 10px
 
 .title
-    a
-        color: black
-        &:visited
-            color: dimgray
+    a:visited
+        color: $gray
 
 .small
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
     a, b
-        color: silver
+        color: $silver
         display: block
         float: left
         margin-right: 5px
@@ -60,10 +58,10 @@ h1
             margin-right: 0
 
 .summary
-    color: dimgray
+    color: $gray
 
 .textual
-    color: dimgray
+    color: $gray
     p
         padding-bottom: 10px
 
@@ -71,13 +69,13 @@ h1
     overflow: hidden
     padding-bottom: 25px
     a, b
-        color: silver
+        color: $silver
         display: block
         float: left
         margin-right: 5px
         padding: 5px 0
         &:first-child
-            border-bottom: gainsboro 5px solid
+            border-bottom: $gainsboro 5px solid
         &:last-child
             margin-right: 0
 
