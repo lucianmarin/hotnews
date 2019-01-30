@@ -7,7 +7,7 @@
         <b>&bull;</b>
         <b>{{ article.pub | shortdate }} ago</b>
         <b>&bull;</b>
-        <a href="{{ reverse('story', args=[article.id]) }}">read</a>
+        <a href="{{ reverse('read', args=[article.id]) }}">read</a>
         {% if article.shares %}
             <b>&bull;</b>
             <b>{{ article.shares }} shares</b>

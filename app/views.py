@@ -34,7 +34,7 @@ def recent(request):
     })
 
 
-def story(request, id):
+def read(request, id):
     count = Article.objects.count()
     theme = 'dark' if request.COOKIES.get('theme') == 'dark' else 'light'
 
@@ -42,12 +42,12 @@ def story(request, id):
     article.description = None
     lines = fetch_paragraphs(article.url)
 
-    return render(request, 'story.jinja', {
+    return render(request, 'read.jinja', {
         'article': article,
         'count': count,
         'lines': lines,
         'theme': theme,
-        'view': 'story'
+        'view': 'read'
     })
 
 
