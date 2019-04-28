@@ -58,7 +58,7 @@ def get_description(soup):
 
 
 def fetch_fb(link):
-    path = "https://graph.facebook.com/v2.8/?id={0}&access_token={1}"
+    path = "https://graph.facebook.com/v3.2/?id={0}&fields=og_object,engagement&access_token={1}"
     url = urllib.parse.quote(link)
     graph = path.format(url, TOKEN)
     return requests.get(graph).json()

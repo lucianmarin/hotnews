@@ -53,17 +53,18 @@ class Command(BaseCommand):
 
     def grab_facebook(self):
         is_allowed = True
-        for article in Article.objects.filter(
+        articles = Article.objects.filter(
             shares=None,
             pub__lt=time.time() - 8 * 3600
-        ).order_by('id'):
+        ).order_by('id')
+        for article in articles:
             if is_allowed:
                 fb = fetch_fb(article.url)
                 if 'error' in fb:
                     is_allowed = False
                     print('error')
                 else:
-                    share = fb.get('share', {})
+                    share = fb.get('engagement', {})
                     article.shares = share.get('share_count', 0)
                     article.save(update_fields=['shares'])
                 print(article.shares)
