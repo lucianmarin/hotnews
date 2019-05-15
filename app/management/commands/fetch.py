@@ -68,8 +68,9 @@ class Command(BaseCommand):
                     article.comments = engagement.get('comment_count', 0)
                     article.reactions = engagement.get('reaction_count', 0)
                     article.shares = engagement.get('share_count', 0)
-                    article.save(update_fields=['comments', 'reactions', 'shares'])
-                    print(article.comments, article.reactions, article.shares)
+                    article.score = article.comments + article.reactions + article.shares
+                    article.save(update_fields=['comments', 'reactions', 'shares', 'score'])
+                    print(article.url, article.score)
 
     def handle(self, *args, **options):
         self.grab_entries()
