@@ -21,18 +21,18 @@ h1 a.selected { color: white; }
 .title a:visited { color: lightgray; }
 
 .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.small a, .small b { color: gray; display: block; float: left; margin-right: 5px; }
-.small a:last-child, .small b:last-child { margin-right: 0; }
+.small a { color: gray; }
+.small b { color: dimgray; }
 
 .summary { color: lightgray; }
 
 .textual { color: lightgray; }
 .textual p { padding-bottom: 10px; }
 
-.footer { overflow: hidden; padding-bottom: 20px; }
-.footer a, .footer b { color: gray; display: block; float: left; margin-right: 5px; padding: 5px 0; }
-.footer a:first-child, .footer b:first-child { border-bottom: dimgray 5px solid; }
-.footer a:last-child, .footer b:last-child { margin-right: 0; }
+.footer { padding-top: 5px; padding-bottom: 30px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.footer a { color: gray; padding: 5px 0; }
+.footer a:first-child { border-bottom: dimgray 5px solid; }
+.footer b { color: dimgray; padding: 5px 2px; }
 
 @font-face { font-family: "Noto Sans"; font-style: normal; font-weight: normal; src: url(notosans/regular.woff); }
 @font-face { font-family: "Noto Sans"; font-style: normal; font-weight: bold; src: url(notosans/bold.woff); }

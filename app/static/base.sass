@@ -1,5 +1,11 @@
 $d: 0.2s
 
+@mixin dots
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+
 *
     margin: 0
     padding: 0
@@ -46,25 +52,18 @@ h1
 .compact
     padding-bottom: 5px
     .title
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
+        @include dots
 
 .title
     a:visited
         color: $gray
 
 .small
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
-    a, b
+    @include dots
+    a
         color: $silver
-        display: block
-        float: left
-        margin-right: 5px
-        &:last-child
-            margin-right: 0
+    b
+        color: $gainsboro
 
 .summary
     color: $gray
@@ -75,18 +74,17 @@ h1
         padding-bottom: 10px
 
 .footer
-    overflow: hidden
-    padding-bottom: 20px
-    a, b
+    padding-top: 5px
+    padding-bottom: 30px
+    @include dots
+    a
         color: $silver
-        display: block
-        float: left
-        margin-right: 5px
         padding: 5px 0
         &:first-child
             border-bottom: $gainsboro 5px solid
-        &:last-child
-            margin-right: 0
+    b
+        color: $gainsboro
+        padding: 5px 2px
 
 @font-face
     font-family: "Noto Sans"
