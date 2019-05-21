@@ -33,10 +33,16 @@
         <b>&frasl;</b>
         <a href="{{ reverse('about') }}">About</a>
         <b>&frasl;</b>
-        {% if theme == 'dark' %}
-            <a href="{{ reverse('light') }}">Light</a>
+        {% if mode == 'compact' %}
+            <a href="{{ reverse('set', args=['mode', 'details']) }}">Details</a>
         {% else %}
-            <a href="{{ reverse('dark') }}">Dark</a>
+            <a href="{{ reverse('set', args=['mode', 'compact']) }}">Compact</a>
+        {% endif %}
+        <b>&frasl;</b>
+        {% if theme == 'dark' %}
+            <a href="{{ reverse('set', args=['theme', 'light']) }}">Light</a>
+        {% else %}
+            <a href="{{ reverse('set', args=['theme', 'dark']) }}">Dark</a>
         {% endif %}
         <b>&frasl;</b>
         <b>{{ count }} articles</b>

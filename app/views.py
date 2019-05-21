@@ -6,14 +6,17 @@ from app.models import Article
 
 def index(request):
     count = Article.objects.count()
-    theme = 'dark' if request.COOKIES.get('theme') == 'dark' else 'light'
+    theme = request.COOKIES.get('theme', 'light')
+    mode = request.COOKIES.get('mode', 'details')
 
     distinct = Article.objects.order_by('domain', '-score').distinct('domain').values('id')
     index = Article.objects.filter(id__in=distinct).order_by('-score')
+    index_list = index[:15] if mode == 'details' else index[:30]
 
     return render(request, 'index.jinja', {
-        'articles': index,
+        'articles': index_list,
         'count': count,
+        'mode': mode,
         'theme': theme,
         'view': 'index'
     })
@@ -21,14 +24,17 @@ def index(request):
 
 def recent(request):
     count = Article.objects.count()
-    theme = 'dark' if request.COOKIES.get('theme') == 'dark' else 'light'
+    theme = request.COOKIES.get('theme', 'light')
+    mode = request.COOKIES.get('mode', 'details')
 
     distinct = Article.objects.order_by('domain', '-pub').distinct('domain').values('id')
     index = Article.objects.filter(id__in=distinct).order_by('-pub')
+    index_list = index[:15] if mode == 'details' else index[:30]
 
     return render(request, 'index.jinja', {
-        'articles': index,
+        'articles': index_list,
         'count': count,
+        'mode': mode,
         'theme': theme,
         'view': 'recent'
     })
@@ -89,13 +95,8 @@ def site_recent(request, domain):
     })
 
 
-def light(request):
-    response = HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    response.set_cookie('theme', 'light')
-    return response
-
-
-def dark(request):
-    response = HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    response.set_cookie('theme', 'dark')
+def settings(request, name, value):
+    ref = request.META.get('HTTP_REFERER', '/')
+    response = HttpResponseRedirect(ref)
+    response.set_cookie(name, value)
     return response

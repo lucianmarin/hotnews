@@ -13,7 +13,7 @@
             <b>{{ article.score // 3 }} score</b>
         {% endif %}
     </div>
-    {% if article.description %}
+    {% if article.description and mode == 'details' %}
         <div class="summary">
             {{ article.description | truncate(320) }}
         </div>
