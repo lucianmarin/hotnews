@@ -20,7 +20,7 @@ h1 a.selected { color: white; }
 
 .title a:visited { color: lightgray; }
 
-.small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.small { color: gray; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .small a { color: gray; }
 .small b { color: dimgray; }
 
