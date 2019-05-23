@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from app.helpers import fetch_paragraphs
@@ -101,8 +101,8 @@ def site_recent(request, domain):
 
 
 def settings(request, name, value):
-    year = date.today() + timedelta(365)
+    year = datetime.now() + timedelta(365)
     ref = request.META.get('HTTP_REFERER', '/')
     response = HttpResponseRedirect(ref)
-    response.set_cookie(name, value, expires=year)
+    response.set_cookie(name, value, expires=year, httponly=True)
     return response
