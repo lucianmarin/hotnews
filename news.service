@@ -19,5 +19,3 @@ WantedBy=default.target
 # sudo cp news.service /etc/systemd/system/news.service
 # sudo systemctl daemon-reload
 # sudo systemctl restart news
-# sudo cp news.conf /etc/nginx/conf.d/news.conf
-# sudo service nginx restart
