@@ -3,7 +3,9 @@ Description=News service
 After=network.target
 
 [Service]
-PIDFile=/run/news.pid
+User=lucian
+Group=lucian
+PIDFile=/home/lucian/newscafe/news.pid
 RuntimeDirectory=gunicorn
 WorkingDirectory=/home/lucian/newscafe
 ExecStart=/usr/local/bin/gunicorn news.wsgi:application -c gunicorn.py

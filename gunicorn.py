@@ -1,2 +1,2 @@
 bind = "unix:/run/news.socket"
-pip = "/run/news.pid"
+pid = "/home/lucian/newscafe/news.pid"
