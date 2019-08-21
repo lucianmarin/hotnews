@@ -1,6 +1,6 @@
 * { margin: 0; padding: 0; }
 
-body { background-color: black; color: white; font-family: "Noto Sans", sans-serif; font-size: 13px; line-height: 20px; }
+body { background-color: black; color: white; font-family: "Clear Sans", sans-serif; font-size: 14px; line-height: 20px; }
 
 a { color: white; text-decoration: none; transition: color 0.2s; }
 
@@ -8,7 +8,7 @@ b, i { font-style: normal; font-weight: normal; }
 
 .menu, .main, .footer { margin: 0 auto; max-width: 520px; padding: 0 20px; }
 
-h1 { font-size: 20px; line-height: 25px; overflow: hidden; margin: 15px 0; }
+h1 { font-size: 21px; line-height: 25px; overflow: hidden; margin: 15px 0; }
 h1 a { color: gray; display: block; float: left; margin-right: 10px; }
 h1 a:last-child { margin-right: 0; }
 h1 a.selected { color: white; }
@@ -33,5 +33,5 @@ h1 a.selected { color: white; }
 .footer a:first-child { border-bottom: dimgray 5px solid; }
 .footer b { color: dimgray; padding: 5px 2px; }
 
-@font-face { font-family: "Noto Sans"; font-style: normal; font-weight: normal; src: url(notosans/regular.woff); }
-@font-face { font-family: "Noto Sans"; font-style: normal; font-weight: bold; src: url(notosans/bold.woff); }
+@font-face { font-family: "Clear Sans"; font-style: normal; font-weight: normal; src: url(clearsans/regular.woff); }
+@font-face { font-family: "Clear Sans"; font-style: normal; font-weight: bold; src: url(clearsans/bold.woff); }
