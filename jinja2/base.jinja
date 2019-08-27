@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" type="image/png" href="/static/192.png">
     <link rel="icon" sizes="192x192" type="image/png" href="/static/192.png">
     <link rel="manifest" type="application/json" href="/static/manifest.json">
-    <link rel="stylesheet" type="text/css" href="/static/_{{theme}}.css?v={{v}}">
+    <link rel="stylesheet" type="text/css" href="/static/style.css?v={{v}}">
 </head>
 <body>
     <div class="menu">
@@ -37,12 +37,6 @@
             <a href="{{ reverse('set', args=['mode', 'details']) }}">Details</a>
         {% else %}
             <a href="{{ reverse('set', args=['mode', 'compact']) }}">Compact</a>
-        {% endif %}
-        <b>&frasl;</b>
-        {% if theme == 'dark' %}
-            <a href="{{ reverse('set', args=['theme', 'light']) }}">Light</a>
-        {% else %}
-            <a href="{{ reverse('set', args=['theme', 'dark']) }}">Dark</a>
         {% endif %}
         <b>&frasl;</b>
         <a>{{ count }} articles</a>

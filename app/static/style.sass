@@ -1,26 +1,39 @@
-$d: 0.2s
-
 @mixin dots
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
 
-
 *
     margin: 0
     padding: 0
 
+html
+    --white: white
+    --gray: dimgray
+    --silver: silver
+    --gainsboro: gainsboro
+    --black: black
+    --d: 0.2s
+
+@media (prefers-color-scheme: dark)
+    html
+        --black: white
+        --gray: lightgray
+        --silver: gray
+        --gainsboro: dimgray
+        --white: black
+
 body
-    background-color: $white
-    color: $black
+    background-color: var(--white)
+    color: var(--black)
     font-family: "Clear Sans", sans-serif
     font-size: 14px
     line-height: 20px
 
 a
-    color: $black
+    color: var(--black)
     text-decoration: none
-    transition: color $d
+    transition: color var(--d)
 
 b, i
     font-style: normal
@@ -37,14 +50,14 @@ h1
     overflow: hidden
     margin: 15px 0
     a
-        color: $silver
+        color: var(--silver)
         display: block
         float: left
         margin-right: 10px
         &:last-child
             margin-right: 0
         &.selected
-            color: $black
+            color: var(--black)
 
 .entry
     padding-bottom: 10px
@@ -54,21 +67,21 @@ h1
 
 .title
     a:visited
-        color: $gray
+        color: var(--gray)
 
 .small
-    color: $silver
+    color: var(--silver)
     @include dots
     a
-        color: $silver
+        color: var(--silver)
     b
-        color: $gainsboro
+        color: var(--gainsboro)
 
 .summary
-    color: $gray
+    color: var(--gray)
 
 .textual
-    color: $gray
+    color: var(--gray)
     p
         padding-bottom: 10px
 
@@ -77,12 +90,12 @@ h1
     padding-bottom: 30px
     @include dots
     a
-        color: $silver
+        color: var(--silver)
         padding: 5px 0
         &:first-child
-            border-bottom: $gainsboro 5px solid
+            border-bottom: var(--gainsboro) 5px solid
     b
-        color: $gainsboro
+        color: var(--gainsboro)
         padding: 5px 2px
 
 @font-face
