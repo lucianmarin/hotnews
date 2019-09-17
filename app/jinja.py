@@ -13,5 +13,6 @@ def environment(**options):
     env.filters['superscript'] = superscript
     # globals
     env.globals['reverse'] = reverse
-    env.globals['v'] = 15
+    env.globals['brand'] = "NewsFi"
+    env.globals['v'] = 16
     return env

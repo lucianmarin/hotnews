@@ -5,7 +5,7 @@
         About
     </a>
     <a class="{% if view == 'index' %}selected{% endif %}" href="{{ reverse('index') }}">
-        Newsfi
+        {{ brand }}
     </a>
 {% endblock %}
 
@@ -15,7 +15,7 @@
             How it works?
         </h4>
         <div class="summary">
-            Newsfi fetches a bunch of important RSS feeds and ranks the links by number of shares on Facebook. It can be much more with better sources and interesting metadata gathered from different services people use.
+            {{ brand }} fetches a bunch of important RSS feeds and ranks the links by number of shares on Facebook. It can be much more with better sources and interesting metadata gathered from different services people use.
         </div>
     </div>
     <div class="entry">
@@ -23,7 +23,7 @@
             Who made it? Why? Donate?
         </h4>
         <div class="summary">
-            Newsfi is made by <a href="http://lucianmarin.com/">Lucian Marin</a>. It is part of Subcafe platform where the core app is a social network. Newsfi is made for busy people who don't want to spent more than a few minutes getting the most important news of the day. You might consider <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZMPR9EL9VPPG">donating</a> for all services provided for free.
+            {{ brand }} is made by <a href="http://lucianmarin.com/">Lucian Marin</a>. It is part of Subcafe platform where the core app is a social network. {{ brand }} is made for busy people who don't want to spent more than a few minutes getting the most important news of the day. You might consider <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RZMPR9EL9VPPG">donating</a> for all services provided for free.
         </div>
     </div>
     <div class="entry">
@@ -31,7 +31,7 @@
             What's the tech?
         </h4>
         <div class="summary">
-            Newsfi is a Django app. It uses feedparser, Requests, Beautiful Soup, PostgreSQL, PgBouncer and Facebook API. PostgreSQL and PgBouncer is faster than Redis for distinct queries.
+            {{ brand }} is a Django app. It uses feedparser, Requests, Beautiful Soup, PostgreSQL, PgBouncer and Facebook API. PostgreSQL and PgBouncer is faster than Redis for distinct queries.
         </div>
     </div>
     <div class="entry">
