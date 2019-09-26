@@ -14,5 +14,5 @@ def environment(**options):
     # globals
     env.globals['reverse'] = reverse
     env.globals['brand'] = "NewsFi"
-    env.globals['v'] = 16
+    env.globals['v'] = 17
     return env
