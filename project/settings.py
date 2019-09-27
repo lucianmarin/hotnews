@@ -1,6 +1,7 @@
 SECRET_KEY = '4^suh^yp2@jm!a!8snts8wb(y2kx4v482km5mnc^+topkpc*!p'
 DEBUG = False
 
+ALLOWED_HOSTS = []
 INSTALLED_APPS = ['app', 'django_extensions']
 MIDDLEWARE = []
 TEMPLATES = []
@@ -15,6 +16,7 @@ DATABASES = {
         'PORT': '6432'
     }
 }
+AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'

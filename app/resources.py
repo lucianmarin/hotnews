@@ -1,4 +1,6 @@
-from falcon import MEDIA_HTML, HTTPNotFound
+from falcon.constants import MEDIA_HTML
+from falcon.errors import HTTPNotFound
+
 from app.helpers import fetch_paragraphs
 from app.jinja import env
 from app.models import Article
