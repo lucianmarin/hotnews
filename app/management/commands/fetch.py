@@ -64,7 +64,8 @@ class Command(BaseCommand):
                 article.reactions = engagement.get('reaction_count', 0)
                 article.shares = engagement.get('share_count', 0)
                 article.score = article.comments + article.reactions + article.shares
-                article.save(update_fields=['comments', 'reactions', 'shares', 'score'])
+                article.has_fb = True
+                article.save(update_fields=['comments', 'reactions', 'shares', 'score', 'has_fb'])
                 print(article.url, article.score)
 
     def handle(self, *args, **options):
