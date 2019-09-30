@@ -52,7 +52,7 @@ class Command(BaseCommand):
 
     def grab_facebook(self):
         articles = Article.objects.filter(
-            has_fb=False, pub__lt=time.time() - 8 * 3600
+            has_fb=False, pub__lt=time.time() - 12 * 3600
         ).order_by('id')
         for article in articles:
             fb = fetch_fb(article.url)
