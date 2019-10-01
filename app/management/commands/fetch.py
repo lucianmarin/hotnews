@@ -1,10 +1,12 @@
+import time
+
 import feedparser
 import requests
-import time
 from dateutil.parser import parse
 from django.core.management.base import BaseCommand
+
 from app.filters import hostname
-from app.helpers import get_url, fetch_desc, fetch_fb
+from app.helpers import fetch_desc, fetch_fb, get_url
 from app.models import Article
 from project.settings import FEEDS
 

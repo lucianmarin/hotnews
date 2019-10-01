@@ -43,10 +43,10 @@ def get_paragraphs(soup):
 
 def get_description(soup):
     attrs = (
-        {'name': "description"},
-        {'name': "twitter:description"},
+        {'property': "og:description"},
         {'name': "og:description"},
-        {'property': "og:description"}
+        {'name': "twitter:description"},
+        {'name': "description"}
     )
     description = ""
     for attr in attrs:
