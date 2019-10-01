@@ -2,10 +2,6 @@ from urllib import parse
 from datetime import datetime
 
 
-def latin(value):
-    return value.encode('latin-1', 'ignore').decode('latin-1')
-
-
 def hostname(value):
     """Get hostname from an url."""
     url = parse.urlsplit(value)

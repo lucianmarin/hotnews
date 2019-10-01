@@ -32,7 +32,8 @@ def get_paragraphs(soup):
                 child.unwrap()
         for child in candidate.children:
             if child.name in allowed:
-                text = child.text.strip()
+                text = " ".join([t for t in child.text.split()])
+                text = text.encode('latin-1', 'ignore').decode('latin-1')
                 if text:
                     if child.name in ["p", "pre", "li"]:
                         paragraphs.append((text, False))
@@ -75,6 +76,8 @@ def fetch_desc(link):
     description = '' if description.endswith(terms) else description
     if not description and paragraphs:
         return paragraphs[0][0]
+    description = " ".join([d for d in description.split()])
+    description = description.encode('latin-1', 'ignore').decode('latin-1')
     return description
 
 
