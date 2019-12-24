@@ -2,6 +2,26 @@ from urllib import parse
 from datetime import datetime
 
 
+def truncate(value, limit=256):
+    """Truncate text based on sentences length."""
+    sentences = []
+    sentence = ""
+    for word in value.split():
+        if word.endswith(('.', '...', '…', '!', '?')):
+            sentence += " " + word
+            sentences.append(sentence)
+            sentence = ""
+        else:
+            sentence += " " + word
+    length = 0
+    truncated = []
+    for sentence in sentences:
+        length += len(sentence)
+        if length < limit:
+            truncated.append(sentence)
+    return " ".join(truncated)
+
+
 def hostname(value):
     """Get hostname from an url."""
     url = parse.urlsplit(value)
