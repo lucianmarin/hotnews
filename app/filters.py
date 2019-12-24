@@ -20,7 +20,9 @@ def truncate(value, limit=256):
         if length < limit:
             truncated.append(sentence)
     if not truncated and value:
-        return value
+        if len(value) < limit:
+            return value
+        return value[:limit] + "..."
     return " ".join(truncated)
 
 
