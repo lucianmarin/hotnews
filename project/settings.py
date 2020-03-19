@@ -79,7 +79,8 @@ FEEDS = [
     "http://feeds.feedburner.com/sub/verge",
     "http://feeds.feedburner.com/sub/vice",
     "http://feeds.feedburner.com/sub/vox",
-    "http://feeds.feedburner.com/sub/wired"
+    "http://feeds.feedburner.com/sub/wired",
+    "http://feeds.feedburner.com/sub/windowslatest"
 ]
 
 LINKS = [
