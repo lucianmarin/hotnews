@@ -1,5 +1,6 @@
 bs4
 falcon
 feedparser
-requests
+lxml
 python-dateutil
+requests

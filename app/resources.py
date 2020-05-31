@@ -1,9 +1,31 @@
+from falcon import HTTP_200
 from falcon.constants import MEDIA_HTML
 from falcon.errors import HTTPNotFound
 
 from app.helpers import fetch_paragraphs
 from app.jinja import env
 from app.models import Article
+
+
+class StaticResource(object):
+    mime_types = {
+        'json': "application/json",
+        'css': "text/css",
+        'woff': "font/woff",
+        'png': "image/png",
+        'jpg': "image/jpeg"
+    }
+    binary = ['png', 'jpg', 'woff']
+
+    def on_get(self, req, resp, filename):
+        print(filename)
+        # do some sanity check on the filename
+        name, ext = filename.split('.')
+        mode = 'rb' if ext in self.binary else 'r'
+        resp.status = HTTP_200
+        resp.content_type = self.mime_types[ext]
+        with open(f'static/{filename}', mode) as f:
+            resp.body = f.read()
 
 
 class MainResource:

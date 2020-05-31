@@ -48,6 +48,6 @@ h1 a.selected { color: var(--black); }
 
 .footer b { color: var(--gainsboro); padding: 5px 2px; }
 
-@font-face { font-family: "Clear Sans"; font-style: normal; font-weight: normal; src: url(/static/clearsans/regular.woff) format("woff"); }
+@font-face { font-family: "Clear Sans"; font-style: normal; font-weight: normal; src: url(/static/clearsans-regular.woff) format("woff"); }
 
-@font-face { font-family: "Clear Sans"; font-style: normal; font-weight: bold; src: url(/static/clearsans/bold.woff) format("woff"); }
+@font-face { font-family: "Clear Sans"; font-style: normal; font-weight: bold; src: url(/static/clearsans-bold.woff) format("woff"); }

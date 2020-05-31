@@ -14,6 +14,17 @@ from project.settings import FEEDS
 class Command(BaseCommand):
     help = "Fetch articles from feeds."
 
+    def add_arguments(self, parser):
+        # Positional arguments
+        # parser.add_argument('poll_ids', nargs='+', type=int)
+
+        # Named (optional) arguments
+        parser.add_argument(
+            '--skip-fb',
+            action='store_true',
+            help='Skip Facebook API calls',
+        )
+
     def grab_entries(self):
         entries = []
         for feed in FEEDS:
@@ -22,8 +33,8 @@ class Command(BaseCommand):
             print(feed)
         for entry in entries:
             try:
-                orig = entry.get('feedburner_origlink', '')
-                entry.link = orig if orig else entry.link
+                origlink = entry.get('feedburner_origlink')
+                entry.link = origlink if origlink else entry.link
                 url = get_url(entry.link)
                 published = parse(entry.published).timestamp()
                 if published > time.time() - 48 * 3600:
@@ -36,7 +47,6 @@ class Command(BaseCommand):
                     )
             except Exception as e:
                 print(e)
-        return entries
 
     def cleanup(self):
         q = Article.objects.filter(pub__lt=time.time() - 48 * 3600)
@@ -59,7 +69,8 @@ class Command(BaseCommand):
         for article in articles:
             fb = fetch_fb(article.url)
             if 'error' in fb:
-                return print('error')
+                print('error')
+                return
             else:
                 engagement = fb.get('engagement', {})
                 article.comments = engagement.get('comment_count', 0)
@@ -71,7 +82,9 @@ class Command(BaseCommand):
                 print(article.url, article.score)
 
     def handle(self, *args, **options):
+        # print(options)
         self.grab_entries()
         self.cleanup()
         self.grab_description()
-        self.grab_facebook()
+        if not options['skip_fb']:
+            self.grab_facebook()

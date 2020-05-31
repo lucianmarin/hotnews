@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = "Fetch articles from feeds."
+    help = "Fetch IPs from logs."
 
     @property
     def days_back(self):
