@@ -7,7 +7,7 @@
         <b>&bull;</b>
         <a>{{ article.pub | shortdate }} ago</a>
         <b>&bull;</b>
-        <a href="/read/{{ article.id }}">read</a>
+        <a href="/read/{{ article.id }}" rel="nofollow">read</a>
         {% if article.score %}
             <b>&bull;</b>
             <a>{{ article.score // 3 }} score</a>

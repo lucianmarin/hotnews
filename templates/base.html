@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <meta name="author" content="Lucian Marin">
     <meta name="description" content="24/7 Quality News">
+    {% if view == 'read' %}
+        <meta name="robots" content="noindex">
+    {% endif %}
     <link rel="apple-touch-icon" type="image/png" href="/static/192.png">
     <link rel="icon" sizes="192x192" type="image/png" href="/static/192.png">
     <link rel="manifest" type="application/json" href="/static/manifest.json">
