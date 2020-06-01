@@ -34,3 +34,10 @@ class Article(models.Model):
             return "/icons/{0}.jpg".format(self.domain)
         else:
             return "/static/192.png"
+
+    @property
+    def reach(self):
+        reach = str(round(self.score / 3, 1))
+        first, last = reach.split('.')
+        reach = first if last == '0' else reach
+        return reach
