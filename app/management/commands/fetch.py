@@ -37,7 +37,8 @@ class Command(BaseCommand):
                 entry.link = origlink if origlink else entry.link
                 url = get_url(entry.link)
                 published = parse(entry.published).timestamp()
-                if published > time.time() - 48 * 3600:
+                now = time.time()
+                if now > published > now - 48 * 3600:
                     article, is_created = Article.objects.get_or_create(
                         url=url,
                         title=entry.title,
