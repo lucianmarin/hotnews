@@ -6,7 +6,7 @@ html { --white: #fff; --gray: #808080; --silver: #c0c0c0; --gainsboro: #d0d0d0; 
 
 body { background-color: var(--white); color: var(--black); font-family: "Clear Sans", sans-serif; font-size: 14px; line-height: 20px; }
 
-a { color: var(--black); text-decoration: none; transition: color var(--d); }
+a { color: var(--black); cursor: pointer; text-decoration: none; transition: color var(--d); }
 
 b, i { font-style: normal; font-weight: normal; }
 

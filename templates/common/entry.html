@@ -7,7 +7,11 @@
         <b>&bull;</b>
         <a>{{ article.pub | shortdate }} ago</a>
         <b>&bull;</b>
-        <a href="/read/{{ article.base }}" rel="nofollow">read</a>
+        {% if view == 'read' %}
+            <a onclick="listen(event)">listen</a>
+        {% else %}
+            <a href="/{{ article.base }}" rel="nofollow">read</a>
+        {% endif %}
         {% if article.score %}
             <b>&bull;</b>
             <a>{{ article.reach }} reach</a>

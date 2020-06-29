@@ -13,5 +13,5 @@ env.filters['shortdate'] = shortdate
 env.filters['superscript'] = superscript
 env.filters['truncate'] = truncate
 
-env.globals['brand'] = "Rad-Fi"
-env.globals['v'] = 21
+env.globals['brand'] = "Radio Fidelity"
+env.globals['v'] = 1

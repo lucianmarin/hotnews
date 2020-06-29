@@ -14,10 +14,11 @@
     <link rel="icon" sizes="192x192" type="image/png" href="/static/192.png">
     <link rel="manifest" type="application/json" href="/static/manifest.json">
     <link rel="stylesheet" type="text/css" href="/static/style.css?v={{v}}">
+    <script type="text/javascript" src="/static/script.js?v={{v}}" async defer></script>
 </head>
 <body>
     <div class="menu">
-        <h3><a href="/">Radio Fidelity</a></h3>
+        <h3><a href="/">{{ brand }}</a></h3>
         <h2>
             {% if view == 'about' %}
                 <a href="/about" class="selected">About</a>
@@ -35,7 +36,7 @@
         {% block main %}{% endblock %}
     </div>
     <div class="footer">
-        <a href="/">{{ brand }}</a>
+        <a href="/">Rad-Fi</a>
         <b>&frasl;</b>
         <a href="/about">About</a>
         <b>&frasl;</b>
