@@ -8,24 +8,27 @@
     padding: 0
 
 html
+    -ms-text-size-adjust: 100%
+    -webkit-text-size-adjust: 100%
+    --regular: 13.6px
+    --big: 19.2px
+    --d: 0.2s
+    --hl: yellow
     --white: #fff
     --gray: #808080
     --silver: #c0c0c0
     --gainsboro: #d0d0d0
     --black: #000
-    --regular: 13.5px
-    --hl: yellow
-    --big: 19.5px
-    --d: 0.2s
+
 
 @media (prefers-color-scheme: dark)
     html
+        --hl: darkcyan
         --black: #fff
         --gray: #c0c0c0
         --silver: #808080
         --gainsboro: #404040
         --white: #000
-        --hl: darkcyan
 
 body
     background-color: var(--white)
