@@ -10,7 +10,7 @@ a { color: var(--black); cursor: pointer; text-decoration: none; transition: col
 
 b, i { font-style: normal; font-weight: normal; }
 
-.menu, .main, .footer { margin: 0 auto; max-width: 480px; padding: 0 15px; }
+.menu, .main, .footer { margin: 0 auto; max-width: 480px; padding: 0 20px; }
 
 svg { fill: var(--black); }
 
