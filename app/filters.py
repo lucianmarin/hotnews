@@ -34,11 +34,7 @@ def hostname(value):
 
 def sitename(value):
     """Get sitename without LTD part."""
-    parts = value.split('.', 1)
-    parts.reverse()
-    del parts[0]
-    parts.reverse()
-    name = ".".join(parts)
+    name = value.split('.', 1)[0]
     if name.startswith('the'):
         name = name[3:]
     return name

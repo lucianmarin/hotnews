@@ -47,7 +47,8 @@ class Article(models.Model):
 
     @property
     def reach(self):
-        reach = str(round(self.score / 3, 1))
-        first, last = reach.split('.')
-        reach = first if last == '0' else reach
-        return reach
+        rounded = round(self.score / 3000)
+        if rounded:
+            return "{0}k".format(rounded)
+        else:
+            return self.score
