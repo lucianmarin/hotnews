@@ -1,8 +1,8 @@
 {
     "lang": "en",
-    "name": "Rad-Fi",
-    "short_name": "Rad-Fi",
-    "description": "Rad news ranked by Facebook likes",
+    "name": "Artificial Feed",
+    "short_name": "Artificial Feed",
+    "description": "Curated daily breaking news and ranked by Facebook.",
     "icons": [
         {
             "src": "/static/192.png",
@@ -11,7 +11,7 @@
         }
     ],
     "start_url": "/",
-    "display": "fullscreen",
+    "display": "standalone",
     "orientation": "portrait",
     "status": "ok"
 }
