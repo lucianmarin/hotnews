@@ -1,8 +1,9 @@
 bs4
+django
+django-extensions
 falcon
 feedparser
 lxml
 python-dateutil
 requests
-django
-django-extensions
+tldextract

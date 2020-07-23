@@ -1,5 +1,6 @@
-from urllib import parse
 from datetime import datetime, timezone
+
+import tldextract
 
 
 def truncate(value, limit=256):
@@ -28,13 +29,18 @@ def truncate(value, limit=256):
 
 def hostname(value):
     """Get hostname from an url."""
-    url = parse.urlsplit(value)
-    return url.netloc.replace('www.', '')
+    subdomain, domain, suffix = tldextract.extract(value)
+    if subdomain == 'www':
+        return f'{domain}.{suffix}'
+    return f'{subdomain}.{domain}.{suffix}'
 
 
 def sitename(value):
-    """Get sitename without LTD part."""
-    return value.split('.', 1)[0]
+    """Get sitename without TLD part."""
+    subdomain, domain, suffix = tldextract.extract(value)
+    if subdomain == 'www':
+        return f'{domain}'
+    return f'{subdomain}.{domain}'
 
 
 def date(stamp):
