@@ -30,7 +30,7 @@ def truncate(value, limit=256):
 def hostname(value):
     """Get hostname from an url."""
     subdomain, domain, suffix = tldextract.extract(value)
-    if subdomain == 'www':
+    if subdomain in ['', 'www']:
         return f'{domain}.{suffix}'
     return f'{subdomain}.{domain}.{suffix}'
 
@@ -38,7 +38,7 @@ def hostname(value):
 def sitename(value):
     """Get sitename without TLD part."""
     subdomain, domain, suffix = tldextract.extract(value)
-    if subdomain == 'www':
+    if subdomain in ['', 'www']:
         return f'{domain}'
     return f'{subdomain}.{domain}'
 
