@@ -68,6 +68,7 @@ FEEDS = [
     "http://feeds.feedburner.com/sub/fastcompany",
     "http://feeds.feedburner.com/sub/fubiz",
     "http://feeds.feedburner.com/sub/gsmarena",
+    "http://feeds.feedburner.com/sub/karpathy",
     "http://feeds.feedburner.com/sub/japantimes",
     "http://feeds.feedburner.com/sub/infoq",
     "http://feeds.feedburner.com/sub/longreads",
