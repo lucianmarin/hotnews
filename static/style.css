@@ -26,13 +26,21 @@ h2 a:hover { color: var(--gray); }
 
 h2 a.selected { color: var(--black); }
 
+svg { fill: none; }
+
+svg path { stroke: var(--black); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.switch { float: right; padding: 6px 0; }
+
+.switch svg { margin-left: 6px; }
+
 .menu { padding-top: 15px; padding-bottom: 10px; }
 
 .entry { margin-bottom: 10px; }
 
 .title a:visited { color: var(--gray); }
 
-.small { color: var(--silver); }
+.small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--silver); }
 
 .small a { color: var(--gray); }
 

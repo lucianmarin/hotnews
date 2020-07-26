@@ -71,6 +71,20 @@ h2
         &.selected
             color: var(--black)
 
+svg
+    fill: none
+    path
+        stroke: var(--black)
+        stroke-width: 2
+        stroke-linecap: round
+        stroke-linejoin: round
+
+.switch
+    float: right
+    padding: 6px 0
+    svg
+        margin-left: 6px
+
 .menu
     padding-top: 15px
     padding-bottom: 10px
@@ -83,6 +97,9 @@ h2
         color: var(--gray)
 
 .small
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
     color: var(--silver)
     a
         color: var(--gray)
