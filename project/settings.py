@@ -55,6 +55,7 @@ FEEDS = [
     "http://feeds.feedburner.com/sub/9to5google",
     "http://feeds.feedburner.com/sub/9to5mac",
     "http://feeds.feedburner.com/sub/aeon",
+    "http://feeds.feedburner.com/sub/aestheticamagazine",
     "http://feeds.feedburner.com/sub/anandtech",
     "http://feeds.feedburner.com/sub/atlantic",
     "http://feeds.feedburner.com/sub/axios",
