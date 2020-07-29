@@ -100,11 +100,14 @@ svg
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
-    color: var(--silver)
     a
         color: var(--gray)
         &:hover
             color: var(--black)
+        &.done
+            color: var(--silver)
+            &:hover
+                color: var(--gray)
 
 .summary
     color: var(--gray)

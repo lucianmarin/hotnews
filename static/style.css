@@ -40,11 +40,15 @@ svg path { stroke: var(--black); stroke-width: 2; stroke-linecap: round; stroke-
 
 .title a:visited { color: var(--gray); }
 
-.small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--silver); }
+.small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .small a { color: var(--gray); }
 
 .small a:hover { color: var(--black); }
+
+.small a.done { color: var(--silver); }
+
+.small a.done:hover { color: var(--gray); }
 
 .summary { color: var(--gray); cursor: text; }
 
