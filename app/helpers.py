@@ -1,5 +1,6 @@
 import requests
 import urllib
+from functools import lru_cache
 from bs4 import BeautifulSoup
 from app.filters import hostname
 from project.settings import HEADERS, TOKEN
@@ -77,10 +78,10 @@ def fetch_desc(link):
     if not description and paragraphs:
         return paragraphs[0][0]
     description = " ".join([d for d in description.split()])
-    description = description.encode('latin-1', 'ignore').decode('latin-1')
-    return description
+    return description.encode('latin-1', 'ignore').decode('latin-1')
 
 
+@lru_cache
 def fetch_paragraphs(link):
     r = requests.get(link, headers=HEADERS)
     soup = BeautifulSoup(r.text, features="lxml")
