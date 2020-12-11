@@ -64,8 +64,7 @@ def fetch_fb(link):
     url = urllib.parse.quote(link)
     graph = path.format(url, TOKEN)
     r = requests.get(graph)
-    rdict = r.json() if r.text else {}
-    return rdict
+    return r.json() if r.text else {}
 
 
 def fetch_desc(link):
@@ -81,7 +80,7 @@ def fetch_desc(link):
     return description.encode('latin-1', 'ignore').decode('latin-1')
 
 
-@lru_cache
+@lru_cache(maxsize=128)
 def fetch_paragraphs(link):
     r = requests.get(link, headers=HEADERS)
     soup = BeautifulSoup(r.text, features="lxml")
