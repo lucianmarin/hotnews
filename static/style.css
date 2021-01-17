@@ -28,9 +28,9 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .column.left .title a:visited { color: #d0d0d0; }
 
-.column.left .small a:first-child { color: #c0c0c0; }
+.column.left .small a { color: #c0c0c0; }
 
-.column.left .small a { color: #808080; }
+.column.left .small .done { color: #808080; }
 
 .column.left .summary { color: #c0c0c0; }
 
@@ -42,9 +42,9 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .column.right .title a:visited { color: #404040; }
 
-.column.right .small a:first-child { color: #808080; }
+.column.right .small a { color: #808080; }
 
-.column.right .small a { color: #c0c0c0; }
+.column.right .small .done { color: #c0c0c0; }
 
 .column.right .summary { color: #808080; }
 
