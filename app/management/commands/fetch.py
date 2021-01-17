@@ -1,18 +1,19 @@
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 import feedparser
 import requests
-from dateutil.parser import parse
-from django.core.management.base import BaseCommand
-
 from app.filters import hostname
 from app.helpers import fetch_desc, fetch_fb, get_url
 from app.models import Article
+from dateutil.parser import parse
+from django.core.management.base import BaseCommand
 from project.settings import FEEDS
 
 
 class Command(BaseCommand):
     help = "Fetch articles from feeds."
+    cores = 4
 
     def add_arguments(self, parser):
         # Positional arguments
@@ -25,20 +26,21 @@ class Command(BaseCommand):
             help='Skip Facebook API calls',
         )
 
-    def grab_entries(self):
-        entries = []
-        for feed in FEEDS:
-            r = requests.get(feed)
-            entries += feedparser.parse(r.text).entries
-            print(feed)
+    @property
+    def now(self):
+        return datetime.now(timezone.utc).timestamp()
+
+    def get_entries(self, feed):
+        r = requests.get(feed)
+        print(feed)
+        entries = feedparser.parse(r.text).entries
         for entry in entries:
             try:
                 origlink = entry.get('feedburner_origlink')
                 entry.link = origlink if origlink else entry.link
                 url = get_url(entry.link)
                 published = parse(entry.published).timestamp()
-                now = datetime.now(timezone.utc).timestamp()
-                if now > published > now - 48 * 3600:
+                if self.now > published > self.now - 48 * 3600:
                     article, is_created = Article.objects.get_or_create(
                         url=url,
                         title=entry.title,
@@ -49,40 +51,48 @@ class Command(BaseCommand):
             except Exception as e:
                 print(e)
 
+    def grab_entries(self):
+        with ThreadPoolExecutor(max_workers=self.cores) as executor:
+            executor.map(self.get_entries, FEEDS)
+
     def cleanup(self):
-        now = datetime.now(timezone.utc).timestamp()
-        q = Article.objects.filter(pub__lt=now - 48 * 3600)
+        q = Article.objects.filter(pub__lt=self.now - 48 * 3600)
         c = q.count()
         q.delete()
         print("Deleted {0} entries".format(c))
 
+    def get_description(self, article):
+        article.description = fetch_desc(article.url)
+        article.save(update_fields=['description'])
+        print(article.url)
+        print(article.description)
+
     def grab_description(self):
         articles = Article.objects.filter(description=None).order_by('-id')
-        for article in articles:
-            article.description = fetch_desc(article.url)
-            article.save(update_fields=['description'])
-            print(article.url)
-            print(article.description)
+        with ThreadPoolExecutor(max_workers=self.cores) as executor:
+            executor.map(self.get_description, articles)
+
+    def get_facebook(self, article):
+        fb = fetch_fb(article.url)
+        if 'error' in fb:
+            print('error')
+            return
+        else:
+            engagement = fb.get('engagement', {})
+            article.comments = engagement.get('comment_count', 0)
+            article.reactions = engagement.get('reaction_count', 0)
+            article.shares = engagement.get('share_count', 0)
+            article.score = article.comments + article.reactions + article.shares
+            article.has_fb = True
+            article.save(update_fields=['comments', 'reactions', 'shares', 'score', 'has_fb'])
+            print(article.url, article.score)
 
     def grab_facebook(self):
-        now = datetime.now(timezone.utc).timestamp()
         articles = Article.objects.filter(
-            has_fb=False, pub__lt=now - 12 * 3600
+            has_fb=False, pub__lt=self.now - 12 * 3600
         ).order_by('id')
-        for article in articles:
-            fb = fetch_fb(article.url)
-            if 'error' in fb:
-                print('error')
-                return
-            else:
-                engagement = fb.get('engagement', {})
-                article.comments = engagement.get('comment_count', 0)
-                article.reactions = engagement.get('reaction_count', 0)
-                article.shares = engagement.get('share_count', 0)
-                article.score = article.comments + article.reactions + article.shares
-                article.has_fb = True
-                article.save(update_fields=['comments', 'reactions', 'shares', 'score', 'has_fb'])
-                print(article.url, article.score)
+        with ThreadPoolExecutor(max_workers=self.cores) as executor:
+            executor.map(self.get_description, articles)
 
     def handle(self, *args, **options):
         # print(options)
