@@ -16,10 +16,6 @@ class Command(BaseCommand):
     cores = 4
 
     def add_arguments(self, parser):
-        # Positional arguments
-        # parser.add_argument('poll_ids', nargs='+', type=int)
-
-        # Named (optional) arguments
         parser.add_argument(
             '--skip-fb',
             action='store_true',
@@ -84,7 +80,9 @@ class Command(BaseCommand):
             article.shares = engagement.get('share_count', 0)
             article.score = article.comments + article.reactions + article.shares
             article.has_fb = True
-            article.save(update_fields=['comments', 'reactions', 'shares', 'score', 'has_fb'])
+            article.save(update_fields=[
+                'comments', 'reactions', 'shares', 'score', 'has_fb'
+            ])
             print(article.url, article.score)
 
     def grab_facebook(self):
@@ -95,7 +93,6 @@ class Command(BaseCommand):
             executor.map(self.get_description, articles)
 
     def handle(self, *args, **options):
-        # print(options)
         self.grab_entries()
         self.cleanup()
         self.grab_description()
