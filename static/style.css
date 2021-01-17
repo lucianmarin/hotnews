@@ -74,9 +74,9 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .center .entry { margin: 10px 0; }
 
-.center .entry .small a:first-child { color: #808080; }
+.center .entry .small a { color: #808080; }
 
-.center .entry .small a { color: #c0c0c0; }
+.center .entry .small .done { color: #c0c0c0; }
 
 .center .text { color: #000; cursor: text; }
 
