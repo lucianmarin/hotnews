@@ -1,26 +1,8 @@
 <div class="entry">
-    <div class="small">
-        <a href="{{ article.url }}">
-            {{ article.domain | sitename }}
-        </a>
-        <b>&nbsp;</b>
-        {% if view == 'read' %}
-            <a class="done" onclick="listen(event)">listen</a>
-            <b>&nbsp;</b>
-        {% endif %}
-        {% if article.score %}
-            <b class="done">+{{ article.reach }}</b>
-            <b>&nbsp;</b>
-        {% endif %}
-        <a class="done" href="/{{ article.base }}" rel="nofollow">
-            {{ article.pub | shortdate }} ago
-        </a>
-    </div>
-    {% if view != 'read' %}
-        <h4 class="title">
-            <a href="{{ article.url }}">{{ article.title }}</a>
-        </h4>
-    {% endif %}
+    {% include 'common/small.html' %}
+    <h4 class="title">
+        <a href="{{ article.url }}">{{ article.title }}</a>
+    </h4>
     {% if article.description %}
         <div class="summary">
             {{ article.description | truncate }}

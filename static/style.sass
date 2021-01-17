@@ -52,10 +52,12 @@ h2
 .main
     display: grid
     grid-template-columns: calc(50% - #{$col}) $col $col calc(50% - #{$col})
-    .side.left
-        background-color: $almostblack
-    .side.right
-        background-color: $whitesmoke
+
+.side.left
+    background-color: $almostblack
+
+.side.right
+    background-color: $whitesmoke
 
 .column.left
     background-color: $almostblack
@@ -93,7 +95,7 @@ h2
 
 .column
     h3
-        margin-top: 10px
+        margin-top: 15px
     h2
         margin-bottom: 10px
     .entry
@@ -108,14 +110,27 @@ h2
 
 .read
     display: grid
-    grid-template-columns: calc(50% - #{$center / 2}) $center calc(50% - #{$center / 2})
-    .side.left, .side.right
-        background-color: $whitesmoke
+    grid-template-columns: calc(50% - #{$center / 2} - 25px) 50px $center calc(50% - #{$center / 2} - 25px)
 
-.center
+.pane.left
+    background-color: $almostblack
+    .small
+        position: sticky
+        padding: 15px
+        transform: rotate(180deg)
+        writing-mode: vertical-lr
+        top: 0
+        left: 0
+    .small a
+        color: $silver
+    .small .done
+        color: $gray
+
+.pane.right
     background-color: $whitesmoke
+    padding-left: 15px
     h3
-        margin-top: 10px
+        margin-top: 15px
     h3 a
         color: $silver
     h2
@@ -143,9 +158,12 @@ h2
         .column.left, .column.right
             padding: 0 5%
     .read
-        grid-template-columns: 0 100% 0
-        .center
-            padding: 0 5%
+        grid-template-columns: 0 40px calc(100% - 40px) 0
+        .pane.left
+            .small
+                padding: 15px 10px
+        .pane.right
+            padding: 0 4%
     .summary
         overflow: hidden
         text-overflow: ellipsis
