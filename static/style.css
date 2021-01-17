@@ -14,6 +14,8 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .main { display: grid; grid-template-columns: calc(50% - 360px) 360px 360px calc(50% - 360px); }
 
+.left, .right { height: 100vh; }
+
 .side.left { background-color: #202020; }
 
 .side.right { background-color: #f0f0f0; }
