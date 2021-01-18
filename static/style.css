@@ -22,7 +22,7 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .column.left { background-color: #202020; padding-right: 15px; }
 
-.column.left h3 a { color: #808080; }
+.column.left h3 a { color: #c0c0c0; }
 
 .column.left h2 a { color: #fff; }
 
@@ -74,7 +74,7 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .pane.right h3 { margin-top: 15px; }
 
-.pane.right h3 a { color: #c0c0c0; }
+.pane.right h3 a { color: #808080; }
 
 .pane.right h2 { margin-bottom: 10px; }
 
