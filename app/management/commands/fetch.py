@@ -92,7 +92,7 @@ class Command(BaseCommand):
             has_fb=False, pub__lt=self.now - 12 * 3600
         ).order_by('id')
         with ThreadPoolExecutor(max_workers=self.cores) as executor:
-            executor.map(self.get_description, articles)
+            executor.map(self.get_facebook, articles)
 
     def handle(self, *args, **options):
         self.grab_entries()
