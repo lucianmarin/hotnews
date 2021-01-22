@@ -12,7 +12,7 @@ h3 { font-size: 14px; font-weight: normal; line-height: 15px; }
 
 h2 { font-size: 20px; line-height: 25px; }
 
-.main { display: grid; grid-template-columns: calc(50% - 360px) 360px 360px calc(50% - 360px); }
+.main { display: grid; grid-template-columns: calc(50% - 375px) 375px 375px calc(50% - 375px); }
 
 .left, .right { min-height: 100vh; }
 
@@ -92,7 +92,7 @@ h2 { font-size: 20px; line-height: 25px; }
 
 .pane.right .text u { background-color: yellow; text-decoration: none; }
 
-@media (max-width: 720px) { .main { grid-template-columns: 0 50% 50% 0; } .main .column.left, .main .column.right { padding: 0 5%; } .read { grid-template-columns: 0 40px calc(100% - 40px) 0; } .read .pane.left .small { padding: 15px 10px; } .read .pane.right { padding: 0 4%; } .summary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
+@media (max-width: 750px) { .main { grid-template-columns: 0 50% 50% 0; } .main .column.left, .main .column.right { padding: 0 5%; } .read { grid-template-columns: 0 40px calc(100% - 40px) 0; } .read .pane.left .small { padding: 15px 10px; } .read .pane.right { padding: 0 4%; } .summary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
 
 @font-face { font-family: "Route 159"; font-style: normal; font-weight: normal; src: url(/static/route159-regular.woff2) format("woff2"); }
 
