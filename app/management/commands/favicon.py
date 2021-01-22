@@ -1,16 +1,11 @@
-from datetime import datetime, timezone
-
 import feedparser
 import requests
-from dateutil.parser import parse
 from django.core.management.base import BaseCommand
 
 from app.filters import hostname
-from app.helpers import fetch_desc, fetch_fb, get_url
-from app.models import Article
+from app.helpers import get_url
 from project.settings import FEEDS
 import favicon
-from collections import defaultdict
 
 
 class Command(BaseCommand):
