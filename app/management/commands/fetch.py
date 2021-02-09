@@ -14,6 +14,9 @@ from project.settings import FEEDS
 class Command(BaseCommand):
     help = "Fetch articles from feeds."
     cores = 4
+    ignored = [
+        "https://kottke.org/quick-links"
+    ]
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -36,7 +39,7 @@ class Command(BaseCommand):
                 entry.link = origlink if origlink else entry.link
                 url = get_url(entry.link)
                 published = parse(entry.published).timestamp()
-                if self.now > published > self.now - 48 * 3600:
+                if self.now > published > self.now - 48 * 3600 and url not in self.ignored:
                     article, is_created = Article.objects.get_or_create(
                         url=url,
                         title=entry.title,
