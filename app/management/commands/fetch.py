@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import feedparser
 import requests
 from app.filters import hostname
-from app.helpers import fetch_fb, get_url, fetch_content
+from app.helpers import fetch_content, fetch_fb, get_url
 from app.models import Article
 from dateutil.parser import parse
 from django.core.management.base import BaseCommand

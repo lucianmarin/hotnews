@@ -1,6 +1,6 @@
 import gzip
-from datetime import datetime, timedelta
 from collections import defaultdict
+from datetime import datetime, timedelta
 
 from dateutil.parser import parse
 from django.core.management.base import BaseCommand
@@ -32,4 +32,3 @@ class Command(BaseCommand):
         ips = self.grab_ips()
         for key, item in ips.items():
             print(parse(key).strftime('%Y-%m-%d'), len(item))
-        # print(ips, 'readers')

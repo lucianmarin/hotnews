@@ -14,7 +14,7 @@ TEMPLATES = []
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'newscafe',
+        'NAME': 'unfeeder',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '',

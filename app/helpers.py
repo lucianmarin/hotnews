@@ -1,8 +1,10 @@
-import requests
 import urllib
+
+import requests
 from bs4 import BeautifulSoup
-from app.filters import hostname
 from project.settings import HEADERS, TOKEN
+
+from app.filters import hostname
 
 
 def get_url(link):
@@ -32,7 +34,7 @@ def get_paragraphs(soup):
                 child.unwrap()
         for child in candidate.children:
             if child.name in allowed:
-                text = " ".join([t for t in child.text.split()])
+                text = " ".join([t.strip() for t in child.text.split()])
                 text = text.encode('latin-1', 'ignore').decode('latin-1')
                 if text:
                     if child.name in ["p", "pre", "li"]:
@@ -76,7 +78,7 @@ def fetch_content(link):
     if not description and paragraphs:
         p = paragraphs[0]
         description = p[8:-9] if p.startswith('<strong>') else p
-    description = " ".join([d for d in description.split()])
+    description = " ".join([d.strip() for d in description.split()])
     description = description.encode('latin-1', 'ignore').decode('latin-1')
     if not paragraphs:
         paragraphs = [description]
