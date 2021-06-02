@@ -1,7 +1,3 @@
-*
-    margin: 0
-    padding: 0
-
 html
     --col: 390px
     --read: 510px
@@ -18,8 +14,6 @@ html
     --darkgray: #404040
     --almostblack: #202020
     --black: #000
-    -ms-text-size-adjust: 100%
-    -webkit-text-size-adjust: 100%
 
 @media (prefers-color-scheme: dark)
     html
@@ -31,6 +25,10 @@ html
         --darkgray: #c0c0c0
         --almostblack: #e0e0e0
         --black: #fff
+
+*
+    margin: 0
+    padding: 0
 
 body
     background-color: var(--gray)
@@ -101,7 +99,6 @@ h2
         text-overflow: ellipsis
         white-space: nowrap
     .summary
-        color: var(--gray)
         cursor: text
     .title
         a
@@ -189,10 +186,10 @@ h2
     font-family: "Route 159"
     font-style: normal
     font-weight: normal
-    src: url(/static/route159-regular.woff2) format("woff2")
+    src: url(/static/r159regular.woff2) format("woff2")
 
 @font-face
     font-family: "Route 159"
     font-style: normal
     font-weight: bold
-    src: url(/static/route159-bold.woff2) format("woff2")
+    src: url(/static/r159bold.woff2) format("woff2")
