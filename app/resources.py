@@ -53,7 +53,7 @@ class MainResource:
         template = env.get_template('pages/main.html')
         resp.body = template.render(
             breaking=breaking[:limit], current=current[:limit],
-            is_mobile=self.is_mobile(req),
+            is_mobile=False,
             articles=articles, sites=sites, view='main'
         )
 

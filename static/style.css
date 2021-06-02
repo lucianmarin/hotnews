@@ -40,7 +40,7 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .column .small { font-size: var(--small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.column .summary { cursor: text; }
+.column .summary { color: var(--gray); cursor: text; }
 
 .column .title a { color: var(--black); }
 
