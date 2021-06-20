@@ -2,16 +2,14 @@
     <a href="{{ article.url }}">
         {{ article.domain | sitename }}
     </a>
-    <b>&nbsp;</b>
     {% if view == 'read' %}
         <a class="done" onclick="listen(event)">listen</a>
-        <b>&nbsp;</b>
-    {% endif %}
-    {% if article.score %}
-        <b class="done">+{{ article.reach }}</b>
-        <b>&nbsp;</b>
     {% endif %}
     <a class="done" href="/{{ article.base }}" rel="nofollow">
-        {{ article.pub | shortdate }} ago
+        {% if article.score %}
+            +{{ article.reach }}
+        {% else %}
+            {{ article.pub | shortdate }}
+        {% endif %}
     </a>
 </div>
