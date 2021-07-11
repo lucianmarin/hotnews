@@ -7,9 +7,9 @@
     {% endif %}
     <a class="done" href="/{{ article.base }}" rel="nofollow">
         {% if article.score %}
-            +{{ article.reach }}
+            {{ article.reach }} reach
         {% else %}
-            {{ article.pub | shortdate }}
+            {{ article.pub | shortdate }} ago
         {% endif %}
     </a>
 </div>

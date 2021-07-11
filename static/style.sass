@@ -94,10 +94,17 @@ h2
         &:last-child
             border: 0 none
     .small
+        color: var(--silver)
         font-size: var(--small)
         overflow: hidden
         text-overflow: ellipsis
         white-space: nowrap
+        a
+            float: left
+            color: var(--gray)
+            margin-right: 10px
+        .done
+            color: var(--silver)
     .summary
         color: var(--gray)
         cursor: text
@@ -106,13 +113,6 @@ h2
             color: var(--black)
             &:visited
                 color: var(--darkgray)
-    .small
-        color: var(--silver)
-        a
-            color: var(--gray)
-        .done
-            color: var(--silver)
-            float: right
 
 .read
     display: grid
