@@ -42,13 +42,6 @@ class Article(models.Model):
         return base36 or alphabet[0]
 
     @property
-    def icon(self):
-        if self.domain in ['axios.com', 'qz.com', 'vox.com']:
-            return "/icons/{0}.jpg".format(self.domain)
-        else:
-            return "/static/192.png"
-
-    @property
     def reach(self):
         rounded = round(self.score / 3000)
         if rounded:
