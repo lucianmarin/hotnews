@@ -47,7 +47,7 @@ class MainResource:
         sites = Article.objects.distinct('domain').count()
         limit = sites // 2
 
-        breaking = Article.objects.filter(id__in=self.ids('-score')).order_by('-score', 'pub')
+        breaking = Article.objects.filter(id__in=self.ids('pub')).order_by('pub')
         current = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
 
         template = env.get_template('pages/main.html')
