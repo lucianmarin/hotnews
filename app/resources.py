@@ -1,6 +1,6 @@
 from falcon import status_codes
 from falcon.errors import HTTPNotFound
-from falcon.redirects import HTTPFound
+from user_agents import parse
 
 from app.jinja import env
 from app.models import Article
@@ -58,8 +58,9 @@ class ReadResource:
             raise HTTPNotFound()
         article = articles[0]
         ip = req.access_route[0]
+        agent = parse(req.user_agent)
 
-        if ip:
+        if ip and not agent.is_bot:
             article.ips += [ip]
             article.ips = list(set(article.ips))
             article.score = len(article.ips)
