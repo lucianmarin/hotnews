@@ -1,11 +1,12 @@
 from falcon import status_codes
 from falcon.errors import HTTPNotFound
+from falcon.redirects import HTTPFound
 
 from app.jinja import env
 from app.models import Article
 
 
-class StaticResource(object):
+class StaticResource:
     binary = ['png', 'jpg', 'woff', 'woff2']
     mime_types = {
         'js': "application/javascript",
@@ -59,6 +60,21 @@ class ReadResource:
         resp.body = template.render(
             article=articles[0], view='read'
         )
+
+
+class PlusResource:
+    def on_get(self, req, resp, base):
+        articles = Article.objects.filter(id=int(base, 36))
+        if not articles:
+            raise HTTPNotFound()
+        article = articles[0]
+
+        print(req.remote_addr)
+        article.pluses += [req.remote_addr]
+        article.pluses = list(set(article.pluses))
+        article.save(update_fields=['pluses'])
+
+        raise HTTPFound(f'/read/{base}')
 
 
 class AboutResource:

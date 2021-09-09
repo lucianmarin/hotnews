@@ -5,11 +5,12 @@
     {% if view == 'read' %}
         <a class="done" onclick="listen(event)">listen</a>
     {% endif %}
-    <a class="done" href="/{{ article.base }}" rel="nofollow">
+    <a class="done" href="/read/{{ article.base }}" rel="nofollow">
         {% if article.score %}
             {{ article.reach }} reach
         {% else %}
             {{ article.pub | shortdate }} ago
         {% endif %}
     </a>
+    <a class="{% if ip not in article.pluses %}done{% endif %}" href="/plus/{{ article.base }}">+{% if article.pluses %}{{ article.pluses | length }}{% endif %}</a>
 </div>
