@@ -39,6 +39,7 @@ class MainResource:
         articles = Article.objects.count()
         sites = Article.objects.distinct('domain').count()
         limit = sites // 2
+        ip = req.remote_addr
 
         breaking = Article.objects.filter(id__in=self.ids('pub')).order_by('pub')
         current = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
@@ -46,7 +47,7 @@ class MainResource:
         template = env.get_template('pages/main.html')
         resp.body = template.render(
             breaking=breaking[:limit], current=current[:limit],
-            articles=articles, sites=sites, view='main'
+            articles=articles, sites=sites, ip=ip, view='main'
         )
 
 
@@ -55,10 +56,12 @@ class ReadResource:
         articles = Article.objects.filter(id=int(base, 36))
         if not articles:
             raise HTTPNotFound()
+        article = articles[0]
+        ip = req.remote_addr
 
         template = env.get_template('pages/read.html')
         resp.body = template.render(
-            article=articles[0], view='read'
+            article=article, ip=ip, view='read'
         )
 
 
@@ -69,7 +72,6 @@ class PlusResource:
             raise HTTPNotFound()
         article = articles[0]
 
-        print(req.remote_addr)
         article.pluses += [req.remote_addr]
         article.pluses = list(set(article.pluses))
         article.save(update_fields=['pluses'])
