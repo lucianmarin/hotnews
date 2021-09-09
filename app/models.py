@@ -31,7 +31,7 @@ class Article(models.Model):
     shares = models.IntegerField(default=0)
     score = models.IntegerField(default=0, db_index=True)
     paragraphs = fields.ArrayField(models.TextField(), default=list)
-    pluses = fields.ArrayField(models.TextField(), default=list)
+    ips = fields.ArrayField(models.TextField(), default=list)
 
     @property
     def base(self):

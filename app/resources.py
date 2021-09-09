@@ -59,27 +59,16 @@ class ReadResource:
         article = articles[0]
         ip = req.access_route[0]
 
+        if ip:
+            article.ips += [ip]
+            article.ips = list(set(article.ips))
+            article.score = len(article.ips)
+            article.save(update_fields=['ips', 'score'])
+
         template = env.get_template('pages/read.html')
         resp.body = template.render(
             article=article, ip=ip, view='read'
         )
-
-
-class PlusResource:
-    def on_get(self, req, resp, base):
-        articles = Article.objects.filter(id=int(base, 36))
-        if not articles:
-            raise HTTPNotFound()
-        article = articles[0]
-        ip = req.access_route[0]
-
-        if ip:
-            article.pluses += [ip]
-            article.pluses = list(set(article.pluses))
-            article.score = len(article.pluses)
-            article.save(update_fields=['pluses', 'score'])
-
-        raise HTTPFound(f'/read/{base}')
 
 
 class AboutResource:

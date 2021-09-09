@@ -12,8 +12,7 @@ app.req_options.strip_url_path_trailing_slash = True
 app.resp_options.secure_cookies_by_default = not DEBUG
 
 app.add_route('/', resources.MainResource())
-app.add_route('/read/{base}', resources.ReadResource())
-app.add_route('/plus/{base}', resources.PlusResource())
+app.add_route('/{base}', resources.ReadResource())
 
 
 if DEBUG:
