@@ -57,7 +57,7 @@ class ReadResource:
         if not articles:
             raise HTTPNotFound()
         article = articles[0]
-        ip = req.remote_addr
+        ip = req.access_route[0]
 
         template = env.get_template('pages/read.html')
         resp.body = template.render(
@@ -71,11 +71,13 @@ class PlusResource:
         if not articles:
             raise HTTPNotFound()
         article = articles[0]
+        ip = req.access_route[0]
 
-        article.pluses += [req.remote_addr]
-        article.pluses = list(set(article.pluses))
-        article.score = len(article.pluses)
-        article.save(update_fields=['pluses', 'score'])
+        if ip:
+            article.pluses += [ip]
+            article.pluses = list(set(article.pluses))
+            article.score = len(article.pluses)
+            article.save(update_fields=['pluses', 'score'])
 
         raise HTTPFound(f'/read/{base}')
 
