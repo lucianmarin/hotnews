@@ -8,7 +8,9 @@
     <a class="done" href="/read/{{ article.base }}" rel="nofollow">
         {{ article.pub | shortdate }} ago
     </a>
-    <a class="{% if ip not in article.ips %}done{% endif %}" href="/read/{{ article.base }}" rel="nofollow">
-        +{% if article.score %}{{ article.score }}{% endif %}
-    </a>
+    {% if article.score %}
+        <a class="done" href="/read/{{ article.base }}" rel="nofollow">
+            +{{ article.score }}
+        </a>
+    {% endif %}
 </div>
