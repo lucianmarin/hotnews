@@ -39,7 +39,7 @@ class MainResource:
         articles = Article.objects.count()
         sites = Article.objects.distinct('domain').count()
         limit = sites // 2
-        ip = req.remote_addr
+        ip = req.access_route[0]
 
         breaking = Article.objects.filter(id__in=self.ids('-score', 'pub')).order_by('-score', 'pub')
         current = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
