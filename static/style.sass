@@ -1,7 +1,6 @@
 html
     --col: 390px
     --read: 510px
-    --super: 8px
     --small: 13px
     --regular: 14px
     --big: 20px
@@ -51,6 +50,7 @@ b, i
 
 sup
     line-height: 0
+    margin-left: 1px
 
 h3
     font-size: var(--regular)
@@ -113,8 +113,7 @@ h2
         .done
             color: var(--silver)
         sup
-            font-size: var(--super)
-            margin-left: 1px
+            font-size: 8px
     .summary
         color: var(--gray)
         cursor: text
@@ -131,17 +130,19 @@ h2
 .pane.left
     background-color: var(--whitesmoke)
     .small
-        position: sticky
+        left: 0
         padding: 15px
+        position: sticky
+        top: 0
         transform: rotate(180deg)
         writing-mode: vertical-lr
-        top: 0
-        left: 0
-    .small a
-        color: var(--gray)
-        margin-top: 10px
-    .small .done
-        color: var(--silver)
+        a
+            color: var(--gray)
+            margin-top: 10px
+        .done
+            color: var(--silver)
+        sup
+            font-size: 9px
 
 .pane.right
     background-color: var(--white)
