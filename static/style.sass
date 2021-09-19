@@ -1,6 +1,7 @@
 html
     --col: 390px
     --read: 510px
+    --super: 8px
     --small: 13px
     --regular: 14px
     --big: 20px
@@ -47,6 +48,9 @@ a
 b, i
     font-style: normal
     font-weight: normal
+
+sup
+    line-height: 0
 
 h3
     font-size: var(--regular)
@@ -108,6 +112,9 @@ h2
             margin-right: 10px
         .done
             color: var(--silver)
+        sup
+            font-size: var(--super)
+            margin-left: 1px
     .summary
         color: var(--gray)
         cursor: text
