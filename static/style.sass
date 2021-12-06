@@ -1,5 +1,5 @@
 html
-    --col: 390px
+    --col: 355px
     --read: 510px
     --small: 13px
     --regular: 14px
@@ -76,13 +76,13 @@ h2
 
 .column.left
     background-color: var(--whitesmoke)
-    padding-right: 15px
+    padding-right: 10px
     .entry
         border-bottom: var(--gainsboro) 1px solid
 
 .column.right
     background-color: var(--white)
-    padding-left: 15px
+    padding-left: 10px
     .entry
         border-bottom: var(--whitesmoke) 1px solid
 
@@ -169,23 +169,22 @@ h2
             background-color: var(--hl)
             text-decoration: none
 
-@media (max-width: 810px)
+@media (max-width: 720px)
     .main
         grid-template-columns: 0 50% 50% 0
         .column.left, .column.right
-            padding: 0 15px
+            padding: 0 10px
+
+@media (max-width: 560px)
     .read
         grid-template-columns: 0 40px calc(100% - 40px) 0
         .pane.left
             .small
-                padding: 15px 10px
+                padding: 10px
         .pane.right
-            padding: 0 4%
+            padding: 0 10px
 
 @media (max-width: 480px)
-    .main
-        .column.left, .column.right
-            padding: 0 10px
     .entry
         .title, .summary
             margin-right: -5px
