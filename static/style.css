@@ -26,11 +26,11 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .column.left { background-color: var(--whitesmoke); padding: 0 10px; }
 
-.column.left .entry { border-bottom: var(--gainsboro) 0.5px solid; }
+.column.left .entry { border-bottom: var(--gainsboro) 1px solid; }
 
 .column.right { background-color: var(--white); padding: 0 10px; }
 
-.column.right .entry { border-bottom: var(--whitesmoke) 0.5px solid; }
+.column.right .entry { border-bottom: var(--whitesmoke) 1px solid; }
 
 .column h3 { padding-top: 15px; }
 
@@ -40,7 +40,7 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .column h2 a { color: var(--black); }
 
-.column .entry { margin-bottom: 9.75px; padding-bottom: 9.75px; }
+.column .entry { margin-bottom: 9.5px; padding-bottom: 9.5px; }
 
 .column .small { color: var(--silver); font-size: var(--small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
