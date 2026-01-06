@@ -12,6 +12,7 @@ flake8-tidy-imports
 flake8-unused-arguments
 lxml
 pep8-naming
+psycopg2-binary
 python-dateutil
 requests
 tldextract

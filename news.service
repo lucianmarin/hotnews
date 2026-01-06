@@ -19,3 +19,5 @@ WantedBy=default.target
 # sudo cp news.service /etc/systemd/system/news.service
 # sudo systemctl daemon-reload
 # sudo systemctl restart news.service
+# start on boot
+# sudo systemctl enable news.service
