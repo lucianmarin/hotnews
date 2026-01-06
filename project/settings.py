@@ -1,20 +1,16 @@
-try:
-    from project.local import DEBUG
-except Exception as e:
-    print(e)
-    DEBUG = False
+from project.local import DEBUG
 
 SECRET_KEY = '4^suh^yp2@jm!a!8snts8wb(y2kx4v482km5mnc^+topkpc*!p'
 
 ALLOWED_HOSTS = []
-INSTALLED_APPS = ['app', 'django_extensions']
+INSTALLED_APPS = ['app', 'django_extensions', 'django.contrib.postgres']
 MIDDLEWARE = []
 TEMPLATES = []
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'unfeeder',
+        'NAME': 'news',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '',

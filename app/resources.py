@@ -27,7 +27,7 @@ class StaticResource:
         resp.content_type = self.mime_types[ext]
         resp.cache_control = ["max-age=3600000"]
         with open(f'static/{filename}', mode) as f:
-            resp.body = f.read()
+            resp.text = f.read()
 
 
 class MainResource:
@@ -46,7 +46,7 @@ class MainResource:
         current = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
 
         template = env.get_template('pages/main.html')
-        resp.body = template.render(
+        resp.text = template.render(
             breaking=breaking[:limit], current=current[:limit],
             articles=articles, sites=sites, ip=ip, view='main'
         )
@@ -80,7 +80,7 @@ class ReadResource:
             article.increment(ip)
 
         template = env.get_template('pages/read.html')
-        resp.body = template.render(
+        resp.text = template.render(
             article=article, ip=ip, view='read'
         )
 
@@ -90,6 +90,6 @@ class AboutResource:
         count = Article.objects.count()
         sites = Article.objects.order_by('domain').distinct('domain').values_list('domain', flat=True)
         template = env.get_template('pages/about.html')
-        resp.body = template.render(
+        resp.text = template.render(
             sites=sites, count=count, view='about'
         )

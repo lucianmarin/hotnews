@@ -26,6 +26,7 @@ class Command(BaseCommand):
         r = requests.get(feed)
         print(feed)
         entries = feedparser.parse(r.text).entries
+        print(len(entries), "entries found")
         for entry in entries:
             try:
                 origlink = entry.get('feedburner_origlink')
@@ -40,6 +41,7 @@ class Command(BaseCommand):
                         pub=published,
                         author=getattr(entry, 'author', '')
                     )
+                    print(is_created, article.url)
             except Exception as e:
                 print(e)
 

@@ -6,9 +6,7 @@ from project.settings import DEBUG
 
 app = App(media_type=MEDIA_HTML)
 
-app.req_options.auto_parse_form_urlencoded = True
 app.req_options.strip_url_path_trailing_slash = True
-
 app.resp_options.secure_cookies_by_default = not DEBUG
 
 app.add_route('/', resources.MainResource())
