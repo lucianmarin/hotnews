@@ -5,20 +5,18 @@
     <meta charset="utf-8">
     <meta name="referrer" content="always">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <meta name="description" content="Curated daily breaking news ranked by Facebook.">
+    <meta name="description" content="Daily news aggregator and reader.">
     <meta name="author" content="Lucian Marin">
     {% if view == 'read' %}<meta name="robots" content="noindex">{% endif %}
     <link rel="apple-touch-icon" type="image/png" href="/static/192.png">
     <link rel="icon" sizes="192x192" type="image/png" href="/static/192.png">
     <link rel="manifest" type="application/json" href="/static/manifest.json">
-    <link rel="stylesheet" type="text/css" href="/static/style.css?v={{v}}">
-    <script type="text/javascript" src="/static/script.js?v={{v}}" async defer></script>
+    <link rel="stylesheet" type="text/css" href="/static/style.css?v={{ v }}">
+    <script type="text/javascript" src="/static/script.js?v={{ v }}" async defer></script>
 </head>
 <body>
-    <div class="{{ view }}">
-        <div class="side left"></div>
+    <div class="main">
         {% block main %}{% endblock %}
-        <div class="side right"></div>
     </div>
 </body>
 </html>

@@ -4,7 +4,7 @@ html { --col: 360px; --read: 500px; --small: 13px; --regular: 14px; --big: 20px;
 
 * { margin: 0; padding: 0; }
 
-body { background-color: var(--gainsboro); color: var(--black); cursor: default; font-family: "Route 159", sans-serif; font-size: var(--regular); line-height: 20px; }
+body { background-color: var(--white); color: var(--black); cursor: default; font-family: "Route 159", sans-serif; font-size: var(--regular); line-height: 20px; }
 
 a { color: var(--black); cursor: pointer; text-decoration: none; transition: color var(--d); }
 
@@ -16,83 +16,43 @@ h3 { font-size: var(--regular); font-weight: normal; line-height: 15px; }
 
 h2 { font-size: var(--big); line-height: 25px; }
 
-.main { display: grid; grid-template-columns: calc(50% - var(--col)) var(--col) var(--col) calc(50% - var(--col)); }
+.main { margin: 0 auto; max-width: 480px; }
 
-.left, .right { min-height: 100vh; }
+.main h3 { padding-left: 15px; padding-top: 15px; }
 
-.side.left { background-color: var(--whitesmoke); }
+.main h3 a { color: var(--gray); }
 
-.side.right { background-color: var(--white); }
+.main h2 { padding-left: 15px; padding-bottom: 15px; }
 
-.column.left { background-color: var(--whitesmoke); }
+.main h2 a { color: var(--silver); }
 
-.column.left .entry { border-bottom: var(--gainsboro) 1px solid; }
+.main h2 a.active { color: var(--black); }
 
-.column.right { background-color: var(--white); }
+.main .entry { border-bottom: var(--whitesmoke) 1px solid; margin-bottom: 10px; padding-bottom: 10px; }
 
-.column.right .entry { border-bottom: var(--whitesmoke) 1px solid; }
+.main .entry:last-child { border-bottom: 0 none; margin-bottom: 10px; padding-bottom: 10px; }
 
-.column h3 { padding-left: 10px; padding-top: 15px; }
+.main .small { color: var(--silver); font-size: var(--small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.column h3 a { color: var(--gray); }
+.main .small a { color: var(--gray); }
 
-.column h2 { padding-left: 10px; padding-bottom: 15px; }
+.main .small .done { color: var(--silver); }
 
-.column h2 a { color: var(--black); }
+.main .small sup { font-size: 8px; }
 
-.column .entry { margin-bottom: 9.5px; padding-bottom: 9.5px; }
+.main .summary { color: var(--gray); cursor: text; }
 
-.column .entry:last-child { border-bottom: 0 none; margin-bottom: 10px; padding-bottom: 10px; }
+.main .title a { color: var(--black); }
 
-.column .small { color: var(--silver); font-size: var(--small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.main .title a:visited { color: var(--darkgray); }
 
-.column .small a { color: var(--gray); }
+.main .title, .main .summary, .main .small { padding: 0 15px; }
 
-.column .small .done { color: var(--silver); }
+.main .text { color: var(--black); cursor: text; padding-bottom: 15px; }
 
-.column .small sup { font-size: 8px; }
+.main .text p { padding: 5px 15px; }
 
-.column .summary { color: var(--gray); cursor: text; }
-
-.column .title a { color: var(--black); }
-
-.column .title a:visited { color: var(--darkgray); }
-
-.column .title, .column .summary, .column .small { padding-left: 10px; }
-
-.read { display: grid; grid-template-columns: calc(50% - var(--read) / 2 - 20px) 40px var(--read) calc(50% - var(--read) / 2 - 20px); }
-
-.pane.left { background-color: var(--whitesmoke); padding: 15px 10px; }
-
-.pane.left .small { left: 0; position: sticky; top: 15px; transform: rotate(180deg); writing-mode: vertical-lr; }
-
-.pane.left .small a { color: var(--gray); margin-top: 10px; }
-
-.pane.left .small .done { color: var(--silver); }
-
-.pane.left .small sup { font-size: 9px; }
-
-.pane.right { background-color: var(--white); padding: 0 10px; }
-
-.pane.right h3 { padding-top: 15px; }
-
-.pane.right h3 a { color: var(--gray); }
-
-.pane.right h2 { padding-bottom: 10px; }
-
-.pane.right h2 a { color: var(--black); }
-
-.pane.right .text { color: var(--black); cursor: text; padding-bottom: 15px; }
-
-.pane.right .text p { padding: 5px 0; }
-
-.pane.right .text u { background-color: var(--hl); text-decoration: none; }
-
-@media (max-width: 720px) { .main { grid-template-columns: 0 50% 50% 0; } }
-
-@media (max-width: 540px) { .read { grid-template-columns: 0 40px calc(100% - 40px) 0; } }
-
-@media (max-width: 480px) { .summary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
+.main .text u { background-color: var(--hl); text-decoration: none; }
 
 @font-face { font-family: "Route 159"; font-style: normal; font-weight: normal; src: url(/static/route159/regular.woff2) format("woff2"); }
 

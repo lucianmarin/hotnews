@@ -1,18 +1,14 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <div class="pane left">
-        {% include 'common/small.html' %}
-    </div>
-    <div class="pane right">
-        <h3><a href="/">{{ brand }}</a></h3>
-        <h2>
-            <a href="/link/{{ article.base }}">{{ article.title }}</a>
-        </h2>
-        <div id="article" class="text">
-            {% for paragraph in article.paragraphs %}
-                <p>{{ paragraph }}</p>
-            {% endfor %}
-        </div>
+    <h3><a href="/">{{ brand }}</a></h3>
+    <h2>
+        <a class="active" href="/link/{{ entry.base }}">{{ entry.title }}</a>
+    </h2>
+    {% include 'common/small.html' %}
+    <div id="article" class="text">
+        {% for paragraph in entry.paragraphs %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
     </div>
 {% endblock %}

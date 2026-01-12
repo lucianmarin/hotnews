@@ -31,7 +31,7 @@ html
     padding: 0
 
 body
-    background-color: var(--gainsboro)
+    background-color: var(--white)
     color: var(--black)
     cursor: default
     font-family: "Route 159", sans-serif
@@ -62,42 +62,24 @@ h2
     line-height: 25px
 
 .main
-    display: grid
-    grid-template-columns: calc(50% - var(--col)) var(--col) var(--col) calc(50% - var(--col))
-
-.left, .right
-    min-height: 100vh
-
-.side.left
-    background-color: var(--whitesmoke)
-
-.side.right
-    background-color: var(--white)
-
-.column.left
-    background-color: var(--whitesmoke)
-    .entry
-        border-bottom: var(--gainsboro) 1px solid
-
-.column.right
-    background-color: var(--white)
-    .entry
-        border-bottom: var(--whitesmoke) 1px solid
-
-.column
+    margin: 0 auto
+    max-width: 480px
     h3
-        padding-left: 10px
+        padding-left: 15px
         padding-top: 15px
         a
             color: var(--gray)
     h2
-        padding-left: 10px
+        padding-left: 15px
         padding-bottom: 15px
         a
-            color: var(--black)
+            color: var(--silver)
+            &.active
+                color: var(--black)
     .entry
-        margin-bottom: 9.5px
-        padding-bottom: 9.5px
+        border-bottom: var(--whitesmoke) 1px solid
+        margin-bottom: 10px
+        padding-bottom: 10px
         &:last-child
             border-bottom: 0 none
             margin-bottom: 10px
@@ -123,63 +105,16 @@ h2
             &:visited
                 color: var(--darkgray)
     .title, .summary, .small
-        padding-left: 10px
-
-.read
-    display: grid
-    grid-template-columns: calc(50% - var(--read) / 2 - 20px) 40px var(--read) calc(50% - var(--read) / 2 - 20px)
-
-.pane.left
-    background-color: var(--whitesmoke)
-    padding: 15px 10px
-    .small
-        left: 0
-        position: sticky
-        top: 15px
-        transform: rotate(180deg)
-        writing-mode: vertical-lr
-        a
-            color: var(--gray)
-            margin-top: 10px
-        .done
-            color: var(--silver)
-        sup
-            font-size: 9px
-
-.pane.right
-    background-color: var(--white)
-    padding: 0 10px
-    h3
-        padding-top: 15px
-        a
-            color: var(--gray)
-    h2
-        padding-bottom: 10px
-        a
-            color: var(--black)
+        padding: 0 15px
     .text
         color: var(--black)
         cursor: text
         padding-bottom: 15px
         p
-            padding: 5px 0
+            padding: 5px 15px
         u
             background-color: var(--hl)
             text-decoration: none
-
-@media (max-width: 720px)
-    .main
-        grid-template-columns: 0 50% 50% 0
-
-@media (max-width: 540px)
-    .read
-        grid-template-columns: 0 40px calc(100% - 40px) 0
-
-@media (max-width: 480px)
-    .summary
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
 
 @font-face
     font-family: "Route 159"

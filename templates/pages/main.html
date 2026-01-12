@@ -1,38 +1,22 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <div class="column left">
-        <h3><a href="/">{{ brand }}</a></h3>
-        <h2><a href="/">Breaking</a></h2>
-        {% for article in breaking %}
-            {% include 'common/entry.html' %}
-        {% else %}
-            <div class="entry">
-                <div class="summary">Fetching articles...</div>
-            </div>
-        {% endfor %}
+    <h3><a href="/">{{ brand }}</a></h3>
+    <h2>
+        <a class="{% if view == 'breaking' %}active{% endif %}" href="/">Breaking</a>
+        <a class="{% if view == 'current' %}active{% endif %}" href="/current">Current</a>
+    </h2>
+    {% for entry in entries %}
+        {% include 'common/entry.html' %}
+    {% else %}
         <div class="entry">
-            <div class="small">
-                <a href="https://lucianmarin.com/">lucianmarin</a>
-                <a class="done" href="/">{{ articles }} articles</a>
-            </div>
+            <div class="summary">Fetching articles...</div>
         </div>
-    </div>
-    <div class="column right">
-        <h3>&nbsp;</h3>
-        <h2><a href="/">Current</a></h2>
-        {% for article in current %}
-            {% include 'common/entry.html' %}
-        {% else %}
-            <div class="entry">
-                <div class="summary">Fetching articles...</div>
-            </div>
-        {% endfor %}
-        <div class="entry">
-            <div class="small">
-                <a href="https://subreply.com/">subreply</a>
-                <a class="done" href="/">{{ sites }} websites</a>
-            </div>
+    {% endfor %}
+    <div class="entry">
+        <div class="small">
+            <a class="done" href="/">{{ sites }} websites</a>
+            <a class="done" href="/">{{ articles }} articles</a>
         </div>
     </div>
 {% endblock %}

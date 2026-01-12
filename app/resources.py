@@ -30,7 +30,7 @@ class StaticResource:
             resp.text = f.read()
 
 
-class MainResource:
+class BreakingResource:
     def ids(self, *args):
         return Article.objects.order_by(
             'domain', *args
@@ -42,13 +42,33 @@ class MainResource:
         limit = sites // 2
         ip = req.access_route[0]
 
-        breaking = Article.objects.filter(id__in=self.ids('-score', 'pub')).order_by('-score', 'pub')
-        current = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
+        entries = Article.objects.filter(id__in=self.ids('-score', 'pub')).order_by('-score', 'pub')
 
         template = env.get_template('pages/main.html')
         resp.text = template.render(
-            breaking=breaking[:limit], current=current[:limit],
-            articles=articles, sites=sites, ip=ip, view='main'
+            entries=entries[:limit],
+            articles=articles, sites=sites, ip=ip, view='breaking'
+        )
+
+
+class CurrentResource:
+    def ids(self, *args):
+        return Article.objects.order_by(
+            'domain', *args
+        ).distinct('domain').values('id')
+
+    def on_get(self, req, resp):
+        articles = Article.objects.count()
+        sites = Article.objects.distinct('domain').count()
+        limit = sites // 2
+        ip = req.access_route[0]
+
+        entries = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
+
+        template = env.get_template('pages/main.html')
+        resp.text = template.render(
+            entries=entries[:limit],
+            articles=articles, sites=sites, ip=ip, view='current'
         )
 
 
@@ -69,19 +89,18 @@ class LinkResource:
 
 class ReadResource:
     def on_get(self, req, resp, base):
-        articles = Article.objects.filter(id=int(base, 36))
-        if not articles:
+        entry = Article.objects.filter(id=int(base, 36)).first()
+        if not entry:
             raise HTTPNotFound()
-        article = articles[0]
         ip = req.access_route[0]
         agent = parse(req.user_agent)
 
         if ip and not agent.is_bot:
-            article.increment(ip)
+            entry.increment(ip)
 
         template = env.get_template('pages/read.html')
         resp.text = template.render(
-            article=article, ip=ip, view='read'
+            entry=entry, ip=ip, view='read'
         )
 
 
