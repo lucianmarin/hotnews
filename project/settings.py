@@ -41,7 +41,7 @@ FEEDS = [
     # "http://feeds.reuters.com/reuters/technologyNews",
     "http://feeds.hbr.org/harvardbusiness/",
     "http://feeds.macrumors.com/macrumors-front",
-    "http://feeds.crackberry.com/crackberry/qbtb",
+    "https://crackberry.com/rss.xml",
     "http://feeds.imore.com/theiphoneblog",
     "http://feeds.androidcentral.com/androidcentral",
     "http://feeds.windowscentral.com/wmexperts",

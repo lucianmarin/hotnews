@@ -3,7 +3,7 @@ __pycache__
 .pytest_cache
 .ruff_cache
 
-db.json
+data/articles.json
 local.py
 
 news.pid

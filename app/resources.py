@@ -4,7 +4,7 @@ from falcon.redirects import HTTPFound
 from user_agents import parse
 
 from app.jinja import env
-from app.models import Article
+from app.helpers import load_articles, save_articles
 
 
 class StaticResource:
@@ -31,72 +31,118 @@ class StaticResource:
 
 
 class BreakingResource:
-    def ids(self, *args):
-        return Article.objects.order_by(
-            'domain', *args
-        ).distinct('domain').values('id')
-
     def on_get(self, req, resp):
-        articles = Article.objects.count()
-        sites = Article.objects.distinct('domain').count()
-        limit = sites // 2
+        articles_data = load_articles()
+        articles_list = list(articles_data.values())
+        
+        articles_count = len(articles_list)
+        domains = set(a['domain'] for a in articles_list)
+        sites_count = len(domains)
+        limit = sites_count // 2
         ip = req.access_route[0]
 
-        entries = Article.objects.filter(id__in=self.ids('-score', 'pub')).order_by('-score', 'pub')
+        # Order by domain, -score, pub to mimic distinct(domain) behavior logic
+        # Python sort is stable, so we sort in reverse order of importance:
+        # 1. pub (asc)
+        # 2. score (desc)
+        # 3. domain
+        articles_list.sort(key=lambda x: x['pub'])
+        articles_list.sort(key=lambda x: x['score'], reverse=True)
+        articles_list.sort(key=lambda x: x['domain'])
+        
+        distinct_entries = []
+        seen_domains = set()
+        for a in articles_list:
+            if a['domain'] not in seen_domains:
+                distinct_entries.append(a)
+                seen_domains.add(a['domain'])
+        
+        # Now order by -score, pub
+        distinct_entries.sort(key=lambda x: x['pub'])
+        distinct_entries.sort(key=lambda x: x['score'], reverse=True)
+        
+        entries = distinct_entries[:limit]
 
         template = env.get_template('pages/main.html')
         resp.text = template.render(
-            entries=entries[:limit],
-            articles=articles, sites=sites, ip=ip, view='breaking'
+            entries=entries,
+            articles=articles_count, sites=sites_count, ip=ip, view='breaking'
         )
 
 
 class CurrentResource:
-    def ids(self, *args):
-        return Article.objects.order_by(
-            'domain', *args
-        ).distinct('domain').values('id')
-
     def on_get(self, req, resp):
-        articles = Article.objects.count()
-        sites = Article.objects.distinct('domain').count()
-        limit = sites // 2
+        articles_data = load_articles()
+        articles_list = list(articles_data.values())
+        
+        articles_count = len(articles_list)
+        domains = set(a['domain'] for a in articles_list)
+        sites_count = len(domains)
+        limit = sites_count // 2
         ip = req.access_route[0]
 
-        entries = Article.objects.filter(id__in=self.ids('-pub')).order_by('-pub')
+        # Order by domain, -pub to mimic distinct(domain)
+        # Sort keys in reverse importance:
+        # 1. pub (desc)
+        # 2. domain
+        articles_list.sort(key=lambda x: x['pub'], reverse=True)
+        articles_list.sort(key=lambda x: x['domain'])
+        
+        distinct_entries = []
+        seen_domains = set()
+        for a in articles_list:
+            if a['domain'] not in seen_domains:
+                distinct_entries.append(a)
+                seen_domains.add(a['domain'])
+        
+        # Order by -pub
+        distinct_entries.sort(key=lambda x: x['pub'], reverse=True)
+        
+        entries = distinct_entries[:limit]
 
         template = env.get_template('pages/main.html')
         resp.text = template.render(
-            entries=entries[:limit],
-            articles=articles, sites=sites, ip=ip, view='current'
+            entries=entries,
+            articles=articles_count, sites=sites_count, ip=ip, view='current'
         )
 
 
 class LinkResource:
     def on_get(self, req, resp, base):
-        articles = Article.objects.filter(id=int(base, 36))
-        if not articles:
+        articles = load_articles()
+        article = articles.get(base)
+        
+        if not article:
             raise HTTPNotFound()
-        article = articles[0]
+        
         ip = req.access_route[0]
         agent = parse(req.user_agent)
 
         if ip and not agent.is_bot:
-            article.increment(ip)
+            if ip not in article['ips']:
+                article['ips'].append(ip)
+                article['score'] = len(article['ips'])
+                save_articles(articles)
 
-        raise HTTPFound(article.url)
+        raise HTTPFound(article['url'])
 
 
 class ReadResource:
     def on_get(self, req, resp, base):
-        entry = Article.objects.filter(id=int(base, 36)).first()
+        articles = load_articles()
+        entry = articles.get(base)
+        
         if not entry:
             raise HTTPNotFound()
+            
         ip = req.access_route[0]
         agent = parse(req.user_agent)
 
         if ip and not agent.is_bot:
-            entry.increment(ip)
+            if ip not in entry['ips']:
+                entry['ips'].append(ip)
+                entry['score'] = len(entry['ips'])
+                save_articles(articles)
 
         template = env.get_template('pages/read.html')
         resp.text = template.render(
@@ -106,8 +152,9 @@ class ReadResource:
 
 class AboutResource:
     def on_get(self, req, resp):
-        count = Article.objects.count()
-        sites = Article.objects.order_by('domain').distinct('domain').values_list('domain', flat=True)
+        articles = load_articles()
+        count = len(articles)
+        sites = sorted(list(set(a['domain'] for a in articles.values())))
         template = env.get_template('pages/about.html')
         resp.text = template.render(
             sites=sites, count=count, view='about'

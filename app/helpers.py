@@ -1,10 +1,35 @@
 import urllib
+import json
+import hashlib
+import os
 
 import requests
 from bs4 import BeautifulSoup
 from project.settings import HEADERS
 
 from app.filters import hostname
+
+
+DATA_FILE = 'data/articles.json'
+
+
+def md5(s):
+    return hashlib.md5(s.encode('utf-8')).hexdigest()
+
+
+def load_articles():
+    if not os.path.exists(DATA_FILE):
+        return {}
+    with open(DATA_FILE, 'r') as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_articles(articles):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(articles, f, indent=4)
 
 
 def get_url(link):
@@ -72,8 +97,11 @@ def fetch_content(link):
         description = p[8:-9] if p.startswith('<strong>') else p
     description = " ".join([d.strip() for d in description.split()])
     description = description.encode('latin-1', 'ignore').decode('latin-1')
-    if not paragraphs:
-        paragraphs = [description]
+    if description:
+        if not paragraphs:
+            paragraphs = [description]
+    else:
+        description = "..."
     return description, paragraphs
 
 
