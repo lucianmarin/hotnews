@@ -8,12 +8,13 @@ from app.helpers import fetch_content, get_url
 from app.models import Article
 from dateutil.parser import parse
 from django.core.management.base import BaseCommand
-from project.settings import FEEDS
+from project.settings import FEEDS, HEADERS
 
 
 class Command(BaseCommand):
     help = "Fetch articles from feeds."
-    cores = 8
+    cores = 1
+    hours = 48 * 60 * 60
     ignored = [
         "https://kottke.org/quick-links"
     ]
@@ -23,7 +24,7 @@ class Command(BaseCommand):
         return datetime.now(timezone.utc).timestamp()
 
     def get_entries(self, feed):
-        r = requests.get(feed)
+        r = requests.get(feed, headers=HEADERS)
         print(feed)
         entries = feedparser.parse(r.text).entries
         print(len(entries), "entries found")
@@ -33,7 +34,7 @@ class Command(BaseCommand):
                 entry.link = origlink if origlink else entry.link
                 url = get_url(entry.link)
                 published = parse(entry.published).timestamp()
-                if self.now > published > self.now - 48 * 3600 and url not in self.ignored:
+                if self.now > published > self.now - self.hours and url not in self.ignored:
                     article, is_created = Article.objects.get_or_create(
                         url=url,
                         title=entry.title,
@@ -41,7 +42,8 @@ class Command(BaseCommand):
                         pub=published,
                         author=getattr(entry, 'author', '')
                     )
-                    print(is_created, article.url)
+                    if is_created:
+                        print("Created", article.url)
             except Exception as e:
                 print(e)
 
@@ -50,7 +52,7 @@ class Command(BaseCommand):
             executor.map(self.get_entries, FEEDS)
 
     def cleanup(self):
-        q = Article.objects.filter(pub__lt=self.now - 48 * 3600)
+        q = Article.objects.filter(pub__lt=self.now - self.hours)
         c = q.count()
         q.delete()
         print("Deleted {0} entries".format(c))
@@ -60,7 +62,7 @@ class Command(BaseCommand):
         article.description = description
         article.paragraphs = paragraphs
         article.save(update_fields=['description', 'paragraphs'])
-        print(article.url, len(paragraphs))
+        print("Read", article.url, len(paragraphs))
         print(article.description)
 
     def grab_content(self):

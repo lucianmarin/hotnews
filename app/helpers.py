@@ -72,8 +72,11 @@ def fetch_content(link):
         description = p[8:-9] if p.startswith('<strong>') else p
     description = " ".join([d.strip() for d in description.split()])
     description = description.encode('latin-1', 'ignore').decode('latin-1')
-    if not paragraphs:
-        paragraphs = [description]
+    if description:
+        if not paragraphs:
+            paragraphs = [description]
+    else:
+        description = "..."
     return description, paragraphs
 
 
