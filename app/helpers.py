@@ -2,15 +2,11 @@ import urllib
 import json
 import hashlib
 import os
-
 import requests
 from bs4 import BeautifulSoup
-from project.settings import HEADERS
 
 from app.filters import hostname
-
-
-DATA_FILE = 'data/articles.json'
+from app.settings import DATA_FILE, HEADERS
 
 
 def md5(s):

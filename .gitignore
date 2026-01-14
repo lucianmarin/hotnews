@@ -1,10 +1,11 @@
 .DS_Store
 __pycache__
+
 .pytest_cache
 .ruff_cache
 
 data/articles.json
-local.py
+app/local.py
 
 news.pid
 news.socket

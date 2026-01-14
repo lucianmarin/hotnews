@@ -7,7 +7,7 @@ from dateutil.parser import parse
 
 from app.filters import hostname
 from app.helpers import fetch_content, get_url, load_articles, save_articles, md5
-from project.settings import FEEDS
+from app.settings import FEEDS
 
 
 class ArticleFetcher:

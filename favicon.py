@@ -5,7 +5,7 @@ import favicon
 
 from app.filters import hostname
 from app.helpers import get_url
-from project.settings import FEEDS
+from app.settings import FEEDS
 
 
 class FaviconFetcher:

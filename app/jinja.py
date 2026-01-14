@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemBytecodeCache, FileSystemLoader
 from app.filters import hostname, shortdate, sitename, superscript, truncate
-from project.settings import DEBUG
+from app.local import DEBUG
 
 env = Environment()
 env.bytecode_cache = FileSystemBytecodeCache()

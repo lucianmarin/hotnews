@@ -1,7 +1,6 @@
 bs4
-falcon
+fastapi
 feedparser
-gunicorn
 jinja2
 lxml
 psycopg2-binary
@@ -9,3 +8,4 @@ python-dateutil
 requests
 tldextract
 user-agents
+uvicorn
