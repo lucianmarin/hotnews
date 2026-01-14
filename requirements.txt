@@ -1,6 +1,4 @@
 bs4
-django
-django-extensions
 falcon
 feedparser
 gunicorn
