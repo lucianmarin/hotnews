@@ -28,7 +28,7 @@ class StaticResource:
             resp.text = f.read()
 
 
-class BreakingResource:
+class HotResource:
     def on_get(self, req, resp):
         articles_data = load_articles()
         articles_list = list(articles_data.values())
@@ -63,11 +63,50 @@ class BreakingResource:
         template = env.get_template('pages/main.html')
         resp.text = template.render(
             entries=entries,
-            articles=articles_count, sites=sites_count, view='breaking'
+            articles=articles_count, sites=sites_count, view='hottest'
         )
 
 
-class CurrentResource:
+class ColdResource:
+    def on_get(self, req, resp):
+        articles_data = load_articles()
+        articles_list = list(articles_data.values())
+
+        articles_count = len(articles_list)
+        domains = set(a['domain'] for a in articles_list)
+        sites_count = len(domains)
+        limit = sites_count // 2
+
+        # Order by domain, -score, pub to mimic distinct(domain) behavior logic
+        # Python sort is stable, so we sort in reverse order of importance:
+        # 1. pub (asc)
+        # 2. score (desc)
+        # 3. domain
+        articles_list.sort(key=lambda x: x['pub'])
+        articles_list.sort(key=lambda x: x['score'])
+        articles_list.sort(key=lambda x: x['domain'])
+
+        distinct_entries = []
+        seen_domains = set()
+        for a in articles_list:
+            if a['domain'] not in seen_domains:
+                distinct_entries.append(a)
+                seen_domains.add(a['domain'])
+
+        # Now order by -score, pub
+        distinct_entries.sort(key=lambda x: x['pub'])
+        distinct_entries.sort(key=lambda x: x['score'])
+
+        entries = distinct_entries[:limit]
+
+        template = env.get_template('pages/main.html')
+        resp.text = template.render(
+            entries=entries,
+            articles=articles_count, sites=sites_count, view='coldest'
+        )
+
+
+class NewResource:
     def on_get(self, req, resp):
         articles_data = load_articles()
         articles_list = list(articles_data.values())
@@ -99,7 +138,7 @@ class CurrentResource:
         template = env.get_template('pages/main.html')
         resp.text = template.render(
             entries=entries,
-            articles=articles_count, sites=sites_count, view='current'
+            articles=articles_count, sites=sites_count, view='newest'
         )
 
 

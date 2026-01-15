@@ -3,8 +3,9 @@
 {% block main %}
     <h3><a href="/">{{ brand }}</a></h3>
     <h2>
-        <a class="{% if view == 'breaking' %}active{% endif %}" href="/">Breaking</a>
-        <a class="{% if view == 'current' %}active{% endif %}" href="/current">Current</a>
+        <a class="{% if view == 'hottest' %}active{% endif %}" href="/">Hottest</a>
+        <a class="{% if view == 'coldest' %}active{% endif %}" href="/cold">Coldest</a>
+        <a class="{% if view == 'newest' %}active{% endif %}" href="/new">Newest</a>
     </h2>
     {% for entry in entries %}
         {% include 'common/entry.html' %}

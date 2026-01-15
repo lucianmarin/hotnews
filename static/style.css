@@ -30,7 +30,7 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .main h2 a.active { color: var(--black); }
 
-.main .entry { border-bottom: var(--whitesmoke) 1px solid; margin-bottom: 10px; padding-bottom: 10px; }
+.main .entry { border-bottom: var(--gainsboro) 1px solid; margin-bottom: 10px; padding-bottom: 10px; }
 
 .main .entry:last-child { border-bottom: 0 none; margin-bottom: 10px; padding-bottom: 10px; }
 

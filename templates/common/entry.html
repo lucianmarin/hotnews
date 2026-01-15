@@ -1,11 +1,11 @@
 <div class="entry">
     {% include 'common/small.html' %}
     <h4 class="title">
-        <a href="/link/{{ entry.base }}" rel="nofollow">
+        <a href="{{ entry.url }}" rel="nofollow">
             {{ entry.title }}
         </a>
     </h4>
-    {% if entry.description and not is_mobile %}
+    {% if entry.description != "..." %}
         <div class="summary">
             {{ entry.description | truncate }}
         </div>
