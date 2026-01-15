@@ -1,15 +1,47 @@
 #!/usr/bin/env python
+from collections import Counter
 from datetime import datetime, timezone
+from dateutil.parser import parse
 
 import feedparser
-import requests
-from dateutil.parser import parse
-from sentence_transformers import SentenceTransformer
+import math
 import numpy as np
+import requests
 
 from app.filters import hostname
 from app.helpers import fetch_content, get_url, load_articles, save_articles, md5
 from app.settings import FEEDS
+
+
+def compute_tf_idf(titles):
+    # Simple TF-IDF implementation
+    all_words = []
+    for title in titles:
+        words = title.lower().split()  # Simple tokenization
+        all_words.extend(words)
+    vocab = list(set(all_words))
+    word_to_id = {w: i for i, w in enumerate(vocab)}
+    n_docs = len(titles)
+    idf = {}
+    for word in vocab:
+        df = sum(1 for title in titles if word in title.lower().split())
+        idf[word] = math.log(n_docs / (1 + df))
+    # Compute TF-IDF vectors
+    vectors = []
+    for title in titles:
+        words = title.lower().split()
+        tf = Counter(words)
+        vec = np.zeros(len(vocab))
+        for word, count in tf.items():
+            if word in word_to_id:
+                tf_val = count / len(words)
+                vec[word_to_id[word]] = tf_val * idf[word]
+        # Normalize the vector for cosine similarity
+        norm = np.linalg.norm(vec)
+        if norm > 0:
+            vec /= norm
+        vectors.append(vec)
+    return np.array(vectors)
 
 
 class ArticleFetcher:
@@ -73,8 +105,7 @@ class ArticleFetcher:
     def grab_score(self):
         keys_to_fetch = [k for k, v in self.articles.items()]
         titles = [v['title'].strip() for v in self.articles.values()]
-        model = SentenceTransformer('all-MiniLM-L6-v2')
-        embeddings = model.encode(titles)
+        embeddings = compute_tf_idf(titles)
         for i, key in enumerate(keys_to_fetch):
             similarities = np.dot(embeddings, embeddings[i])
             similarities[i] = 0  # exclude self

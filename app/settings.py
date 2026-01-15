@@ -82,7 +82,7 @@ FEEDS = [
     "https://www.smashingmagazine.com/feed/",
     "https://spacenews.com/feed/",
     "https://techcrunch.com/feed/",
-    "https://www.techmeme.com/feed.xml",
+    # "https://www.techmeme.com/feed.xml",
     "https://thefreethoughtproject.com/feed/",
     "https://thegradient.pub/rss/",
     "https://tidbits.com/feed/",
