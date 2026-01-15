@@ -3,7 +3,7 @@
 {% block main %}
     <h3><a href="/">{{ brand }}</a></h3>
     <h2>
-        <a class="active" href="/link/{{ entry.base }}">{{ entry.title }}</a>
+        <a class="active" href="{{ entry.url }}">{{ entry.title }}</a>
     </h2>
     {% include 'common/small.html' %}
     <div id="article" class="text">
