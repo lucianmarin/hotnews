@@ -1,33 +1,4 @@
-from app.local import DEBUG
-
 DATA_FILE = "data/articles.json"
-
-SECRET_KEY = '4^suh^yp2@jm!a!8snts8wb(y2kx4v482km5mnc^+topkpc*!p'
-DEBUG = DEBUG
-
-ALLOWED_HOSTS = []
-INSTALLED_APPS = ['app', 'django_extensions', 'django.contrib.postgres']
-MIDDLEWARE = []
-TEMPLATES = []
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'news',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '',
-        'PORT': '6432'
-    }
-}
-AUTH_PASSWORD_VALIDATORS = []
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = False
-USE_L10N = False
-USE_TZ = False
-USE_ETAGS = False
 
 FEEDS = [
     "http://feeds.arstechnica.com/arstechnica/index",
