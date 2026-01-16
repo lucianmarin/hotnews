@@ -50,8 +50,7 @@ class ArticleFetcher:
                             'pub': published,
                             'author': entry.get('author', ''),
                             'description': get_description(entry),
-                            'score': 0,
-                            'paragraphs': []
+                            'score': 0
                         }
                         print('Created', url)
                 except Exception as e:
