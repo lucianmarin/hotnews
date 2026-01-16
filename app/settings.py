@@ -1,4 +1,4 @@
-DATA_FILE = "data/articles.json"
+DATA_FILE = "articles.json"
 
 FEEDS = [
     "http://feeds.arstechnica.com/arstechnica/index",

@@ -5,8 +5,8 @@ __pycache__
 .ruff_cache
 
 static/logs.html
-data/articles.json
 app/local.py
+articles.json
 
 news.pid
 news.socket
