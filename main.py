@@ -1,23 +1,25 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from jinja2 import FileSystemBytecodeCache
+from jinja2 import Environment, FileSystemBytecodeCache, FileSystemLoader
 
 from app.filters import hostname, shortdate, sitename, superscript, truncate
 from app.helpers import load_articles
 from app.local import DEBUG
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
-templates.env.auto_reload = DEBUG
-templates.env.bytecode_cache = FileSystemBytecodeCache()
-templates.env.filters['hostname'] = hostname
-templates.env.filters['sitename'] = sitename
-templates.env.filters['shortdate'] = shortdate
-templates.env.filters['superscript'] = superscript
-templates.env.filters['truncate'] = truncate
-templates.env.globals['brand'] = "News"
-templates.env.globals['v'] = 12
+env = Environment(
+    loader=FileSystemLoader("templates"),
+    bytecode_cache=FileSystemBytecodeCache(),
+    enable_async=True
+)
+env.filters['hostname'] = hostname
+env.filters['sitename'] = sitename
+env.filters['shortdate'] = shortdate
+env.filters['superscript'] = superscript
+env.filters['truncate'] = truncate
+env.globals['brand'] = "News"
+env.globals['v'] = 12
 
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -55,13 +57,14 @@ async def hot_resource(request: Request):
 
     entries = distinct_entries[:limit]
 
-    return templates.TemplateResponse("pages/main.html", {
+    content = await env.get_template("main.html").render_async({
         "request": request,
         "entries": entries,
         "articles": articles_count,
         "sites": sites_count,
         "view": 'hottest'
     })
+    return HTMLResponse(content)
 
 
 @app.get("/cold")
@@ -96,13 +99,14 @@ async def cold_resource(request: Request):
 
     entries = distinct_entries[:limit]
 
-    return templates.TemplateResponse("pages/main.html", {
+    content = await env.get_template("main.html").render_async({
         "request": request,
         "entries": entries,
         "articles": articles_count,
         "sites": sites_count,
         "view": 'coldest'
     })
+    return HTMLResponse(content)
 
 
 @app.get("/new")
@@ -134,13 +138,14 @@ async def new_resource(request: Request):
 
     entries = distinct_entries[:limit]
 
-    return templates.TemplateResponse("pages/main.html", {
+    content = await env.get_template("main.html").render_async({
         "request": request,
         "entries": entries,
         "articles": articles_count,
         "sites": sites_count,
         "view": 'newest'
     })
+    return HTMLResponse(content)
 
 
 @app.get("/{site}")
@@ -151,26 +156,13 @@ async def site_resource(site: str, request: Request):
     articles_list.sort(key=lambda x: x['pub'])
     articles_list.sort(key=lambda x: x['score'], reverse=True)
 
-    return templates.TemplateResponse("pages/site.html", {
+    content = await env.get_template("site.html").render_async({
         "request": request,
         "entries": articles_list,
         "site": site,
         "view": 'site'
     })
-
-
-@app.get("/about")
-async def about_resource(request: Request):
-    articles = load_articles()
-    count = len(articles)
-    sites = sorted(list(set(a['domain'] for a in articles.values())))
-
-    return templates.TemplateResponse("pages/about.html", {
-        "request": request,
-        "sites": sites,
-        "count": count,
-        "view": 'about'
-    })
+    return HTMLResponse(content)
 
 
 if __name__ == "__main__":
