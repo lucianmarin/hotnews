@@ -14,10 +14,13 @@
             <div class="summary">Fetching articles...</div>
         </div>
     {% endfor %}
-    <div class="entry">
-        <div class="small">
-            <a class="done" href="/">{{ sites }} websites</a>
-            <a class="done" href="/">{{ articles }} articles</a>
+    {% if pages > 1 %}
+        <div class="entry">
+            <div class="pages">
+                {% for number in range(1, pages + 1) %}
+                    <a class="{% if number == page %}selected{% endif %}" href="/?p={{ number }}">{{ number }}</a>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

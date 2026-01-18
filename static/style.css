@@ -58,6 +58,18 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .main .text u { background-color: var(--hl); text-decoration: none; }
 
+.pages { color: var(--silver); font-size: var(--small); overflow: hidden; padding: 0 20px; text-overflow: ellipsis; white-space: nowrap; }
+
+.pages a { border-right: var(--gainsboro) 1px solid; color: var(--silver); float: left; padding: 0 9.5px; }
+
+.pages a:hover { color: var(--gray); }
+
+.pages a:first-child { padding-left: 0; }
+
+.pages a:last-child { border-right: 0 none; padding-right: 0; }
+
+.pages a.selected { color: var(--black); }
+
 @font-face { font-family: "Route 159"; font-style: normal; font-weight: normal; src: url(/static/route159/regular.woff2) format("woff2"); }
 
 @font-face { font-family: "Route 159"; font-style: normal; font-weight: bold; src: url(/static/route159/bold.woff2) format("woff2"); }

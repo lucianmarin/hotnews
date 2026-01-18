@@ -126,6 +126,28 @@ h2
             background-color: var(--hl)
             text-decoration: none
 
+.pages
+    color: var(--silver)
+    font-size: var(--small)
+    overflow: hidden
+    padding: 0 20px
+    text-overflow: ellipsis
+    white-space: nowrap
+    a
+        border-right: var(--gainsboro) 1px solid
+        color: var(--silver)
+        float: left
+        padding: 0 9.5px
+        &:hover
+            color: var(--gray)
+        &:first-child
+            padding-left: 0
+        &:last-child
+            border-right: 0 none
+            padding-right: 0
+        &.selected
+            color: var(--black)
+
 @font-face
     font-family: "Route 159"
     font-style: normal

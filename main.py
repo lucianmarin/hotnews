@@ -19,21 +19,24 @@ env.filters['shortdate'] = shortdate
 env.filters['superscript'] = superscript
 env.filters['truncate'] = truncate
 env.globals['brand'] = "News"
-env.globals['v'] = 12
+env.globals['v'] = 13
 
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/")
-async def hot_resource(request: Request):
+async def hot_resource(request: Request, p: int = 1):
     articles_data = load_articles()
     articles_list = list(articles_data.values())
 
-    articles_count = len(articles_list)
+    # Pagination
+    page = p if p > 0 else 1
+    limit = 10
+    offset = limit * (page - 1)
     domains = set(a['domain'] for a in articles_list)
-    sites_count = len(domains)
-    limit = sites_count // 2
+    count = len(domains)
+    pages = (count + limit - 1) // limit  # ceil(count / limit)
 
     # Order by domain, -score, pub to mimic distinct(domain) behavior logic
     # Python sort is stable, so we sort in reverse order of importance:
@@ -55,27 +58,30 @@ async def hot_resource(request: Request):
     distinct_entries.sort(key=lambda x: x['pub'])
     distinct_entries.sort(key=lambda x: x['score'], reverse=True)
 
-    entries = distinct_entries[:limit]
+    entries = distinct_entries[offset:offset + limit]
 
     content = await env.get_template("main.html").render_async({
         "request": request,
         "entries": entries,
-        "articles": articles_count,
-        "sites": sites_count,
+        "page": page,
+        "pages": pages,
         "view": 'hottest'
     })
     return HTMLResponse(content)
 
 
 @app.get("/cold")
-async def cold_resource(request: Request):
+async def cold_resource(request: Request, p: int = 1):
     articles_data = load_articles()
     articles_list = list(articles_data.values())
 
-    articles_count = len(articles_list)
+    # Pagination
+    page = p if p > 0 else 1
+    limit = 10
+    offset = limit * (page - 1)
     domains = set(a['domain'] for a in articles_list)
-    sites_count = len(domains)
-    limit = sites_count // 2
+    count = len(domains)
+    pages = (count + limit - 1) // limit  # ceil(count / limit)
 
     # Order by domain, -score, pub to mimic distinct(domain) behavior logic
     # Python sort is stable, so we sort in reverse order of importance:
@@ -97,27 +103,30 @@ async def cold_resource(request: Request):
     distinct_entries.sort(key=lambda x: x['pub'])
     distinct_entries.sort(key=lambda x: x['score'])
 
-    entries = distinct_entries[:limit]
+    entries = distinct_entries[offset:offset + limit]
 
     content = await env.get_template("main.html").render_async({
         "request": request,
         "entries": entries,
-        "articles": articles_count,
-        "sites": sites_count,
+        "page": page,
+        "pages": pages,
         "view": 'coldest'
     })
     return HTMLResponse(content)
 
 
 @app.get("/new")
-async def new_resource(request: Request):
+async def new_resource(request: Request, p: int = 1):
     articles_data = load_articles()
     articles_list = list(articles_data.values())
 
-    articles_count = len(articles_list)
+    # Pagination
+    page = p if p > 0 else 1
+    limit = 10
+    offset = limit * (page - 1)
     domains = set(a['domain'] for a in articles_list)
-    sites_count = len(domains)
-    limit = sites_count // 2
+    count = len(domains)
+    pages = (count + limit - 1) // limit  # ceil(count / limit)
 
     # Order by domain, -pub to mimic distinct(domain)
     # Sort keys in reverse importance:
@@ -136,30 +145,41 @@ async def new_resource(request: Request):
     # Order by -pub
     distinct_entries.sort(key=lambda x: x['pub'], reverse=True)
 
-    entries = distinct_entries[:limit]
+    entries = distinct_entries[offset:offset + limit]
 
     content = await env.get_template("main.html").render_async({
         "request": request,
         "entries": entries,
-        "articles": articles_count,
-        "sites": sites_count,
+        "page": page,
+        "pages": pages,
         "view": 'newest'
     })
     return HTMLResponse(content)
 
 
 @app.get("/{site}")
-async def site_resource(site: str, request: Request):
+async def site_resource(site: str, request: Request, p: int = 1):
     articles_data = load_articles()
     articles_list = [v for v in articles_data.values() if v['site'] == site]
+
+    # Pagination
+    page = p if p > 0 else 1
+    limit = 10
+    offset = limit * (page - 1)
+    count = len(articles_list)
+    pages = (count + limit - 1) // limit  # ceil(count / limit)
 
     articles_list.sort(key=lambda x: x['pub'])
     articles_list.sort(key=lambda x: x['score'], reverse=True)
 
+    entries = articles_list[offset:offset + limit]
+
     content = await env.get_template("site.html").render_async({
         "request": request,
-        "entries": articles_list,
+        "entries": entries,
         "site": site,
+        "page": page,
+        "pages": pages,
         "view": 'site'
     })
     return HTMLResponse(content)
