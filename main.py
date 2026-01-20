@@ -19,7 +19,7 @@ env.filters['shortdate'] = shortdate
 env.filters['superscript'] = superscript
 env.filters['truncate'] = truncate
 env.globals['brand'] = "Hotnews"
-env.globals['v'] = 14
+env.globals['v'] = 15
 
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -60,7 +60,7 @@ async def hot_resource(request: Request, p: int = 1):
 
     entries = distinct_entries[offset:offset + limit]
 
-    content = await env.get_template("main.html").render_async({
+    content = await env.get_template("base.html").render_async({
         "request": request,
         "entries": entries,
         "page": page,
@@ -105,7 +105,7 @@ async def cold_resource(request: Request, p: int = 1):
 
     entries = distinct_entries[offset:offset + limit]
 
-    content = await env.get_template("main.html").render_async({
+    content = await env.get_template("base.html").render_async({
         "request": request,
         "entries": entries,
         "page": page,
@@ -147,7 +147,7 @@ async def new_resource(request: Request, p: int = 1):
 
     entries = distinct_entries[offset:offset + limit]
 
-    content = await env.get_template("main.html").render_async({
+    content = await env.get_template("base.html").render_async({
         "request": request,
         "entries": entries,
         "page": page,
@@ -174,7 +174,7 @@ async def site_resource(site: str, request: Request, p: int = 1):
 
     entries = articles_list[offset:offset + limit]
 
-    content = await env.get_template("site.html").render_async({
+    content = await env.get_template("base.html").render_async({
         "request": request,
         "entries": entries,
         "site": site,

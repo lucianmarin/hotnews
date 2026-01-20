@@ -5,9 +5,8 @@
     <meta charset="utf-8">
     <meta name="referrer" content="always">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-    <meta name="description" content="Daily news aggregator and reader.">
+    <meta name="description" content="Daily hottest news aggregator.">
     <meta name="author" content="Lucian Marin">
-    {% if view == 'read' %}<meta name="robots" content="noindex">{% endif %}
     <link rel="apple-touch-icon" type="image/png" href="/static/192.png">
     <link rel="icon" sizes="192x192" type="image/png" href="/static/192.png">
     <link rel="manifest" type="application/json" href="/static/manifest.json">
@@ -16,7 +15,35 @@
 </head>
 <body>
     <div class="main">
-        {% block main %}{% endblock %}
+        <h3>
+            <a href="/">{{ brand }}</a>
+            {% if page > 1 %}&frasl; <span>{{ page }}</span>{% endif %}
+        </h3>
+        <h2>
+            {% if view == 'site' %}
+                <a class="active" href="/{{ site }}">{{ site }}</a>
+            {% else %}
+                <a class="{% if view == 'hottest' %}active{% endif %}" href="/">Hottest</a>
+                <a class="{% if view == 'coldest' %}active{% endif %}" href="/cold">Coldest</a>
+                <a class="{% if view == 'newest' %}active{% endif %}" href="/new">Newest</a>
+            {% endif %}
+        </h2>
+        {% for entry in entries %}
+            {% include 'entry.html' %}
+        {% else %}
+            <div class="entry">
+                <div class="summary">Fetching articles...</div>
+            </div>
+        {% endfor %}
+        {% if pages > 1 %}
+            <div class="entry">
+                <div class="pages">
+                    {% for n in range(1, pages + 1) %}
+                        <a class="{% if n == page %}selected{% endif %}" href="?p={{ n }}">{{ n }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>

@@ -10,7 +10,7 @@ a { color: var(--black); cursor: pointer; text-decoration: none; transition: col
 
 b, i { font-style: normal; font-weight: normal; }
 
-sup { line-height: 0; margin-left: 1px; }
+sup { line-height: 0; }
 
 h3 { font-size: var(--caps); font-weight: bold; letter-spacing: 1px; line-height: 15px; text-transform: uppercase; }
 
@@ -18,9 +18,9 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .main { margin: 0 auto; max-width: 520px; }
 
-.main h3 { padding-left: 20px; padding-top: 15px; }
+.main h3 { color: var(--silver); padding-left: 20px; padding-top: 15px; }
 
-.main h3 a { color: var(--gray); }
+.main h3 a, .main h3 span { color: var(--gray); }
 
 .main h2 { padding-left: 20px; padding-bottom: 15px; overflow: hidden; }
 
