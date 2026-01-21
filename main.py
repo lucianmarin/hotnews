@@ -24,6 +24,7 @@ env.globals['v'] = 15
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
+LIMIT = 10
 
 @app.get("/")
 async def hot_resource(request: Request, p: int = 1):
@@ -32,11 +33,10 @@ async def hot_resource(request: Request, p: int = 1):
 
     # Pagination
     page = p if p > 0 else 1
-    limit = 10
-    offset = limit * (page - 1)
+    offset = LIMIT * (page - 1)
     domains = set(a['domain'] for a in articles_list)
     count = len(domains)
-    pages = (count + limit - 1) // limit  # ceil(count / limit)
+    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
     # Order by domain, -score, pub to mimic distinct(domain) behavior logic
     # Python sort is stable, so we sort in reverse order of importance:
@@ -58,7 +58,7 @@ async def hot_resource(request: Request, p: int = 1):
     distinct_entries.sort(key=lambda x: x['pub'])
     distinct_entries.sort(key=lambda x: x['score'], reverse=True)
 
-    entries = distinct_entries[offset:offset + limit]
+    entries = distinct_entries[offset:offset + LIMIT]
 
     content = await env.get_template("base.html").render_async({
         "request": request,
@@ -77,11 +77,10 @@ async def cold_resource(request: Request, p: int = 1):
 
     # Pagination
     page = p if p > 0 else 1
-    limit = 10
-    offset = limit * (page - 1)
+    offset = LIMIT * (page - 1)
     domains = set(a['domain'] for a in articles_list)
     count = len(domains)
-    pages = (count + limit - 1) // limit  # ceil(count / limit)
+    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
     # Order by domain, -score, pub to mimic distinct(domain) behavior logic
     # Python sort is stable, so we sort in reverse order of importance:
@@ -103,7 +102,7 @@ async def cold_resource(request: Request, p: int = 1):
     distinct_entries.sort(key=lambda x: x['pub'])
     distinct_entries.sort(key=lambda x: x['score'])
 
-    entries = distinct_entries[offset:offset + limit]
+    entries = distinct_entries[offset:offset + LIMIT]
 
     content = await env.get_template("base.html").render_async({
         "request": request,
@@ -122,11 +121,10 @@ async def new_resource(request: Request, p: int = 1):
 
     # Pagination
     page = p if p > 0 else 1
-    limit = 10
-    offset = limit * (page - 1)
+    offset = LIMIT * (page - 1)
     domains = set(a['domain'] for a in articles_list)
     count = len(domains)
-    pages = (count + limit - 1) // limit  # ceil(count / limit)
+    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
     # Order by domain, -pub to mimic distinct(domain)
     # Sort keys in reverse importance:
@@ -145,7 +143,7 @@ async def new_resource(request: Request, p: int = 1):
     # Order by -pub
     distinct_entries.sort(key=lambda x: x['pub'], reverse=True)
 
-    entries = distinct_entries[offset:offset + limit]
+    entries = distinct_entries[offset:offset + LIMIT]
 
     content = await env.get_template("base.html").render_async({
         "request": request,
@@ -164,15 +162,14 @@ async def site_resource(site: str, request: Request, p: int = 1):
 
     # Pagination
     page = p if p > 0 else 1
-    limit = 10
-    offset = limit * (page - 1)
+    offset = LIMIT * (page - 1)
     count = len(articles_list)
-    pages = (count + limit - 1) // limit  # ceil(count / limit)
+    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
     articles_list.sort(key=lambda x: x['pub'])
     articles_list.sort(key=lambda x: x['score'], reverse=True)
 
-    entries = articles_list[offset:offset + limit]
+    entries = articles_list[offset:offset + LIMIT]
 
     content = await env.get_template("base.html").render_async({
         "request": request,

@@ -5,6 +5,7 @@ from dateutil.parser import parse
 
 import feedparser
 import numpy as np
+import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -52,7 +53,8 @@ class ArticleFetcher:
 
     def get_entries(self, feed):
         print(feed)
-        return feedparser.parse(feed).entries
+        r = requests.get(feed)
+        return feedparser.parse(r.text).entries
 
     def grab_entries(self):
         all_entries = []
