@@ -7,8 +7,12 @@ from app.filters import hostname, shortdate, sitename, superscript, truncate
 from app.helpers import load_articles
 from app.local import DEBUG
 
+LIMIT = 10
+
 app = FastAPI()
 env = Environment(
+    autoescape=True,
+    auto_reload=DEBUG,
     loader=FileSystemLoader("templates"),
     bytecode_cache=FileSystemBytecodeCache(),
     enable_async=True
@@ -23,8 +27,6 @@ env.globals['v'] = 15
 
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")
-
-LIMIT = 10
 
 @app.get("/")
 async def hot_resource(request: Request, p: int = 1):
