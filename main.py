@@ -7,7 +7,7 @@ from app.filters import hostname, shortdate, sitename, superscript, truncate
 from app.helpers import load_articles
 from app.local import DEBUG
 
-LIMIT = 10
+LIMIT = 16
 
 app = FastAPI()
 env = Environment(
