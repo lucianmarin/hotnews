@@ -15,4 +15,4 @@ class Article(models.Model):
         table = "articles"
 
     def __str__(self):
-        return self.title
+        return self.id
