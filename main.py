@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemBytecodeCache, FileSystemLoader
 from tortoise.contrib.fastapi import register_tortoise
-from tortoise.functions import Max
+from tortoise.functions import Max, Min
 
 from app.filters import hostname, shortdate, sitename, superscript, truncate
 from app.local import DEBUG
@@ -44,7 +44,7 @@ async def hot_resource(request: Request, p: int = 1):
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
 
-    max_ids = await Article.all().annotate(max_id=Max("id")).group_by("site").values_list("max_id", flat=True)
+    max_ids = await Article.all().annotate(max_score=Max("score")).group_by("site").values_list("id", flat=True)
     count = len(max_ids)
     pages = (count + LIMIT - 1) // LIMIT
 
@@ -66,7 +66,7 @@ async def cold_resource(request: Request, p: int = 1):
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
 
-    max_ids = await Article.all().annotate(max_id=Max("id")).group_by("site").values_list("max_id", flat=True)
+    max_ids = await Article.all().annotate(min_score=Min("score")).group_by("site").values_list("id", flat=True)
     count = len(max_ids)
     pages = (count + LIMIT - 1) // LIMIT
 
@@ -88,7 +88,7 @@ async def new_resource(request: Request, p: int = 1):
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
 
-    max_ids = await Article.all().annotate(max_id=Max("id")).group_by("site").values_list("max_id", flat=True)
+    max_ids = await Article.all().annotate(max_pub=Max("pub")).group_by("site").values_list("id", flat=True)
     count = len(max_ids)
     pages = (count + LIMIT - 1) // LIMIT
 
