@@ -1,4 +1,12 @@
-DATA_FILE = "articles.json"
+TORTOISE_ORM = {
+    "connections": {"default": "sqlite://db.sqlite3"},
+    "apps": {
+        "models": {
+            "models": ["app.models"],
+            "default_connection": "default",
+        },
+    },
+}
 
 FEEDS = [
     "http://feeds.arstechnica.com/arstechnica/index",

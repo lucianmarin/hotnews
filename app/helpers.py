@@ -1,29 +1,10 @@
 import urllib
-import json
 import hashlib
-import os
 from bs4 import BeautifulSoup
-
-from app.settings import DATA_FILE
 
 
 def md5(s):
     return hashlib.md5(s.encode('utf-8')).hexdigest()
-
-
-def load_articles():
-    if not os.path.exists(DATA_FILE):
-        return {}
-    with open(DATA_FILE, 'r') as f:
-        try:
-            return json.load(f)
-        except json.JSONDecodeError:
-            return {}
-
-
-def save_articles(articles):
-    with open(DATA_FILE, 'w') as f:
-        json.dump(articles, f, indent=4)
 
 
 def get_url(link):

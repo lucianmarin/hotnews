@@ -6,7 +6,10 @@ __pycache__
 
 static/logs.html
 app/local.py
+
 articles.json
+db.sqlite3
+db.sqlite3-*
 
 news.pid
 news.socket

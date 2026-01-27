@@ -2,10 +2,13 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemBytecodeCache, FileSystemLoader
+from tortoise.contrib.fastapi import register_tortoise
+from tortoise.functions import Max
 
 from app.filters import hostname, shortdate, sitename, superscript, truncate
-from app.helpers import load_articles
 from app.local import DEBUG
+from app.settings import TORTOISE_ORM
+from app.models import Article
 
 LIMIT = 16
 
@@ -28,39 +31,24 @@ env.globals['v'] = 15
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
+register_tortoise(
+    app,
+    config=TORTOISE_ORM,
+    generate_schemas=True,
+    add_exception_handlers=True,
+)
+
 @app.get("/")
 async def hot_resource(request: Request, p: int = 1):
-    articles_data = load_articles()
-    articles_list = list(articles_data.values())
-
     # Pagination
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
-    domains = set(a['domain'] for a in articles_list)
-    count = len(domains)
-    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
-    # Order by domain, -score, pub to mimic distinct(domain) behavior logic
-    # Python sort is stable, so we sort in reverse order of importance:
-    # 1. pub (asc)
-    # 2. score (desc)
-    # 3. domain
-    articles_list.sort(key=lambda x: x['pub'])
-    articles_list.sort(key=lambda x: x['score'], reverse=True)
-    articles_list.sort(key=lambda x: x['domain'])
+    max_ids = await Article.all().annotate(max_id=Max("id")).group_by("site").values_list("max_id", flat=True)
+    count = len(max_ids)
+    pages = (count + LIMIT - 1) // LIMIT
 
-    distinct_entries = []
-    seen_domains = set()
-    for a in articles_list:
-        if a['domain'] not in seen_domains:
-            distinct_entries.append(a)
-            seen_domains.add(a['domain'])
-
-    # Now order by -score, pub
-    distinct_entries.sort(key=lambda x: x['pub'])
-    distinct_entries.sort(key=lambda x: x['score'], reverse=True)
-
-    entries = distinct_entries[offset:offset + LIMIT]
+    entries = await Article.filter(id__in=max_ids).order_by("-score", "pub").offset(offset).limit(LIMIT)
 
     content = await env.get_template("base.html").render_async({
         "request": request,
@@ -74,37 +62,15 @@ async def hot_resource(request: Request, p: int = 1):
 
 @app.get("/cold")
 async def cold_resource(request: Request, p: int = 1):
-    articles_data = load_articles()
-    articles_list = list(articles_data.values())
-
     # Pagination
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
-    domains = set(a['domain'] for a in articles_list)
-    count = len(domains)
-    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
-    # Order by domain, -score, pub to mimic distinct(domain) behavior logic
-    # Python sort is stable, so we sort in reverse order of importance:
-    # 1. pub (asc)
-    # 2. score (desc)
-    # 3. domain
-    articles_list.sort(key=lambda x: x['pub'])
-    articles_list.sort(key=lambda x: x['score'])
-    articles_list.sort(key=lambda x: x['domain'])
+    max_ids = await Article.all().annotate(max_id=Max("id")).group_by("site").values_list("max_id", flat=True)
+    count = len(max_ids)
+    pages = (count + LIMIT - 1) // LIMIT
 
-    distinct_entries = []
-    seen_domains = set()
-    for a in articles_list:
-        if a['domain'] not in seen_domains:
-            distinct_entries.append(a)
-            seen_domains.add(a['domain'])
-
-    # Now order by -score, pub
-    distinct_entries.sort(key=lambda x: x['pub'])
-    distinct_entries.sort(key=lambda x: x['score'])
-
-    entries = distinct_entries[offset:offset + LIMIT]
+    entries = await Article.filter(id__in=max_ids).order_by("score", "pub").offset(offset).limit(LIMIT)
 
     content = await env.get_template("base.html").render_async({
         "request": request,
@@ -118,35 +84,15 @@ async def cold_resource(request: Request, p: int = 1):
 
 @app.get("/new")
 async def new_resource(request: Request, p: int = 1):
-    articles_data = load_articles()
-    articles_list = list(articles_data.values())
-
     # Pagination
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
-    domains = set(a['domain'] for a in articles_list)
-    count = len(domains)
-    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
-    # Order by domain, -pub to mimic distinct(domain)
-    # Sort keys in reverse importance:
-    # 1. pub (desc)
-    # 2. domain
-    articles_list.sort(key=lambda x: x['pub'], reverse=True)
-    articles_list.sort(key=lambda x: x['domain'])
+    max_ids = await Article.all().annotate(max_id=Max("id")).group_by("site").values_list("max_id", flat=True)
+    count = len(max_ids)
+    pages = (count + LIMIT - 1) // LIMIT
 
-    distinct_entries = []
-    seen_domains = set()
-    for a in articles_list:
-        if a['domain'] not in seen_domains:
-            distinct_entries.append(a)
-            seen_domains.add(a['domain'])
-
-    # Order by -pub
-    distinct_entries.sort(key=lambda x: x['pub'], reverse=True)
-
-    entries = distinct_entries[offset:offset + LIMIT]
-
+    entries = await Article.filter(id__in=max_ids).order_by("-pub").offset(offset).limit(LIMIT)
     content = await env.get_template("base.html").render_async({
         "request": request,
         "entries": entries,
@@ -159,19 +105,15 @@ async def new_resource(request: Request, p: int = 1):
 
 @app.get("/{site}")
 async def site_resource(site: str, request: Request, p: int = 1):
-    articles_data = load_articles()
-    articles_list = [v for v in articles_data.values() if v['site'] == site]
-
     # Pagination
     page = p if p > 0 else 1
     offset = LIMIT * (page - 1)
-    count = len(articles_list)
-    pages = (count + LIMIT - 1) // LIMIT  # ceil(count / LIMIT)
 
-    articles_list.sort(key=lambda x: x['pub'])
-    articles_list.sort(key=lambda x: x['score'], reverse=True)
+    query = Article.filter(site=site)
+    count = await query.count()
+    pages = (count + LIMIT - 1) // LIMIT
 
-    entries = articles_list[offset:offset + LIMIT]
+    entries = await query.order_by("-score", "pub").offset(offset).limit(LIMIT)
 
     content = await env.get_template("base.html").render_async({
         "request": request,

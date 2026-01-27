@@ -11,3 +11,5 @@ scikit-learn
 tldextract
 user-agents
 uvicorn
+tortoise-orm
+aiosqlite
