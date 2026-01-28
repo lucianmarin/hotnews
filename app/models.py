@@ -4,8 +4,8 @@ class Article(models.Model):
     id = fields.CharField(pk=True, max_length=32)  # md5 hash
     url = fields.TextField()
     title = fields.TextField()
-    domain = fields.CharField(max_length=255)
-    site = fields.CharField(max_length=255)
+    domain = fields.CharField(max_length=255, db_index=True)
+    site = fields.CharField(max_length=255, db_index=True)
     pub = fields.FloatField()
     author = fields.TextField(null=True)
     description = fields.TextField(null=True)
