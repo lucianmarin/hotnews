@@ -3,8 +3,6 @@ fastapi
 feedparser
 jinja2
 lxml
-numpy
-psycopg2-binary
 python-dateutil
 requests
 scikit-learn

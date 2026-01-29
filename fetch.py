@@ -2,9 +2,9 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from dateutil.parser import parse
+from statistics import mean
 
 import feedparser
-import numpy as np
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -16,9 +16,6 @@ from app.settings import FEEDS
 
 class ArticleFetcher:
     def __init__(self):
-        self.ignored = [
-            "https://kottke.org/quick-links"
-        ]
         self.articles = {}
 
     @property
@@ -36,7 +33,7 @@ class ArticleFetcher:
             url = get_url(entry.link)
             published = parse(entry.published).timestamp()
             key = md5(url)
-            if self.now > published > self.cutoff and url not in self.ignored and key not in self.articles:
+            if self.now > published > self.cutoff and key not in self.articles:
                 self.articles[key] = {
                     'url': url,
                     'title': entry.title,
@@ -79,7 +76,7 @@ class ArticleFetcher:
         cos_sim = cosine_similarity(tfidf_matrix)
         for i, key in enumerate(keys_to_fetch):
             similarities = [cos_sim[i][j] for j in range(len(titles)) if j != i]
-            score = np.mean(similarities) if similarities else 0
+            score = mean(similarities) if similarities else 0
             self.articles[key]['score'] = float(score)
             print(score, self.articles[key]['title'])
 
