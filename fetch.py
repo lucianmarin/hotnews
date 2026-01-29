@@ -3,9 +3,9 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from dateutil.parser import parse
+from statistics import mean
 
 import feedparser
-import numpy as np
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -18,11 +18,6 @@ from app.models import Article
 
 
 class ArticleFetcher:
-    def __init__(self):
-        self.ignored = [
-            "https://kottke.org/quick-links"
-        ]
-
     @property
     def now(self):
         return datetime.now(timezone.utc).timestamp()
@@ -38,7 +33,7 @@ class ArticleFetcher:
             url = get_url(entry.link)
             published = parse(entry.published).timestamp()
             key = md5(url)
-            if self.now > published > self.cutoff and url not in self.ignored:
+            if self.now > published > self.cutoff:
                 await Article.update_or_create(
                     id=key,
                     defaults={
@@ -89,10 +84,9 @@ class ArticleFetcher:
 
         for i, article in enumerate(articles):
             similarities = [cos_sim[i][j] for j in range(len(titles)) if j != i]
-            score = np.mean(similarities) if similarities else 0
-            article.score = float(score)
+            article.score = mean(similarities) if similarities else 0
             await article.save(update_fields=['score'])
-            print(f"{score:.4f} {article.title}")
+            print(f"{article.score:.4f} {article.title}")
 
 
 async def main():

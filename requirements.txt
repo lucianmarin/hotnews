@@ -1,15 +1,13 @@
+aiosqlite
 bs4
 fastapi
 feedparser
 jinja2
 lxml
-numpy
-psycopg2-binary
 python-dateutil
 requests
 scikit-learn
 tldextract
+tortoise-orm
 user-agents
 uvicorn
-tortoise-orm
-aiosqlite
