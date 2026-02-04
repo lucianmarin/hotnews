@@ -6,8 +6,7 @@ from statistics import mean
 
 import feedparser
 import requests
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+from Levenshtein import ratio
 
 from app.filters import hostname, sitename
 from app.helpers import get_url, get_description, load_articles, save_articles, md5
@@ -69,15 +68,11 @@ class ArticleFetcher:
         print("Deleted {0} entries".format(len(keys_to_delete)))
 
     def grab_score(self):
-        keys_to_fetch = [k for k, v in self.articles.items()]
-        titles = [v['title'].strip() for v in self.articles.values()]
-        vectorizer = TfidfVectorizer()
-        tfidf_matrix = vectorizer.fit_transform(titles)
-        cos_sim = cosine_similarity(tfidf_matrix)
-        for i, key in enumerate(keys_to_fetch):
-            similarities = [cos_sim[i][j] for j in range(len(titles)) if j != i]
+        for key, value in self.articles.items():
+            title = value['title'].strip()
+            similarities = [ratio(title, v['title'].strip()) for k, v in self.articles.items() if key != k]
             score = mean(similarities) if similarities else 0
-            self.articles[key]['score'] = float(score)
+            self.articles[key]['score'] = score
             print(score, self.articles[key]['title'])
 
 

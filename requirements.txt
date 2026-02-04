@@ -2,10 +2,10 @@ bs4
 fastapi
 feedparser
 jinja2
+levenshtein
 lxml
 python-dateutil
 requests
-scikit-learn
 tldextract
 user-agents
 uvicorn
