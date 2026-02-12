@@ -50,10 +50,10 @@ class ArticleFetcher:
             print(f"Error inserting {entry.link}: {e}")
 
     async def get_entries(self, session, feed):
-        print(f"Fetching {feed}")
         try:
             async with session.get(feed, timeout=10) as response:
                 text = await response.text()
+            print(f"Fetched {feed}")
             return feedparser.parse(text).entries
         except Exception as e:
             print(f"Error fetching {feed}: {e}")

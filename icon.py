@@ -14,11 +14,11 @@ class FaviconFetcher:
     def __init__(self):
         self.urls = set()
 
-    async def grab_feed_entries(self, session, feed):
+    async def get_entries(self, session, feed):
         try:
             async with session.get(feed, timeout=10) as response:
                 text = await response.text()
-            print(feed)
+            print(f"Fetched {feed}")
             return feedparser.parse(text).entries
         except Exception as e:
             print(f"Error fetching feed {feed}: {e}")
@@ -28,14 +28,14 @@ class FaviconFetcher:
         entries = []
         async with aiohttp.ClientSession() as session:
             results = await asyncio.gather(
-                *(self.grab_feed_entries(session, feed) for feed in FEEDS),
+                *(self.get_entries(session, feed) for feed in FEEDS),
                 return_exceptions=True,
             )
         for result in results:
             if isinstance(result, Exception):
                 print(f"Error collecting feed entries: {result}")
                 continue
-            entries += result
+            entries.extend(result)
 
         links = {}
         for entry in entries:
