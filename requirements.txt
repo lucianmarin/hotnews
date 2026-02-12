@@ -1,6 +1,8 @@
+aiohttp
 aiosqlite
 bs4
 fastapi
+favicon
 feedparser
 jinja2
 lxml

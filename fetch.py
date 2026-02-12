@@ -1,20 +1,19 @@
 #!/usr/bin/env python
 import asyncio
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from dateutil.parser import parse
 from statistics import mean
 
+import aiohttp
 import feedparser
-import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from tortoise import Tortoise
 
 from app.filters import hostname, sitename
 from app.helpers import get_url, get_description, md5
-from app.settings import FEEDS, TORTOISE_ORM
 from app.models import Article
+from app.settings import FEEDS, TORTOISE_ORM
 
 
 class ArticleFetcher:
@@ -50,21 +49,28 @@ class ArticleFetcher:
         except Exception as e:
             print(f"Error inserting {entry.link}: {e}")
 
-    def get_entries(self, feed):
+    async def get_entries(self, session, feed):
         print(f"Fetching {feed}")
         try:
-            r = requests.get(feed, timeout=10)
-            return feedparser.parse(r.text).entries
+            async with session.get(feed, timeout=10) as response:
+                text = await response.text()
+            return feedparser.parse(text).entries
         except Exception as e:
             print(f"Error fetching {feed}: {e}")
             return []
 
     async def grab_entries(self):
         entries = []
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = {executor.submit(self.get_entries, f): f for f in FEEDS}
-            for future in as_completed(futures):
-                entries.extend(future.result())
+        async with aiohttp.ClientSession() as session:
+            results = await asyncio.gather(
+                *(self.get_entries(session, feed) for feed in FEEDS),
+                return_exceptions=True,
+            )
+        for result in results:
+            if isinstance(result, Exception):
+                print(f"Error collecting feed entries: {result}")
+                continue
+            entries.extend(result)
         for entry in entries:
             await self.insert_entry(entry)
 

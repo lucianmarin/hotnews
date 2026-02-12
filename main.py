@@ -3,13 +3,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemBytecodeCache, FileSystemLoader
 from tortoise.contrib.fastapi import register_tortoise
-from tortoise.functions import Max, Min
-from tortoise.expressions import Subquery, RawSQL
 
 from app.filters import hostname, shortdate, sitename, superscript, truncate
 from app.local import DEBUG
-from app.settings import TORTOISE_ORM
 from app.models import Article
+from app.settings import TORTOISE_ORM
 
 LIMIT = 16
 SQL = 'SELECT "id" FROM ({0}) GROUP BY "domain"'
