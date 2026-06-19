@@ -1,6 +1,6 @@
-# Hotnews
+# Torrid News
 
-Hotnews is a high-performance news aggregator built with **FastAPI** for serving web requests. It aggregates news from a curated list of RSS feeds, scores them based on title uniqueness (lower score means more unique/hotter articles), and presents them in a clean interface.
+Torridn News is a high-performance news aggregator built with **FastAPI** for serving web requests. It aggregates news from a curated list of RSS feeds, scores them based on title uniqueness (lower score means more unique/hotter articles), and presents them in a clean interface.
 
 ## Tech Stack
 
@@ -28,7 +28,7 @@ Hotnews is a high-performance news aggregator built with **FastAPI** for serving
 1.  **Clone the repository:**
     ```bash
     git clone <repository-url>
-    cd hotnews
+    cd torridnews
     ```
 
 2.  **Create and activate a virtual environment:**
