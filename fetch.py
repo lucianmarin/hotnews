@@ -6,6 +6,7 @@ from statistics import mean
 
 import aiohttp
 import feedparser
+from scipy.sparse import hstack
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from tortoise import Tortoise
@@ -84,12 +85,22 @@ class ArticleFetcher:
             return
 
         titles = [a.title.strip() for a in articles]
-        vectorizer = TfidfVectorizer()
-        tfidf_matrix = vectorizer.fit_transform(titles)
+        descriptions = [a.description.strip() if a.description else "" for a in articles]
+
+        title_vectorizer = TfidfVectorizer(ngram_range=(1, 2))
+        desc_vectorizer = TfidfVectorizer(stop_words='english')
+
+        title_matrix = title_vectorizer.fit_transform(titles)
+        desc_matrix = desc_vectorizer.fit_transform(descriptions)
+
+        # Give titles double weight relative to descriptions
+        title_matrix = title_matrix * 2.0
+
+        tfidf_matrix = hstack([title_matrix, desc_matrix])
         cos_sim = cosine_similarity(tfidf_matrix)
 
         for i, article in enumerate(articles):
-            similarities = [cos_sim[i][j] for j in range(len(titles)) if j != i]
+            similarities = [cos_sim[i][j] for j in range(len(articles)) if j != i]
             article.score = mean(similarities) if similarities else 0
             await article.save(update_fields=['score'])
             print(f"{article.score:.4f} {article.title}")
