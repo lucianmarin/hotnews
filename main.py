@@ -24,7 +24,6 @@ env.filters['hostname'] = hostname
 env.filters['sitename'] = sitename
 env.filters['shortdate'] = shortdate
 env.filters['superscript'] = superscript
-env.filters['truncate'] = truncate
 env.globals['brand'] = "Hotnews"
 env.globals['v'] = 15
 

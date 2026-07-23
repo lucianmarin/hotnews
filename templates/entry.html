@@ -12,6 +12,6 @@
         </a>
     </h4>
     <div class="summary">
-        {{ entry.description | truncate }}
+        {{ entry.description | truncate(480, False, '...') }}
     </div>
 </div>

@@ -3,30 +3,6 @@ from datetime import datetime, timezone
 import tldextract
 
 
-def truncate(value, limit=480):
-    """Truncate text based on sentences length."""
-    sentences = []
-    sentence = ""
-    for word in value.split():
-        if word.endswith(('.', '...', '…', '!', '?')):
-            sentence += " " + word
-            sentences.append(sentence)
-            sentence = ""
-        else:
-            sentence += " " + word
-    length = 0
-    truncated = []
-    for sentence in sentences:
-        length += len(sentence)
-        if length < limit:
-            truncated.append(sentence)
-    if not truncated and value:
-        if len(value) < limit:
-            return value
-        return value[:limit] + "..."
-    return " ".join(truncated)
-
-
 def hostname(value):
     """Get hostname from an url."""
     r = tldextract.extract(value)
