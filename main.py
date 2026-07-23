@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemBytecodeCache, FileSystemLoader
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.filters import hostname, shortdate, sitename, superscript, truncate
+from app.filters import hostname, shortdate, sitename, superscript
 from app.local import DEBUG
 from app.models import Article
 from app.settings import TORTOISE_ORM
