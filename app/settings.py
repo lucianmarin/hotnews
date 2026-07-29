@@ -47,6 +47,7 @@ FEEDS = [
     "https://www.fastcompany.com/latest/rss",
     "https://fs.blog/feed/",
     "http://www.fubiz.net/en/feed/",
+    "https://futurism.com/feed",
     "http://www.gsmarena.com/rss-news-reviews.php3",
     "https://gizmodo.com/feed/",
     "https://spectrum.ieee.org/feeds/feed.rss",
