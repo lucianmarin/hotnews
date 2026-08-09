@@ -38,7 +38,7 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .main h3 { color: var(--silver); }
 
-.main h3 a, .main h3 span { color: var(--gray); }
+.main h3 a, .main h3 span { color: orangered; }
 
 .main h2 { overflow: hidden; }
 
@@ -54,7 +54,7 @@ h2 { font-size: var(--big); line-height: 25px; }
 
 .main .entry div, .main .entry h4, .main .entry h3, .main .entry h2 { margin: 0 auto; max-width: 520px; }
 
-.main .small { color: var(--gray); font-size: var(--small); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.main .small { color: var(--gray); font-size: var(--small); overflow: hidden; }
 
 .main .small a, .main .small b { color: var(--black); float: left; margin-right: 5px; }
 
@@ -63,6 +63,8 @@ h2 { font-size: var(--big); line-height: 25px; }
 .main .small a.done, .main .small b { color: var(--gray); }
 
 .main .small sup { font-size: 8px; }
+
+.main .small .score { color: orangered; }
 
 .main .summary { color: var(--gray); cursor: text; }
 
