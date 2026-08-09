@@ -9,7 +9,7 @@ from app.local import DEBUG
 from app.models import Article
 from app.settings import TORTOISE_ORM
 
-LIMIT = 16
+LIMIT = 10
 SQL = 'SELECT "id" FROM ({0}) GROUP BY "domain"'
 
 app = FastAPI()
@@ -25,7 +25,7 @@ env.filters['sitename'] = sitename
 env.filters['shortdate'] = shortdate
 env.filters['superscript'] = superscript
 env.globals['brand'] = "Hotnews"
-env.globals['v'] = 15
+env.globals['v'] = 16
 
 if DEBUG:
     app.mount("/static", StaticFiles(directory="static"), name="static")

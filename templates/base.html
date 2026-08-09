@@ -14,21 +14,25 @@
 </head>
 <body>
     <div class="main">
-        <h3>
-            <a href="/">{{ brand }}</a>
-            {% if page > 1 %}&frasl; <span>{{ page }}</span>{% endif %}
-        </h3>
-        <h2>
-            {% if view == 'site' %}
-                <a class="active" href="/{{ site }}">{{ site }}</a>
-            {% else %}
-                <a class="{% if view == 'hottest' %}active{% endif %}" href="/">Hottest</a>
-                <a class="{% if view == 'coldest' %}active{% endif %}" href="/cold">Coldest</a>
-                <a class="{% if view == 'newest' %}active{% endif %}" href="/new">Newest</a>
-            {% endif %}
-        </h2>
+        <div class="entry">
+            <h3>
+                <a href="/">{{ brand }}</a>
+                {% if page > 1 %}&frasl; <span>{{ page }}</span>{% endif %}
+            </h3>
+            <h2>
+                {% if view == 'site' %}
+                    <a class="active" href="/{{ site }}">{{ site }}</a>
+                {% else %}
+                    <a class="{% if view == 'hottest' %}active{% endif %}" href="/">Hottest</a>
+                    <a class="{% if view == 'coldest' %}active{% endif %}" href="/cold">Coldest</a>
+                    <a class="{% if view == 'newest' %}active{% endif %}" href="/new">Newest</a>
+                {% endif %}
+            </h2>
+        </div>
         {% for entry in entries %}
-            {% include 'entry.html' %}
+            {% with revindex=loop.revindex %}
+                {% include 'entry.html' %}
+            {% endwith %}
         {% else %}
             <div class="entry">
                 <div class="summary">Fetching articles...</div>
