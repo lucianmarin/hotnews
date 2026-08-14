@@ -30,7 +30,7 @@
             </h2>
         </div>
         {% for entry in entries %}
-            {% with revindex=loop.revindex %}
+            {% with revindex0=loop.revindex0 %}
                 {% include 'entry.html' %}
             {% endwith %}
         {% else %}
